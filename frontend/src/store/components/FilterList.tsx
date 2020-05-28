@@ -88,6 +88,11 @@ const FilterList: React.FC<FilterListProps> = ({}) => {
 
   const spiceLevel = [ 'extraHot', 'hot', 'medium', 'mild' ]
 
+  const priceRange = ['cheapEats', 'average', 'fineDining']
+
+  const category = ['chinese', 'indian', 'korean', 'mexican']
+
+  const dietaryRestrictions = ['lactoseFree', 'vegetarianFriendly', 'veganOptions', 'glutenFree']
 
   const toTitleCase = (phrase: string) => {
     return phrase
@@ -136,40 +141,30 @@ const FilterList: React.FC<FilterListProps> = ({}) => {
     <FormGroup className={classes.root}>
 
 
-    {spiceLevel.map((spiciness: keyof IState) => <CheckBox checked={checkbox[spiciness]} item={spiciness} handleChange={handleChange}/>)}
+    
 
       <Typography variant="body1" className={classes.titleFont}>Spice Level</Typography>
-      {filterItem('extraHot')}
-      {filterItem('hot')}
-      {filterItem('medium')}
-      {filterItem('mild')}
+      {spiceLevel.map((spiciness: keyof IState) => <CheckBox checked={checkbox[spiciness]} item={spiciness} handleChange={handleChange}/>)}
 
       <Divider variant="middle" className={classes.divider}/>
 
         
       <Typography variant="body1" className={classes.titleFont}>Price</Typography>
 
-      {filterItem('cheapEats')}
-      {filterItem('average')}
-      {filterItem('fineDining')}
+      {priceRange.map((price: keyof IState) => <CheckBox checked={checkbox[price]} item={price} handleChange={handleChange}/>)}
 
         
       <Divider variant="middle" className={classes.divider}/>
 
       <Typography variant="body1" className={classes.titleFont}>Category</Typography>
 
-      {filterItem('chinese')}
-      {filterItem('indian')}
-      {filterItem('mexican')}
-      {filterItem('korean')}
+      {category.map((cat: keyof IState) => <CheckBox checked={checkbox[cat]} item={cat} handleChange={handleChange}/>)}
 
       <Divider variant="middle" className={classes.divider}/>  
    
       <Typography variant="body1" className={classes.titleFont}>Dietary Restrictions</Typography>
-      {filterItem('lactoseFree')}
-      {filterItem('vegetarianFriendly')}
-      {filterItem('veganOptions')}
-      {filterItem('glutenFree')}
+      {dietaryRestrictions.map((res: keyof IState) => <CheckBox checked={checkbox[res]} item={res} handleChange={handleChange}/>)}
+
       
   
 
