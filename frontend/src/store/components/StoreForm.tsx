@@ -1,16 +1,21 @@
 import React, { useState } from 'react'
 import RadioButton from '../../shared/components/UIElements/RadioButton'
+import CheckBox from '../../shared/components/UIElements/CheckBox'
 
 
 import { makeStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
+
+import Paper from '@material-ui/core/Paper';
+import Divider from '@material-ui/core/Divider';
+
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import Layout from '../../util/Layout';
 import Input from '../../shared/components/UIElements/Input'
+import FormGroup from '@material-ui/core/FormGroup';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
+
 
 import { VALIDATOR_REQUIRE } from '../../util/validators'
 
@@ -26,24 +31,87 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: 'center',
     },
 
+    tagsRoot: {
+      display: 'flex',
+      flexDirection: 'column', 
+      justifyContent: 'flex-start',
+      padding: 16
+  
+    },
+  
+    divider: {
+      margin: '8px 0',
+      width: '100%'
+    },
+  
+    titleFont: {
+      fontWeight: 'bold'
+    },
+  
+
 }));
 
 interface StoreFormProps {
 
 }
 
+interface IState {
+
+  cheapEats: boolean
+  average: boolean
+  fineDining: boolean
+  chinese: boolean
+  indian: boolean
+  mexican: boolean
+  korean: boolean
+  lactoseFree: boolean
+  vegetarianFriendly: boolean
+  veganOptions: boolean
+  glutenFree: boolean
+
+}
 const StoreForm: React.FC<StoreFormProps> = ({}) => {
   const classes = useStyles()
-  const [priceRange, setPriceRange] = useState('');
+  
+  const [checkbox, setCheckbox] = useState<IState>({
+    cheapEats: false,
+    average: false,
+    fineDining: false,
+    chinese: false,
+    indian: false,
+    mexican: false,
+    korean: false,
+    lactoseFree: false,
+    vegetarianFriendly: false,
+    veganOptions: false,
+    glutenFree: false
 
-  const handleChange = (event: any) => {
+  });
+
+  const [priceRange, setPriceRange] = useState('');
+  const [checkedList, setCheckedList] = useState<string[]>([])
+
+  const handlePriceChange = (event: any) => {
     setPriceRange(event.target.value);
   }
   
+  const handleTagsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      setCheckedList([...checkedList, event.target.name]) 
+    } else {
+      setCheckedList(checkedList.filter((tag: string) => tag !== event.target.name))
+    }
+    setCheckbox({ ...checkbox, [event.target.name]: event.target.checked })
+    console.log(event.target.checked, checkedList)
+    
+  };
 
-  // const handlePriceChange = (event) => {
-  //   setSelectedValue(event.target.value);
-  // };
+
+
+  const category = ['chinese', 'indian', 'korean', 'mexican']
+
+  const dietaryRestrictions = ['lactoseFree', 'vegetarianFriendly', 'veganOptions', 'glutenFree']
+
 
   const priceLevel = ['$', '$$', '$$$', '$$$$']
 
@@ -114,24 +182,42 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
         </div>
 
         <div style={{ width: '100%' }}>
-        <FormControl component="fieldset" style={{ width: '100%' }}>
-        <FormLabel  style={{ color: 'black', margin: '16px 0'}}>Price</FormLabel>
-        <RadioGroup row aria-label="price" name="price" value={priceRange} onChange={handleChange} style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-  
-          {priceLevel.map(price => <RadioButton value={price} label={price} key={price} />)}
-          </RadioGroup>
-        </FormControl>
+
+          <FormControl component="fieldset" style={{ width: '100%' }}>
+          <FormLabel  style={{ color: 'black', margin: '16px 0'}}>Price</FormLabel>
+          <Paper variant="outlined" style={{ padding: 16 }}>
+          <RadioGroup row aria-label="price" name="price" value={priceRange} onChange={handlePriceChange} style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+
+            {priceLevel.map(price => <RadioButton value={price} label={price} key={price} />)}
+            </RadioGroup>
+          </Paper>
+          </FormControl>
 
         </div>
 
         <div >
-          <Typography>Tags</Typography>
-          
+          <Typography style={{ margin: '16px 0' }}>Tags</Typography>
+          <Paper variant="outlined">
+
+
+          <FormGroup className={classes.tagsRoot}>
+
+            <Typography variant="body1" className={classes.titleFont}>Category</Typography>
+
+            {category.map((cat: keyof IState) => <CheckBox checked={checkbox[cat]} item={cat} handleChange={handleTagsChange}/>)}
+
+            <Divider variant="middle" className={classes.divider}/>  
+
+            <Typography variant="body1" className={classes.titleFont}>Dietary Restrictions</Typography>
+            {dietaryRestrictions.map((res: keyof IState) => <CheckBox checked={checkbox[res]} item={res} handleChange={handleTagsChange}/>)}
+
+    
+
+          </FormGroup>
+          </Paper>
+
 
         </div>
-
-
-
 
       </div>
 
