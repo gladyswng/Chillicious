@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import CheckBox from '../../shared/components/UIElements/CheckBox'
+
+
 import { makeStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -39,30 +42,51 @@ interface FilterListProps {
 }
 
 
+interface IState {
+    extraHot: boolean
+    hot: boolean
+    medium: boolean
+    mild: boolean
+    cheapEats: boolean
+    average: boolean
+    fineDining: boolean
+    chinese: boolean
+    indian: boolean
+    mexican: boolean
+    korean: boolean
+    lactoseFree: boolean
+    vegetarianFriendly: boolean
+    veganOptions: boolean
+    glutenFree: boolean
+
+}
+
+
 
 const FilterList: React.FC<FilterListProps> = ({}) => {
   const classes = useStyles()
-  const [checkbox, setCheckbox] = useState({
-    extraHot: true,
-    hot: true,
-    medium: true,
+  const [checkbox, setCheckbox] = useState<IState>({
+    extraHot: false,
+    hot: false,
+    medium: false,
     mild: false,
-    cheapEats: true,
-    average: true,
-    fineDining: true,
-    chinese: true,
-    indian: true,
+    cheapEats: false,
+    average: false,
+    fineDining: false,
+    chinese: false,
+    indian: false,
     mexican: false,
     korean: false,
-    lactoseFree: true,
+    lactoseFree: false,
     vegetarianFriendly: false,
-    veganOptions: true,
+    veganOptions: false,
     glutenFree: false
 
   });
 
   const [checkedList, setCheckedList] = useState<any>([])
 
+  const spiceLevel = [ 'extraHot', 'hot', 'medium', 'mild' ]
 
 
   const toTitleCase = (phrase: string) => {
@@ -110,6 +134,10 @@ const FilterList: React.FC<FilterListProps> = ({}) => {
 
 
     <FormGroup className={classes.root}>
+
+
+    {spiceLevel.map((spiciness: keyof IState) => <CheckBox checked={checkbox[spiciness]} item={spiciness} handleChange={handleChange}/>)}
+
       <Typography variant="body1" className={classes.titleFont}>Spice Level</Typography>
       {filterItem('extraHot')}
       {filterItem('hot')}

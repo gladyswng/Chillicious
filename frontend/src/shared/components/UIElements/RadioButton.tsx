@@ -8,7 +8,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 
 
 interface RadioButtonProps {
-  // title: string,
+
   value: string,
   label: string,
 }

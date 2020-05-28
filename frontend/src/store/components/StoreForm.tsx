@@ -34,10 +34,10 @@ interface StoreFormProps {
 
 const StoreForm: React.FC<StoreFormProps> = ({}) => {
   const classes = useStyles()
-  const [price, setPrice] = useState();
+  const [priceRange, setPriceRange] = useState('');
 
   const handleChange = (event: any) => {
-    setPrice(event.target.value);
+    setPriceRange(event.target.value);
   }
   
 
@@ -113,14 +113,20 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
 
         </div>
 
-        <div>
-        <FormControl component="fieldset">
-        <FormLabel  color="secondary" >Price</FormLabel>
-        <RadioGroup row aria-label="price" name="price" value={price} onChange={handleChange}>
+        <div style={{ width: '100%' }}>
+        <FormControl component="fieldset" style={{ width: '100%' }}>
+        <FormLabel  style={{ color: 'black', margin: '16px 0'}}>Price</FormLabel>
+        <RadioGroup row aria-label="price" name="price" value={priceRange} onChange={handleChange} style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
   
-          {priceLevel.map(price => <RadioButton value={price} label={price} />)}
+          {priceLevel.map(price => <RadioButton value={price} label={price} key={price} />)}
           </RadioGroup>
-          </FormControl>
+        </FormControl>
+
+        </div>
+
+        <div >
+          <Typography>Tags</Typography>
+          
 
         </div>
 
