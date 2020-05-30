@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback, useReducer } from 'react'
 import RadioButton from '../../shared/components/UIElements/RadioButton'
 import CheckBox from '../../shared/components/UIElements/CheckBox'
 
@@ -70,9 +70,79 @@ interface IState {
   glutenFree: boolean
 
 }
+
+
+// Form reducer - returns a new state
+
+const formReducer = (state: any, action: any) => {
+  
+  // Here we update the state in the reducer
+  switch (action.type) {
+    case 'INPUT_CHANGE':
+      // This combine with individual input ensures if one false, the overfall will be false
+      let formIsValid = true
+      for (const inputId in state.inputs) {// Go through all the inputs(also samee as id)
+
+        // if current input we're looking at, which is getting updated in this currint action -- if this is the case, take info from the dispatched action on weather it is valid or not
+        if (inputId === action.inputId)  {
+          formIsValid = formIsValid && action.isValid
+          console.log(action.isValid)
+      
+        } else {
+          // if looking at an input in form state which is not currently getting updated throught the running action
+          formIsValid = formIsValid && state.inputs[inputId].isValid
+          console.log(state.inputs[inputId].isValid)
+         
+        }
+      }
+      console.log(formIsValid)
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          [action.inputId]: { value: action.value, isValid: action.isValid }
+        },
+
+        isValid: formIsValid
+
+      }
+    default:   // default set to unchanged state
+      return state  
+  }
+}
+
+
+
+
 const StoreForm: React.FC<StoreFormProps> = ({}) => {
   const classes = useStyles()
   
+  // useReducer returns a dispatch function
+  const [formState, dispatch] = useReducer(formReducer, {
+    // initial state
+    inputs: {
+      // validity of original input
+      storeName: {
+        value: '',
+        isValid: false
+      },
+      description: {
+        value: '',
+        isValid: false
+      },
+      address: {
+        value: '',
+        isValid: false
+      },
+      phoneNumber: {
+        value: '',
+        isValid: false
+      }
+    },
+    isValid: false// wether over all form is valid
+  })
+
+
   const [checkbox, setCheckbox] = useState<IState>({
     cheapEats: false,
     average: false,
@@ -87,7 +157,6 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
     glutenFree: false
 
   });
-
   const [priceRange, setPriceRange] = useState('');
   const [checkedList, setCheckedList] = useState<string[]>([])
 
@@ -102,11 +171,35 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
       setCheckedList(checkedList.filter((tag: string) => tag !== event.target.name))
     }
     setCheckbox({ ...checkbox, [event.target.name]: event.target.checked })
-    console.log(event.target.checked, checkedList)
     
   };
 
 
+  // Here we have a flexible reusable input handler, so we don't need different handlers for different inputs
+  // Used useCallback so that it doesnt create a new function obj since it's a function in a function, avoiding useEffect to run again
+  const inputHandler = useCallback((id, value, isValid) => {
+    // value and other params- since we try to extract the values from the action in reducer
+    // value is the value we get from the callback func
+   
+    dispatch({
+      type: 'INPUT_CHANGE', 
+      value: value, 
+      inputId: id, 
+      isValid: isValid
+    })
+  }, [])
+
+
+
+  // TO BE CHANGED
+
+
+  const submitHandler = (event: any) => {
+    event.preventDefault()
+
+  }
+
+  
 
   const category = ['chinese', 'indian', 'korean', 'mexican']
 
@@ -117,7 +210,7 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
 
     return (
       <form action="" className={classes.root} noValidate autoComplete="off" >
-      <div style={{ width: '100%' }}>
+      <div style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
 
         <Input 
         id="storeName" 
@@ -127,6 +220,7 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
         errorMessage="Invalid store name" 
         required
         validators={[VALIDATOR_REQUIRE()]}
+        onInput={inputHandler}
         />
 
         
@@ -141,6 +235,7 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
         rows={4}
         errorMessage="Invalid description"
         validators={[VALIDATOR_REQUIRE()]}
+        onInput={inputHandler}
         />
         
         <Input 
@@ -151,6 +246,7 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
         errorMessage="Not valid" 
         required
         validators={[VALIDATOR_REQUIRE()]}
+        onInput={inputHandler}
         />
         
 
@@ -162,6 +258,7 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
         errorMessage="Invalid number" 
         required
         validators={[VALIDATOR_REQUIRE()]}
+        onInput={inputHandler}
         />
 
         <div>
@@ -219,7 +316,16 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
 
         </div>
 
+        <Button 
+        variant="contained" 
+        color="primary" 
+        type="submit"
+        disabled={!formState.isValid}
+        onSubmit={submitHandler} 
+        style={{ margin: "16px 0" }}
+        >Add Store</Button>
       </div>
+
 
     </form>
     );

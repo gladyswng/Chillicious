@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography';
@@ -20,6 +20,7 @@ interface InputProps {
     type: string,
     val?: any
   }[]
+  onInput: (id: any, value: any, isValid: any) => void
   
 }
 
@@ -32,23 +33,12 @@ interface Action {
   }[]
 }
 
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     '& .MuiTextField-root': {
-//       marginBottom: theme.spacing(4),
-//       marginTop: theme.spacing(2),
-//       width: '100%',
 
-//     },
-//     display: 'flex',
-//     justifyContent: 'center',
-//     width: '80%'
-//   },
-// }));
 
 const inputReducer = (state: any, action: Action) => {
   switch (action.type) {
     case 'CHANGE':
+     
       return {
         ...state,
         value: action.val,
@@ -72,6 +62,19 @@ const Input: React.FC<InputProps> = (props) => {
     isValid: false
   });
 
+  const { id, onInput } = props
+  const { value, isValid } = inputState
+
+  useEffect(() => {
+
+    onInput(id, value, isValid)
+  }, [id, value, isValid, onInput])
+
+  // useEffect(() => {
+  //   props.onInput(props.id, inputState.value, inputState.isvalid)
+  // }, [props, inputState])
+  // change whenever props changed, but this can lead to infinite loop
+
   const changeHandler = (event: any) => {
     dispatch({ 
       type: 'CHANGE', 
@@ -89,8 +92,8 @@ const Input: React.FC<InputProps> = (props) => {
 
     return (
       <div>
-        <label htmlFor="address"><Typography>{props.inputLabel}</Typography></label>
-        <TextField id={props.id}
+        <label htmlFor={id}><Typography>{props.inputLabel}</Typography></label>
+        <TextField id={id}
           required={props.required}
           label={props.label}
           multiline={props.multiline}

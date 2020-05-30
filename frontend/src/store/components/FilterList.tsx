@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+
 import { Typography } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 
@@ -84,7 +84,7 @@ const FilterList: React.FC<FilterListProps> = ({}) => {
 
   });
 
-  const [checkedList, setCheckedList] = useState<any>([])
+  const [checkedList, setCheckedList] = useState<string[]>([])
 
   const spiceLevel = [ 'extraHot', 'hot', 'medium', 'mild' ]
 
@@ -93,30 +93,6 @@ const FilterList: React.FC<FilterListProps> = ({}) => {
   const category = ['chinese', 'indian', 'korean', 'mexican']
 
   const dietaryRestrictions = ['lactoseFree', 'vegetarianFriendly', 'veganOptions', 'glutenFree']
-
-  const toTitleCase = (phrase: string) => {
-    return phrase
-      .split(/(?=[A-Z])/)
-      .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-  }
-
-
-
-  const filterItem = (item: keyof typeof checkbox) => {
-
-    return (
-      <FormControlLabel
-      control={<Checkbox checked={checkbox[item]} onChange={handleChange} 
-      color="primary"
-      name={item} 
-      style={{ padding: "0 10px" }}
-      />}
-      style={{ width: '100%' }}
-      label={<span style={{ fontSize: 15 }}>{toTitleCase(item)}</span>}
-    />
-    )
-  }
 
 
 
