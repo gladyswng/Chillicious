@@ -18,6 +18,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 
 
 import { VALIDATOR_REQUIRE } from '../../util/validators'
+import { ECDH } from 'crypto';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -86,16 +87,15 @@ const formReducer = (state: any, action: any) => {
         // if current input we're looking at, which is getting updated in this currint action -- if this is the case, take info from the dispatched action on weather it is valid or not
         if (inputId === action.inputId)  {
           formIsValid = formIsValid && action.isValid
-          console.log(action.isValid)
+   
       
         } else {
           // if looking at an input in form state which is not currently getting updated throught the running action
           formIsValid = formIsValid && state.inputs[inputId].isValid
-          console.log(state.inputs[inputId].isValid)
+          
          
         }
       }
-      console.log(formIsValid)
       return {
         ...state,
         inputs: {
@@ -106,6 +106,32 @@ const formReducer = (state: any, action: any) => {
         isValid: formIsValid
 
       }
+    
+ 
+    case 'PRICE_CHANGE':
+      return {
+        ...state,
+        priceRange: action.priceRange
+      }
+    
+    case 'TAGS_CHANGE': 
+      if (action.checked) {
+        state.checkedList = [...state.checkedList, action.checkboxId]
+      } else {
+        state.checkedList = state.checkedList.filter((tag: string) => tag !== action.checkboxId)
+        
+      }
+      
+      return {
+        ...state,
+        checkbox: {
+          ...state.checkbox,
+          [action.checkboxId]: action.checked
+        },
+        checkedList: [...state.checkedList]
+ 
+      }
+
     default:   // default set to unchanged state
       return state  
   }
@@ -139,40 +165,74 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
         isValid: false
       }
     },
-    isValid: false// wether over all form is valid
+    isValid: false, // wether over all form is valid
+    priceRange: '',
+    checkbox: {
+      cheapEats: false,
+      average: false,
+      fineDining: false,
+      chinese: false,
+      indian: false,
+      mexican: false,
+      korean: false,
+      lactoseFree: false,
+      vegetarianFriendly: false,
+      veganOptions: false,
+      glutenFree: false
+    },
+    checkedList: []
   })
+ 
 
 
-  const [checkbox, setCheckbox] = useState<IState>({
-    cheapEats: false,
-    average: false,
-    fineDining: false,
-    chinese: false,
-    indian: false,
-    mexican: false,
-    korean: false,
-    lactoseFree: false,
-    vegetarianFriendly: false,
-    veganOptions: false,
-    glutenFree: false
 
-  });
-  const [priceRange, setPriceRange] = useState('');
-  const [checkedList, setCheckedList] = useState<string[]>([])
+  // const [checkbox, setCheckbox] = useState<IState>({
+  //   cheapEats: false,
+  //   average: false,
+  //   fineDining: false,
+  //   chinese: false,
+  //   indian: false,
+  //   mexican: false,
+  //   korean: false,
+  //   lactoseFree: false,
+  //   vegetarianFriendly: false,
+  //   veganOptions: false,
+  //   glutenFree: false
 
-  const handlePriceChange = (event: any) => {
-    setPriceRange(event.target.value);
-  }
+  // });
+  // const [priceRange, setPriceRange] = useState('');
+  // const [checkedList, setCheckedList] = useState<string[]>([])
+
+  // const handlePriceChange = (event: any) => {
+  //   setPriceRange(event.target.value);
+  // }
   
-  const handleTagsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      setCheckedList([...checkedList, event.target.name]) 
-    } else {
-      setCheckedList(checkedList.filter((tag: string) => tag !== event.target.name))
-    }
-    setCheckbox({ ...checkbox, [event.target.name]: event.target.checked })
+  // const handleTagsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (event.target.checked) {
+  //     setCheckedList([...checkedList, event.target.name]) 
+  //   } else {
+  //     setCheckedList(checkedList.filter((tag: string) => tag !== event.target.name))
+  //   }
+  //   setCheckbox({ ...checkbox, [event.target.name]: event.target.checked })
     
-  };
+  // };
+
+  const tagsHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch({
+      type: 'TAGS_CHANGE',
+      checkboxId: event.target.name,
+      checked: event.target.checked
+
+    })
+  }
+
+  const priceHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch({
+      type: 'PRICE_CHANGE',
+      priceRange: event.target.value 
+    })
+  }
+
 
 
   // Here we have a flexible reusable input handler, so we don't need different handlers for different inputs
@@ -188,6 +248,8 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
       isValid: isValid
     })
   }, [])
+
+
 
 
 
@@ -207,6 +269,7 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
 
 
   const priceLevel = ['$', '$$', '$$$', '$$$$']
+
 
     return (
       <form action="" className={classes.root} noValidate autoComplete="off" >
@@ -283,7 +346,7 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
           <FormControl component="fieldset" style={{ width: '100%' }}>
           <FormLabel  style={{ color: 'black', margin: '16px 0'}}>Price</FormLabel>
           <Paper variant="outlined" style={{ padding: 16 }}>
-          <RadioGroup row aria-label="price" name="price" value={priceRange} onChange={handlePriceChange} style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+          <RadioGroup row aria-label="price" name="price" value={formState.priceRange} onChange={priceHandler} style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
 
             {priceLevel.map(price => <RadioButton value={price} label={price} key={price} />)}
             </RadioGroup>
@@ -301,17 +364,18 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
 
             <Typography variant="body1" className={classes.titleFont}>Category</Typography>
 
-            {category.map((cat: keyof IState) => <CheckBox checked={checkbox[cat]} item={cat} handleChange={handleTagsChange}/>)}
+            {category.map((cat: keyof IState) => <CheckBox checked={formState.checkbox[cat]} item={cat} handleChange={tagsHandler}/>)}
 
             <Divider variant="middle" className={classes.divider}/>  
 
             <Typography variant="body1" className={classes.titleFont}>Dietary Restrictions</Typography>
-            {dietaryRestrictions.map((res: keyof IState) => <CheckBox checked={checkbox[res]} item={res} handleChange={handleTagsChange}/>)}
+            {dietaryRestrictions.map((res) => <CheckBox checked={formState.checkbox[res]} item={res} handleChange={tagsHandler}/>)}
 
     
 
           </FormGroup>
           </Paper>
+          <p>{formState.checkedList}</p>
 
 
         </div>
