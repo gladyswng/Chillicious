@@ -12,11 +12,11 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
     inputs: {
       // validity of original input
       storeName: {
-        value: 'test',
+        value: '',
         isValid: false
       },
       description: {
-        value: 'test',
+        value: '',
         isValid: false
       },
       address: {
@@ -28,7 +28,7 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
         isValid: false
       },
       priceRange: '',
-      tags: ['']
+      tags: [] as string[]
     },
     isValid: false, // wether over all form is valid
   

@@ -177,30 +177,30 @@ const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox }) => {
       },
       description: {
         value: inputs.description.value,
-        isValid: false
+        isValid: inputs.description.isValid
       },
       address: {
-        value: '',
-        isValid: false
+        value: inputs.address.value,
+        isValid: inputs.address.isValid,
       },
       phoneNumber: {
-        value: '',
-        isValid: false
+        value: inputs.phoneNumber.value,
+        isValid: inputs.phoneNumber.isValid
       },
-      priceRange: '',
-      tags: []
+      priceRange: inputs.priceRange,
+      tags: inputs.tags
     },
-    isValid: false, // wether over all form is valid
+    isValid: isValid, // wether over all form is valid
     checkbox: {
 
-      chinese: false,
-      indian: false,
-      mexican: false,
-      korean: false,
-      lactoseFree: false,
-      vegetarianFriendly: false,
-      veganOptions: false,
-      glutenFree: false
+      chinese: checkbox.chinese,
+      indian: checkbox.indian,
+      mexican: checkbox.mexican,
+      korean: checkbox.korean,
+      lactoseFree: checkbox.lactoseFree,
+      vegetarianFriendly: checkbox.vegetarianFriendly,
+      veganOptions: checkbox.veganOptions,
+      glutenFree: checkbox.glutenFree
     }
     
   })
@@ -343,7 +343,7 @@ const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox }) => {
           <FormControl component="fieldset" style={{ width: '100%' }}>
           <FormLabel  style={{ color: 'black', margin: '16px 0'}}>Price</FormLabel>
           <Paper variant="outlined" style={{ padding: 16 }}>
-          <RadioGroup row aria-label="price" name="price" value={formState.priceRange} onChange={priceHandler} style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+          <RadioGroup row aria-label="price" name="price" value={formState.inputs.priceRange} onChange={priceHandler} style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
 
             {priceLevel.map(price => <RadioButton value={price} label={price} key={price} />)}
             </RadioGroup>

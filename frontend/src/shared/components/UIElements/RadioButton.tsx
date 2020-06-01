@@ -19,6 +19,7 @@ const RadioButton: React.FC<RadioButtonProps> = (props) => {
   
       <FormControlLabel
         value={props.value}
+       
         control={<Radio color="primary" />}
         label={props.label}
         labelPlacement="top"
