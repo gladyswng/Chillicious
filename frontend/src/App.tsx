@@ -2,13 +2,15 @@ import React, { useRef } from "react"
 import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-dom"
 import UserProfile from './user/pages/UserProfile'
 import UserAccount from './user/pages/UserAccount'
+
+import UpdateStore from './store/pages/UpdateStore'
 import Store from './store/pages/Store'
 import AddStore from './store/pages/AddStore'
+import SearchResult from './store/pages/SearchResult'
 import Layout from './util/Layout'
 
 import Homepage from './home/page/homePage'
 
-import SearchResult from './store/pages/SearchResult'
 
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 
@@ -53,6 +55,14 @@ const App: React.FC = () => {
                         <Store />
                     </Route>
 
+                    <Route path="/store/add" exact>
+                        <AddStore />
+                    </Route>
+
+                    <Route path="/store/update" exact>
+                        <UpdateStore />
+                    </Route>
+
                     <Route path="/users/me" exact>
                         <UserAccount />
                         {/* <UserProfile /> */}
@@ -60,9 +70,6 @@ const App: React.FC = () => {
 
                     </Route>
 
-                    <Route path="/store/add" exact>
-                        <AddStore />
-                    </Route>
 
          
 

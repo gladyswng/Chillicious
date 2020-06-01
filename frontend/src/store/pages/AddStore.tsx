@@ -1,7 +1,7 @@
 import React from 'react'
 import StoreForm from '../components/StoreForm'
 import Typography from '@material-ui/core/Typography';
-import Layout from '../../util/Layout'
+
 interface AddStoreProps {
 
 }
