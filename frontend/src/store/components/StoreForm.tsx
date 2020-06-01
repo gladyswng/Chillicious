@@ -18,7 +18,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 
 
 import { VALIDATOR_REQUIRE } from '../../util/validators'
-import { ECDH } from 'crypto';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -56,21 +56,6 @@ interface StoreFormProps {
 
 }
 
-interface IState {
-
-  cheapEats: boolean
-  average: boolean
-  fineDining: boolean
-  chinese: boolean
-  indian: boolean
-  mexican: boolean
-  korean: boolean
-  lactoseFree: boolean
-  vegetarianFriendly: boolean
-  veganOptions: boolean
-  glutenFree: boolean
-
-}
 
 
 // Form reducer - returns a new state
@@ -111,24 +96,31 @@ const formReducer = (state: any, action: any) => {
     case 'PRICE_CHANGE':
       return {
         ...state,
-        priceRange: action.priceRange
+        inputs: {
+          ...state.inputs,
+          priceRange: action.priceRange
+        }
+        
       }
     
     case 'TAGS_CHANGE': 
-      if (action.checked) {
-        state.checkedList = [...state.checkedList, action.checkboxId]
+      if (action.checked && !state.inputs.tags.includes(action.checkboxId)) {
+        state.inputs.tags = [...state.inputs.tags, action.checkboxId]
       } else {
-        state.checkedList = state.checkedList.filter((tag: string) => tag !== action.checkboxId)
+        state.inputs.tags = state.inputs.tags.filter((tag: string) => tag !== action.checkboxId)
         
       }
       
       return {
         ...state,
+        inputs: {
+          ...state.inputs,
+          tags: state.inputs.tags
+        },
         checkbox: {
           ...state.checkbox,
           [action.checkboxId]: action.checked
-        },
-        checkedList: [...state.checkedList]
+        }
  
       }
 
@@ -163,14 +155,14 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
       phoneNumber: {
         value: '',
         isValid: false
-      }
+      },
+      priceRange: '',
+      tags: []
     },
     isValid: false, // wether over all form is valid
-    priceRange: '',
+    priceRange: '', // TODO, CHECK IT IS DONE!!!!
     checkbox: {
-      cheapEats: false,
-      average: false,
-      fineDining: false,
+
       chinese: false,
       indian: false,
       mexican: false,
@@ -180,42 +172,9 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
       veganOptions: false,
       glutenFree: false
     },
-    checkedList: []
+    
   })
  
-
-
-
-  // const [checkbox, setCheckbox] = useState<IState>({
-  //   cheapEats: false,
-  //   average: false,
-  //   fineDining: false,
-  //   chinese: false,
-  //   indian: false,
-  //   mexican: false,
-  //   korean: false,
-  //   lactoseFree: false,
-  //   vegetarianFriendly: false,
-  //   veganOptions: false,
-  //   glutenFree: false
-
-  // });
-  // const [priceRange, setPriceRange] = useState('');
-  // const [checkedList, setCheckedList] = useState<string[]>([])
-
-  // const handlePriceChange = (event: any) => {
-  //   setPriceRange(event.target.value);
-  // }
-  
-  // const handleTagsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (event.target.checked) {
-  //     setCheckedList([...checkedList, event.target.name]) 
-  //   } else {
-  //     setCheckedList(checkedList.filter((tag: string) => tag !== event.target.name))
-  //   }
-  //   setCheckbox({ ...checkbox, [event.target.name]: event.target.checked })
-    
-  // };
 
   const tagsHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({
@@ -256,13 +215,12 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
   // TO BE CHANGED
 
 
-  const submitHandler = (event: any) => {
+  const storeFormSubmitHandler = (event: any) => {
     event.preventDefault()
-
+    console.log(formState)
   }
 
-  
-
+  console.log(formState.inputs)
   const category = ['chinese', 'indian', 'korean', 'mexican']
 
   const dietaryRestrictions = ['lactoseFree', 'vegetarianFriendly', 'veganOptions', 'glutenFree']
@@ -270,9 +228,14 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
 
   const priceLevel = ['$', '$$', '$$$', '$$$$']
 
-
-    return (
-      <form action="" className={classes.root} noValidate autoComplete="off" >
+  return (
+    <form 
+    action=""  //????
+    className={classes.root} 
+    // onSubmit={storeFormSubmitHandler}
+    noValidate //??
+    autoComplete="off" 
+    >
       <div style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
 
         <Input 
@@ -360,22 +323,22 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
           <Paper variant="outlined">
 
 
-          <FormGroup className={classes.tagsRoot}>
+          <FormGroup className={classes.tagsRoot} >
 
             <Typography variant="body1" className={classes.titleFont}>Category</Typography>
 
-            {category.map((cat: keyof IState) => <CheckBox checked={formState.checkbox[cat]} item={cat} handleChange={tagsHandler}/>)}
+            {category.map((cat) => <CheckBox checked={formState.checkbox[cat]} item={cat} key={cat} handleChange={tagsHandler}/>)}
 
             <Divider variant="middle" className={classes.divider}/>  
 
             <Typography variant="body1" className={classes.titleFont}>Dietary Restrictions</Typography>
-            {dietaryRestrictions.map((res) => <CheckBox checked={formState.checkbox[res]} item={res} handleChange={tagsHandler}/>)}
+            {dietaryRestrictions.map((res) => <CheckBox checked={formState.checkbox[res]} item={res} key={res} handleChange={tagsHandler}/>)}
 
     
 
           </FormGroup>
           </Paper>
-          <p>{formState.checkedList}</p>
+          <p>{formState.inputs.tags}</p>
 
 
         </div>
@@ -385,13 +348,13 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
         color="primary" 
         type="submit"
         disabled={!formState.isValid}
-        onSubmit={submitHandler} 
+        onSubmit={storeFormSubmitHandler} 
         style={{ margin: "16px 0" }}
         >Add Store</Button>
       </div>
 
 
     </form>
-    );
+  );
 }
 export default StoreForm
