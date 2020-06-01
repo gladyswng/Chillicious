@@ -1,8 +1,9 @@
 import React, { useState, useCallback, useReducer } from 'react'
+import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH } from '../../util/validators'
+
+
 import RadioButton from '../../shared/components/UIElements/RadioButton'
 import CheckBox from '../../shared/components/UIElements/CheckBox'
-
-
 import { makeStyles } from '@material-ui/core/styles'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import Paper from '@material-ui/core/Paper';
@@ -16,8 +17,6 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
 
-
-import { VALIDATOR_REQUIRE } from '../../util/validators'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -110,15 +109,11 @@ const formReducer = (state: any, action: any) => {
         // if current input we're looking at, which is getting updated in this currint action -- if this is the case, take info from the dispatched action on weather it is valid or not
         if (inputId === action.inputId)  {
           formIsValid = formIsValid && action.isValid
-          console.log(formIsValid)
           
         } else {
           // if looking at an input in form state which is not currently getting updated throught the running action
           formIsValid = formIsValid && state.inputs[inputId].isValid
-          console.log(formIsValid)
 
-          
-         
         }
       }
       return {
@@ -132,13 +127,7 @@ const formReducer = (state: any, action: any) => {
 
       }
     
- 
-    // case 'PRICE_CHANGE':
-    //   return {
-    //     ...state,
-    //     priceRange: action.priceRange
-    //   }
-    
+
     case 'TAGS_CHANGE': 
       if (action.checked && !state.tags.includes(action.checkboxId)) {
         state.tags = [...state.tags, action.checkboxId]
@@ -167,7 +156,10 @@ const formReducer = (state: any, action: any) => {
 
 const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, blur, buttonTitle }) => {
   const classes = useStyles()
-  
+    
+  const category = ['chinese', 'indian', 'korean', 'mexican']
+  const dietaryRestrictions = ['lactoseFree', 'vegetarianFriendly', 'veganOptions', 'glutenFree']
+  const priceLevel = ['$', '$$', '$$$', '$$$$']
   
   // useReducer returns a dispatch function
   const [formState, dispatch] = useReducer(formReducer, {
@@ -193,13 +185,10 @@ const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, 
         value: inputs.priceRange.value,
         isValid: inputs.phoneNumber.isValid
       }
-
     },
-    
     tags: tags,
     isValid: isValid, 
     checkbox: {
-
       chinese: checkbox.chinese,
       indian: checkbox.indian,
       mexican: checkbox.mexican,
@@ -209,8 +198,7 @@ const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, 
       veganOptions: checkbox.veganOptions,
       glutenFree: checkbox.glutenFree
     },
-
-    
+    image: []
   })
 
   console.log(formState)
@@ -224,15 +212,11 @@ const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, 
     })
   }
 
-
-
-
   // Here we have a flexible reusable input handler, so we don't need different handlers for different inputs
   // Used useCallback so that it doesnt create a new function obj since it's a function in a function, avoiding useEffect to run again
   const inputHandler = useCallback((id, value, isValid) => {
     // value and other params- since we try to extract the values from the action in reducer
     // value is the value we get from the callback func
-   
     dispatch({
       type: 'INPUT_CHANGE', 
       value: value, 
@@ -241,28 +225,25 @@ const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, 
     })
   }, [])
 
-  const priceHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    inputHandler('priceRange', event.target.value, true)
-  }
+  const priceHandler = (event: React.ChangeEvent<HTMLInputElement>) => inputHandler('priceRange', event.target.value, true)
+
   const priceRange = formState.inputs.priceRange
 
+  const imageHandler = ({ target } : any) => {
+    console.log(target.files[0].name)
+    console.log(target.files[0])
+    // dispatch({
+    //   type: 'IMAGE_CHANGE',
+      
+    // })
 
-
-
-  // TO BE CHANGED
-
-
-  const storeFormSubmitHandler = (event: any) => {
-    event.preventDefault()
-    console.log(formState)
   }
 
-  const category = ['chinese', 'indian', 'korean', 'mexican']
-
-  const dietaryRestrictions = ['lactoseFree', 'vegetarianFriendly', 'veganOptions', 'glutenFree']
-
-
-  const priceLevel = ['$', '$$', '$$$', '$$$$']
+  // TO BE CHANGED
+    const storeFormSubmitHandler = (event: any) => {
+      event.preventDefault()
+      console.log(formState)
+    }
 
   return (
     <form 
@@ -287,8 +268,6 @@ const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, 
         blur={blur}
         />
 
-        
-
         <Input 
         id="description" 
         required
@@ -298,8 +277,8 @@ const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, 
         variant="outlined"
         multiline
         rows={4}
-        errorMessage="Invalid description"
-        validators={[VALIDATOR_REQUIRE()]}
+        errorMessage="Please provide more than 15 characters"
+        validators={[VALIDATOR_REQUIRE(), VALIDATOR_MINLENGTH(15)] }
         onInput={inputHandler}
         blur={blur}
         />
@@ -310,7 +289,7 @@ const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, 
         inputLabel="Address" 
         value={formState.inputs.address.value}
         variant="outlined"
-        errorMessage="Not valid" 
+        errorMessage="Invalid address" 
         required
         validators={[VALIDATOR_REQUIRE()]}
         onInput={inputHandler}
@@ -336,15 +315,17 @@ const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, 
           <input
             accept="image/*"
             style={{ display: 'none' }}
-            id="contained-button-file"
+            onChange={imageHandler}
+            id="image"
             multiple
             type="file"
           />
-          <label htmlFor="contained-button-file">
+          <label htmlFor="image">
             <Button variant="contained" color="primary" component="span">
               Upload
             </Button>
           </label>
+        
 
         </div>
 
@@ -361,11 +342,13 @@ const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, 
           name="price" 
           id="priceRange" 
           value={priceRange.value}
-           onChange={priceHandler} 
-           style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+          onChange={priceHandler} 
+          style={{ width: '100%', 
+          display: 'flex', 
+          justifyContent: 'space-between' }}>
 
             {priceLevel.map(price => <RadioButton value={price} label={price} key={price} />)}
-            </RadioGroup>
+          </RadioGroup>
             
           </Paper>
           </FormControl>
@@ -375,35 +358,33 @@ const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, 
         <div >
           <Typography style={{ margin: '16px 0' }}>Tags</Typography>
           <Paper variant="outlined">
+            <FormGroup className={classes.tagsRoot} >
 
+              <Typography variant="body1" className={classes.titleFont}>Category</Typography>
 
-          <FormGroup className={classes.tagsRoot} >
+              {category.map((cat) => <CheckBox 
+              checked={formState.checkbox[cat]} 
+              item={cat} 
+              key={cat}
+              handleChange={tagsHandler} 
+              />)}
 
-            <Typography variant="body1" className={classes.titleFont}>Category</Typography>
+              <Divider variant="middle" className={classes.divider}/>  
 
-            {category.map((cat) => <CheckBox 
-            checked={formState.checkbox[cat]} 
-            item={cat} 
-            key={cat} 
-            
-            handleChange={tagsHandler} 
-            />)}
+              <Typography variant="body1" className={classes.titleFont}>Dietary Restrictions</Typography>
+              {dietaryRestrictions.map((res) => <CheckBox 
+              checked={formState.checkbox[res]} 
+              item={res} 
+              key={res} 
+              handleChange={tagsHandler}/>)}
 
-            <Divider variant="middle" className={classes.divider}/>  
-
-            <Typography variant="body1" className={classes.titleFont}>Dietary Restrictions</Typography>
-            {dietaryRestrictions.map((res) => <CheckBox checked={formState.checkbox[res]} item={res} key={res} handleChange={tagsHandler}/>)}
-
-    
-
-          </FormGroup>
+            </FormGroup>
 
           </Paper>
           <p>{formState.inputs.tags}</p>
 
 
         </div>
-
         <Button 
         variant="contained" 
         color="primary" 

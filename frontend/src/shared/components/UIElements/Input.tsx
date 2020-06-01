@@ -59,9 +59,9 @@ const inputReducer = (state: any, action: Action) => {
 const Input: React.FC<InputProps> = (props) => {
   // const classes = useStyles()
   const [inputState, dispatch] = useReducer(inputReducer, {
-    value: props.value,
+    value: props.value || '',
     isTouched: false, 
-    isValid: !props.blur 
+    isValid: !props.blur || false
     // If want to blur, meaning no content yet, meaning valid should be false
   });
 
