@@ -53,37 +53,38 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface StoreFormProps {
-  inputs: {
-    storeName: {
-      value: string;
-      isValid: boolean;
-    };
-    description: {
-        value: string;
-        isValid: boolean;
-    };
-    address: {
-        value: string;
-        isValid: boolean;
-    };
-    phoneNumber: {
-        value: string;
-        isValid: boolean;
-    };
-    priceRange: string;
-    tags: string[];
-  }
-  isValid: boolean
-  checkbox: {
-    chinese: boolean;
-    indian: boolean;
-    mexican: boolean;
-    korean: boolean;
-    lactoseFree: boolean;
-    vegetarianFriendly: boolean;
-    veganOptions: boolean;
-    glutenFree: boolean;
-  }
+  // inputs: {
+  //   storeName: {
+  //     value: string;
+  //     isValid: boolean;
+  //   };
+  //   description: {
+  //     value: string;
+  //     isValid: boolean;
+  //   };
+  //   address: {
+  //     value: string;
+  //     isValid: boolean;
+  //   };
+  //   phoneNumber: {
+  //     value: string;
+  //     isValid: boolean;
+  //   };
+  //   priceRange: string;
+  //   tags: string[];
+  // }
+  // formIsValid: boolean
+  // checkbox: {
+  //   chinese: boolean;
+  //   indian: boolean;
+  //   mexican: boolean;
+  //   korean: boolean;
+  //   lactoseFree: boolean;
+  //   vegetarianFriendly: boolean;
+  //   veganOptions: boolean;
+  //   glutenFree: boolean;
+  // },
+  buttonTitle: string
 }
 
 
@@ -102,11 +103,13 @@ const formReducer = (state: any, action: any) => {
         // if current input we're looking at, which is getting updated in this currint action -- if this is the case, take info from the dispatched action on weather it is valid or not
         if (inputId === action.inputId)  {
           formIsValid = formIsValid && action.isValid
-   
-      
+          
+          
         } else {
           // if looking at an input in form state which is not currently getting updated throught the running action
           formIsValid = formIsValid && state.inputs[inputId].isValid
+          console.log(formIsValid)
+
           
          
         }
@@ -126,27 +129,20 @@ const formReducer = (state: any, action: any) => {
     case 'PRICE_CHANGE':
       return {
         ...state,
-        inputs: {
-          ...state.inputs,
-          priceRange: action.priceRange
-        }
-        
+        priceRange: action.priceRange
       }
     
     case 'TAGS_CHANGE': 
-      if (action.checked && !state.inputs.tags.includes(action.checkboxId)) {
-        state.inputs.tags = [...state.inputs.tags, action.checkboxId]
+      if (action.checked && !state.tags.includes(action.checkboxId)) {
+        state.tags = [...state.tags, action.checkboxId]
       } else {
-        state.inputs.tags = state.inputs.tags.filter((tag: string) => tag !== action.checkboxId)
+        state.tags = state.tags.filter((tag: string) => tag !== action.checkboxId)
         
       }
       
       return {
         ...state,
-        inputs: {
-          ...state.inputs,
-          tags: state.inputs.tags
-        },
+        tags: state.tags,
         checkbox: {
           ...state.checkbox,
           [action.checkboxId]: action.checked
@@ -162,50 +158,50 @@ const formReducer = (state: any, action: any) => {
 
 
 
-const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox }) => {
+const StoreForm: React.FC<StoreFormProps> = ({ buttonTitle }) => {
   const classes = useStyles()
-  console.log(inputs.storeName.value)
+  
   
   // useReducer returns a dispatch function
   const [formState, dispatch] = useReducer(formReducer, {
-    // initial state
     inputs: {
       // validity of original input
       storeName: {
-        value: inputs.storeName.value,
-        isValid: inputs.storeName.isValid
+        value: '',
+        isValid: false
       },
       description: {
-        value: inputs.description.value,
-        isValid: inputs.description.isValid
+        value: '',
+        isValid: false
       },
       address: {
-        value: inputs.address.value,
-        isValid: inputs.address.isValid,
+        value: '',
+        isValid: false
       },
       phoneNumber: {
-        value: inputs.phoneNumber.value,
-        isValid: inputs.phoneNumber.isValid
-      },
-      priceRange: inputs.priceRange,
-      tags: inputs.tags
-    },
-    isValid: isValid, // wether over all form is valid
-    checkbox: {
+        value: '',
+        isValid: false
+      }
 
-      chinese: checkbox.chinese,
-      indian: checkbox.indian,
-      mexican: checkbox.mexican,
-      korean: checkbox.korean,
-      lactoseFree: checkbox.lactoseFree,
-      vegetarianFriendly: checkbox.vegetarianFriendly,
-      veganOptions: checkbox.veganOptions,
-      glutenFree: checkbox.glutenFree
+    },
+    priceRange: '', // TODO - CHECK IT IS DONE
+    tags: [] as string[],
+    isValid: false, 
+  
+    checkbox: {
+      chinese: false,
+      indian: false,
+      mexican: false,
+      korean: false,
+      lactoseFree: false,
+      vegetarianFriendly: false,
+      veganOptions: false,
+      glutenFree: false
     }
     
   })
- 
-  console.log(formState.inputs)
+
+  console.log(formState)
 
   const tagsHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({
@@ -390,7 +386,7 @@ const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox }) => {
         disabled={!formState.isValid}
         onSubmit={storeFormSubmitHandler} 
         style={{ margin: "16px 0" }}
-        >Add Store</Button>
+        >{buttonTitle}</Button>
       </div>
 
 
@@ -398,3 +394,41 @@ const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox }) => {
   );
 }
 export default StoreForm
+
+
+
+
+    // // initial state
+    // inputs: {
+    //   // validity of original input
+    //   storeName: {
+    //     value: inputs.storeName.value,
+    //     isValid: inputs.storeName.isValid
+    //   },
+    //   description: {
+    //     value: inputs.description.value,
+    //     isValid: inputs.description.isValid
+    //   },
+    //   address: {
+    //     value: inputs.address.value,
+    //     isValid: inputs.address.isValid,
+    //   },
+    //   phoneNumber: {
+    //     value: inputs.phoneNumber.value,
+    //     isValid: inputs.phoneNumber.isValid
+    //   },
+    //   priceRange: inputs.priceRange,
+    //   tags: inputs.tags
+    // },
+    // isValid: formIsValid, 
+    // checkbox: {
+
+    //   chinese: checkbox.chinese,
+    //   indian: checkbox.indian,
+    //   mexican: checkbox.mexican,
+    //   korean: checkbox.korean,
+    //   lactoseFree: checkbox.lactoseFree,
+    //   vegetarianFriendly: checkbox.vegetarianFriendly,
+    //   veganOptions: checkbox.veganOptions,
+    //   glutenFree: checkbox.glutenFree
+    // }
