@@ -53,38 +53,40 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface StoreFormProps {
-  // inputs: {
-  //   storeName: {
-  //     value: string;
-  //     isValid: boolean;
-  //   };
-  //   description: {
-  //     value: string;
-  //     isValid: boolean;
-  //   };
-  //   address: {
-  //     value: string;
-  //     isValid: boolean;
-  //   };
-  //   phoneNumber: {
-  //     value: string;
-  //     isValid: boolean;
-  //   };
-  //   priceRange: string;
-  //   tags: string[];
-  // }
-  // formIsValid: boolean
-  // checkbox: {
-  //   chinese: boolean;
-  //   indian: boolean;
-  //   mexican: boolean;
-  //   korean: boolean;
-  //   lactoseFree: boolean;
-  //   vegetarianFriendly: boolean;
-  //   veganOptions: boolean;
-  //   glutenFree: boolean;
-  // },
-  buttonTitle: string
+  inputs: {
+    storeName: {
+      value: string;
+      isValid: boolean;
+    };
+    description: {
+      value: string;
+      isValid: boolean;
+    };
+    address: {
+      value: string;
+      isValid: boolean;
+    };
+    phoneNumber: {
+      value: string;
+      isValid: boolean;
+    };
+    
+  }
+  priceRange: string;
+  tags: string[];
+  isValid: boolean
+  checkbox: {
+    chinese: boolean;
+    indian: boolean;
+    mexican: boolean;
+    korean: boolean;
+    lactoseFree: boolean;
+    vegetarianFriendly: boolean;
+    veganOptions: boolean;
+    glutenFree: boolean;
+  },
+  buttonTitle: string,
+  blur: boolean
 }
 
 
@@ -158,46 +160,80 @@ const formReducer = (state: any, action: any) => {
 
 
 
-const StoreForm: React.FC<StoreFormProps> = ({ buttonTitle }) => {
+const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, priceRange, blur, buttonTitle }) => {
   const classes = useStyles()
   
   
   // useReducer returns a dispatch function
   const [formState, dispatch] = useReducer(formReducer, {
-    inputs: {
+      inputs: {
       // validity of original input
       storeName: {
-        value: '',
-        isValid: false
+        value: inputs.storeName.value,
+        isValid: inputs.storeName.isValid
       },
       description: {
-        value: '',
-        isValid: false
+        value: inputs.description.value,
+        isValid: inputs.description.isValid
       },
       address: {
-        value: '',
-        isValid: false
+        value: inputs.address.value,
+        isValid: inputs.address.isValid,
       },
       phoneNumber: {
-        value: '',
-        isValid: false
-      }
-
+        value: inputs.phoneNumber.value,
+        isValid: inputs.phoneNumber.isValid
+      },
+      
     },
-    priceRange: '', // TODO - CHECK IT IS DONE
-    tags: [] as string[],
-    isValid: false, 
-  
+    priceRange: priceRange,
+    tags: tags,
+    isValid: isValid, 
     checkbox: {
-      chinese: false,
-      indian: false,
-      mexican: false,
-      korean: false,
-      lactoseFree: false,
-      vegetarianFriendly: false,
-      veganOptions: false,
-      glutenFree: false
+
+      chinese: checkbox.chinese,
+      indian: checkbox.indian,
+      mexican: checkbox.mexican,
+      korean: checkbox.korean,
+      lactoseFree: checkbox.lactoseFree,
+      vegetarianFriendly: checkbox.vegetarianFriendly,
+      veganOptions: checkbox.veganOptions,
+      glutenFree: checkbox.glutenFree
     }
+    // inputs: {
+    //   // validity of original input
+    //   storeName: {
+    //     value: '',
+    //     isValid: false
+    //   },
+    //   description: {
+    //     value: '',
+    //     isValid: false
+    //   },
+    //   address: {
+    //     value: '',
+    //     isValid: false
+    //   },
+    //   phoneNumber: {
+    //     value: '',
+    //     isValid: false
+    //   }
+
+    // },
+    // priceRange: '', // TODO - CHECK IT IS DONE
+    // tags: [] as string[],
+    // isValid: false, 
+  
+    // checkbox: {
+    //   chinese: false,
+    //   indian: false,
+    //   mexican: false,
+    //   korean: false,
+    //   lactoseFree: false,
+    //   vegetarianFriendly: false,
+    //   veganOptions: false,
+    //   glutenFree: false
+    // }
     
   })
 
@@ -274,6 +310,7 @@ const StoreForm: React.FC<StoreFormProps> = ({ buttonTitle }) => {
         required
         validators={[VALIDATOR_REQUIRE()]}
         onInput={inputHandler}
+        blur={blur}
         />
 
         
@@ -290,6 +327,7 @@ const StoreForm: React.FC<StoreFormProps> = ({ buttonTitle }) => {
         errorMessage="Invalid description"
         validators={[VALIDATOR_REQUIRE()]}
         onInput={inputHandler}
+        blur={blur}
         />
         
         <Input 
@@ -302,6 +340,7 @@ const StoreForm: React.FC<StoreFormProps> = ({ buttonTitle }) => {
         required
         validators={[VALIDATOR_REQUIRE()]}
         onInput={inputHandler}
+        blur={blur}
         />
         
 
@@ -315,6 +354,7 @@ const StoreForm: React.FC<StoreFormProps> = ({ buttonTitle }) => {
         required
         validators={[VALIDATOR_REQUIRE()]}
         onInput={inputHandler}
+        blur={blur}
         />
 
         <div>
@@ -339,7 +379,7 @@ const StoreForm: React.FC<StoreFormProps> = ({ buttonTitle }) => {
           <FormControl component="fieldset" style={{ width: '100%' }}>
           <FormLabel  style={{ color: 'black', margin: '16px 0'}}>Price</FormLabel>
           <Paper variant="outlined" style={{ padding: 16 }}>
-          <RadioGroup row aria-label="price" name="price" value={formState.inputs.priceRange} onChange={priceHandler} style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+          <RadioGroup row aria-label="price" name="price" value={formState.priceRange} onChange={priceHandler} style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
 
             {priceLevel.map(price => <RadioButton value={price} label={price} key={price} />)}
             </RadioGroup>

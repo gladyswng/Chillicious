@@ -21,6 +21,7 @@ interface InputProps {
     type: string,
     val?: any
   }[]
+  blur?: boolean
   onInput: (id: any, value: any, isValid: any) => void
   
 }
@@ -58,7 +59,7 @@ const inputReducer = (state: any, action: Action) => {
 const Input: React.FC<InputProps> = (props) => {
   // const classes = useStyles()
   const [inputState, dispatch] = useReducer(inputReducer, {
-    value: '',
+    value: props.value,
     isTouched: false, 
     isValid: false
   });
@@ -85,9 +86,13 @@ const Input: React.FC<InputProps> = (props) => {
   };
   
   const touchHandler = () => {
-    dispatch({ 
-      type: 'TOUCH'
-    })
+    if (props.blur) {
+      dispatch({ 
+        type: 'TOUCH'
+      })
+
+    }
+    return
   }
 
 
@@ -102,7 +107,7 @@ const Input: React.FC<InputProps> = (props) => {
           type={props.type} 
           variant={props.variant} 
           error={!inputState.isValid && inputState.isTouched}
-          helperText={!inputState.isValid && inputState.isTouched && props.errorMessage}
+          helperText={blur? !inputState.isValid && inputState.isTouched && props.errorMessage : !inputState.isValid&& props.errorMessage}
           onChange={changeHandler}
           onBlur={touchHandler}
           value={inputState.value}

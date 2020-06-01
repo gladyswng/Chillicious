@@ -8,42 +8,43 @@ interface AddStoreProps {
 
 const AddStore: React.FC<AddStoreProps> = ({}) => {
 
-  // const initialFormState = {
-  //   inputs: {
-  //     // validity of original input
-  //     storeName: {
-  //       value: '',
-  //       isValid: false
-  //     },
-  //     description: {
-  //       value: '',
-  //       isValid: false
-  //     },
-  //     address: {
-  //       value: '',
-  //       isValid: false
-  //     },
-  //     phoneNumber: {
-  //       value: '',
-  //       isValid: false
-  //     },
-  //     priceRange: '',
-  //     tags: [] as string[]
-  //   },
-  //   isValid: false, 
-  
-  //   checkbox: {
+  const initialFormState = {
+    inputs: {
+      // validity of original input
+      storeName: {
+        value: '',
+        isValid: false
+      },
+      description: {
+        value: '',
+        isValid: false
+      },
+      address: {
+        value: '',
+        isValid: false
+      },
+      phoneNumber: {
+        value: '',
+        isValid: false
+      },
 
-  //     chinese: false,
-  //     indian: false,
-  //     mexican: false,
-  //     korean: false,
-  //     lactoseFree: false,
-  //     vegetarianFriendly: false,
-  //     veganOptions: false,
-  //     glutenFree: false
-  //   }
-  // }
+    },
+    priceRange: '',
+    tags: [] as string[],
+    isValid: false, 
+  
+    checkbox: {
+
+      chinese: false,
+      indian: false,
+      mexican: false,
+      korean: false,
+      lactoseFree: false,
+      vegetarianFriendly: false,
+      veganOptions: false,
+      glutenFree: false
+    }
+  }
     return (
      
         <div style={{ marginTop: 80, width: '80%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
@@ -51,9 +52,12 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
           Add Store
           </Typography>
           <StoreForm 
-          // inputs={initialFormState.inputs}
-          // formIsValid={initialFormState.isValid}
-          // checkbox={initialFormState.checkbox}
+          inputs={initialFormState.inputs}
+          tags={initialFormState.tags}
+          priceRange={initialFormState.priceRange}
+          isValid={initialFormState.isValid}
+          checkbox={initialFormState.checkbox}
+          blur={true}
           buttonTitle="Add Store"
           />
         </div>
