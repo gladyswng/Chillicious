@@ -61,7 +61,8 @@ const Input: React.FC<InputProps> = (props) => {
   const [inputState, dispatch] = useReducer(inputReducer, {
     value: props.value,
     isTouched: false, 
-    isValid: !props.blur
+    isValid: !props.blur 
+    // If want to blur, meaning no content yet, meaning valid should be false
   });
 
   const { id, onInput } = props
