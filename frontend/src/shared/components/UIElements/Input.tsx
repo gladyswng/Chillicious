@@ -9,6 +9,7 @@ interface InputProps {
   id: string,
   label: string,
   inputLabel: string,
+  value: string
   error?: boolean,
   type?: string,
   required: boolean,
@@ -26,7 +27,7 @@ interface InputProps {
 
 interface Action {
   type: string,
-  val?: any,
+  val?: string,
   validators?: {
     type: string,
     val?: any
@@ -57,7 +58,7 @@ const inputReducer = (state: any, action: Action) => {
 const Input: React.FC<InputProps> = (props) => {
   // const classes = useStyles()
   const [inputState, dispatch] = useReducer(inputReducer, {
-    value: '',
+    value: props.value,
     isTouched: false, 
     isValid: false
   });

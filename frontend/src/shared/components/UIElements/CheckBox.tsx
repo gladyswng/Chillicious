@@ -7,7 +7,7 @@ import { Typography } from '@material-ui/core';
 interface CheckBoxProps {
   item: string
   checked: boolean
-  // value: 'string'
+  // defaultValue: string
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 
 
@@ -26,6 +26,7 @@ const CheckBox: React.FC<CheckBoxProps> = (props) => {
     control={<Checkbox checked={props.checked} onChange={props.handleChange} 
     color="primary"
     name={props.item} 
+    // value={props.defaultValue}
     style={{ padding: "0 10px" }}
     />}
     style={{ width: '100%' }}

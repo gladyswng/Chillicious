@@ -53,7 +53,37 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface StoreFormProps {
-
+  inputs: {
+    storeName: {
+      value: string;
+      isValid: boolean;
+    };
+    description: {
+        value: string;
+        isValid: boolean;
+    };
+    address: {
+        value: string;
+        isValid: boolean;
+    };
+    phoneNumber: {
+        value: string;
+        isValid: boolean;
+    };
+    priceRange: string;
+    tags: string[];
+  }
+  isValid: boolean
+  checkbox: {
+    chinese: boolean;
+    indian: boolean;
+    mexican: boolean;
+    korean: boolean;
+    lactoseFree: boolean;
+    vegetarianFriendly: boolean;
+    veganOptions: boolean;
+    glutenFree: boolean;
+  }
 }
 
 
@@ -132,8 +162,9 @@ const formReducer = (state: any, action: any) => {
 
 
 
-const StoreForm: React.FC<StoreFormProps> = ({}) => {
+const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox }) => {
   const classes = useStyles()
+  console.log(inputs.storeName.value)
   
   // useReducer returns a dispatch function
   const [formState, dispatch] = useReducer(formReducer, {
@@ -141,11 +172,11 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
     inputs: {
       // validity of original input
       storeName: {
-        value: '',
-        isValid: false
+        value: inputs.storeName.value,
+        isValid: inputs.storeName.isValid
       },
       description: {
-        value: '',
+        value: inputs.description.value,
         isValid: false
       },
       address: {
@@ -160,7 +191,6 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
       tags: []
     },
     isValid: false, // wether over all form is valid
-    priceRange: '', // TODO, CHECK IT IS DONE!!!!
     checkbox: {
 
       chinese: false,
@@ -171,10 +201,11 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
       vegetarianFriendly: false,
       veganOptions: false,
       glutenFree: false
-    },
+    }
     
   })
  
+  console.log(formState.inputs)
 
   const tagsHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({
@@ -220,7 +251,6 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
     console.log(formState)
   }
 
-  console.log(formState.inputs)
   const category = ['chinese', 'indian', 'korean', 'mexican']
 
   const dietaryRestrictions = ['lactoseFree', 'vegetarianFriendly', 'veganOptions', 'glutenFree']
@@ -242,6 +272,7 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
         id="storeName" 
         label="Required" 
         inputLabel="Store Name"
+        value={formState.inputs.storeName.value}
         variant="outlined"
         errorMessage="Invalid store name" 
         required
@@ -256,6 +287,7 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
         required
         label="Required" 
         inputLabel="Description" 
+        value={formState.inputs.description.value}
         variant="outlined"
         multiline
         rows={4}
@@ -268,6 +300,7 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
         id="address" 
         label="Required" 
         inputLabel="Address" 
+        value={formState.inputs.address.value}
         variant="outlined"
         errorMessage="Not valid" 
         required
@@ -280,6 +313,7 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
         id="phoneNumber" 
         label="Required" 
         inputLabel="Phone Number"
+        value={formState.inputs.phoneNumber.value}
         variant="outlined"
         errorMessage="Invalid number" 
         required
@@ -327,7 +361,13 @@ const StoreForm: React.FC<StoreFormProps> = ({}) => {
 
             <Typography variant="body1" className={classes.titleFont}>Category</Typography>
 
-            {category.map((cat) => <CheckBox checked={formState.checkbox[cat]} item={cat} key={cat} handleChange={tagsHandler}/>)}
+            {category.map((cat) => <CheckBox 
+            checked={formState.checkbox[cat]} 
+            item={cat} 
+            key={cat} 
+            
+            handleChange={tagsHandler} 
+            />)}
 
             <Divider variant="middle" className={classes.divider}/>  
 
