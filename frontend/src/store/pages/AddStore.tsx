@@ -27,9 +27,12 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
         value: '',
         isValid: false
       },
+      priceRange: {
+        value: '',
+        isValid: false
+      }
 
     },
-    priceRange: '',
     tags: [] as string[],
     isValid: false, 
   
@@ -45,6 +48,8 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
       glutenFree: false
     }
   }
+
+  const { inputs, isValid, checkbox, tags } = initialFormState
     return (
      
         <div style={{ marginTop: 80, width: '80%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
@@ -52,11 +57,10 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
           Add Store
           </Typography>
           <StoreForm 
-          inputs={initialFormState.inputs}
-          tags={initialFormState.tags}
-          priceRange={initialFormState.priceRange}
-          isValid={initialFormState.isValid}
-          checkbox={initialFormState.checkbox}
+          inputs={inputs}
+          tags={tags}
+          isValid={isValid}
+          checkbox={checkbox}
           blur={true}
           buttonTitle="Add Store"
           />

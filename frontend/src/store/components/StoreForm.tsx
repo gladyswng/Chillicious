@@ -4,7 +4,7 @@ import CheckBox from '../../shared/components/UIElements/CheckBox'
 
 
 import { makeStyles } from '@material-ui/core/styles'
-
+import FormHelperText from '@material-ui/core/FormHelperText'
 import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
 
@@ -70,9 +70,13 @@ interface StoreFormProps {
       value: string;
       isValid: boolean;
     };
+    priceRange: {
+      value: string
+      isValid: boolean
+    }
     
   }
-  priceRange: string;
+  
   tags: string[];
   isValid: boolean
   checkbox: {
@@ -129,11 +133,11 @@ const formReducer = (state: any, action: any) => {
       }
     
  
-    case 'PRICE_CHANGE':
-      return {
-        ...state,
-        priceRange: action.priceRange
-      }
+    // case 'PRICE_CHANGE':
+    //   return {
+    //     ...state,
+    //     priceRange: action.priceRange
+    //   }
     
     case 'TAGS_CHANGE': 
       if (action.checked && !state.tags.includes(action.checkboxId)) {
@@ -161,7 +165,7 @@ const formReducer = (state: any, action: any) => {
 
 
 
-const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, priceRange, blur, buttonTitle }) => {
+const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, blur, buttonTitle }) => {
   const classes = useStyles()
   
   
@@ -185,9 +189,13 @@ const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, 
         value: inputs.phoneNumber.value,
         isValid: inputs.phoneNumber.isValid
       },
-      
+      priceRange:{
+        value: inputs.priceRange.value,
+        isValid: inputs.phoneNumber.isValid
+      }
+
     },
-    priceRange: priceRange,
+    
     tags: tags,
     isValid: isValid, 
     checkbox: {
@@ -200,41 +208,8 @@ const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, 
       vegetarianFriendly: checkbox.vegetarianFriendly,
       veganOptions: checkbox.veganOptions,
       glutenFree: checkbox.glutenFree
-    }
-    // inputs: {
-    //   // validity of original input
-    //   storeName: {
-    //     value: '',
-    //     isValid: false
-    //   },
-    //   description: {
-    //     value: '',
-    //     isValid: false
-    //   },
-    //   address: {
-    //     value: '',
-    //     isValid: false
-    //   },
-    //   phoneNumber: {
-    //     value: '',
-    //     isValid: false
-    //   }
+    },
 
-    // },
-    // priceRange: '', // TODO - CHECK IT IS DONE
-    // tags: [] as string[],
-    // isValid: false, 
-  
-    // checkbox: {
-    //   chinese: false,
-    //   indian: false,
-    //   mexican: false,
-    //   korean: false,
-    //   lactoseFree: false,
-    //   vegetarianFriendly: false,
-    //   veganOptions: false,
-    //   glutenFree: false
-    // }
     
   })
 
@@ -249,12 +224,6 @@ const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, 
     })
   }
 
-  const priceHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch({
-      type: 'PRICE_CHANGE',
-      priceRange: event.target.value 
-    })
-  }
 
 
 
@@ -272,6 +241,10 @@ const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, 
     })
   }, [])
 
+  const priceHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    inputHandler('priceRange', event.target.value, true)
+  }
+  const priceRange = formState.inputs.priceRange
 
 
 
@@ -377,13 +350,23 @@ const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, 
 
         <div style={{ width: '100%' }}>
 
-          <FormControl component="fieldset" style={{ width: '100%' }}>
+          <FormControl component="fieldset"
+        style={{ width: '100%' }}>
+
           <FormLabel  style={{ color: 'black', margin: '16px 0'}}>Price</FormLabel>
           <Paper variant="outlined" style={{ padding: 16 }}>
-          <RadioGroup row aria-label="price" name="price" value={formState.priceRange} onChange={priceHandler} style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+          <FormHelperText hidden={priceRange.isValid}>Required*</FormHelperText>
+          <RadioGroup 
+          row aria-label="price" 
+          name="price" 
+          id="priceRange" 
+          value={priceRange.value}
+           onChange={priceHandler} 
+           style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
 
             {priceLevel.map(price => <RadioButton value={price} label={price} key={price} />)}
             </RadioGroup>
+            
           </Paper>
           </FormControl>
 
@@ -414,6 +397,7 @@ const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, 
     
 
           </FormGroup>
+
           </Paper>
           <p>{formState.inputs.tags}</p>
 
