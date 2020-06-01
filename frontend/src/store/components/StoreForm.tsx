@@ -99,13 +99,14 @@ const formReducer = (state: any, action: any) => {
   switch (action.type) {
     case 'INPUT_CHANGE':
       // This combine with individual input ensures if one false, the overfall will be false
+      
       let formIsValid = true
       for (const inputId in state.inputs) {// Go through all the inputs(also samee as id)
 
         // if current input we're looking at, which is getting updated in this currint action -- if this is the case, take info from the dispatched action on weather it is valid or not
         if (inputId === action.inputId)  {
           formIsValid = formIsValid && action.isValid
-          
+          console.log(formIsValid)
           
         } else {
           // if looking at an input in form state which is not currently getting updated throught the running action

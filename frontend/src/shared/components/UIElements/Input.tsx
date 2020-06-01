@@ -61,7 +61,7 @@ const Input: React.FC<InputProps> = (props) => {
   const [inputState, dispatch] = useReducer(inputReducer, {
     value: props.value,
     isTouched: false, 
-    isValid: false
+    isValid: !props.blur
   });
 
   const { id, onInput } = props
@@ -106,8 +106,8 @@ const Input: React.FC<InputProps> = (props) => {
           rows={props.rows}
           type={props.type} 
           variant={props.variant} 
-          error={!inputState.isValid && inputState.isTouched}
-          helperText={blur? !inputState.isValid && inputState.isTouched && props.errorMessage : !inputState.isValid&& props.errorMessage}
+          error={props.blur? !inputState.isValid && inputState.isTouched : !inputState.isValid}
+          helperText={props.blur? !inputState.isValid && inputState.isTouched && props.errorMessage : !inputState.isValid&& props.errorMessage}
           onChange={changeHandler}
           onBlur={touchHandler}
           value={inputState.value}
