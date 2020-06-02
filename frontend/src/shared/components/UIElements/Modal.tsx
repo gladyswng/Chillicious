@@ -1,7 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
-
+import Button from '@material-ui/core/Button';
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -28,15 +28,18 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2, 4, 3),
   },
   modal: {
-    '& .makeStyles-paper-95': {
+    
+    '& .makeStyles-paper-308': {
+      outline: 'none',
       border: 0
-    },
+    }
   },
 }));
 
 
 interface SharedModalProps {
-
+  buttonText: string,
+  buttonColor?: 'primary' | 'default'
 }
 
 const SharedModal: React.FC<SharedModalProps> = (props) => {
@@ -62,14 +65,15 @@ const SharedModal: React.FC<SharedModalProps> = (props) => {
 
   return (
     <div>
-    <button type="button" onClick={handleOpen}>
-      For Click
-    </button>
+    <Button variant="contained" onClick={handleOpen} color={props.buttonColor}>
+      {props.buttonText}
+    </Button>
     <Modal
       open={open}
       onClose={handleClose}
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
+      style={{outline: 'none' }}
       className={classes.modal}
       
     >

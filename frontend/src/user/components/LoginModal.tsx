@@ -23,7 +23,7 @@ const LoginModal: React.FC<LoginModalProps> = ({}) => {
   const classes = useStyles()
   const preventDefault = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => event.preventDefault();
     return (
-      <Modal>
+      <Modal buttonText="Log In" buttonColor="primary">
 
         <Typography variant="h5">Log In</Typography>
         <form action="" className={classes.root} noValidate autoComplete="off">

@@ -63,7 +63,8 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
           formIsValid={isValid}
           checkbox={otherData.checkbox}
           blur={true}
-          buttonTitle="Add Store"
+      
+       
           />
         </div>
 

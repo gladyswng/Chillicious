@@ -88,7 +88,7 @@ interface StoreFormProps {
     veganOptions: boolean;
     glutenFree: boolean;
   },
-  buttonTitle: string,
+  
   blur: boolean,
 
 }
@@ -96,12 +96,9 @@ interface StoreFormProps {
 
 
 
-
-
-
 const StoreForm: React.FC<StoreFormProps> = (props) => {
   const classes = useStyles()
-  const { inputs, formIsValid, checkbox, tags, blur, buttonTitle } = props
+  const { inputs, formIsValid, checkbox, tags, blur } = props
   
   
   const [formState, inputHandler, priceHandler, tagsHandler, setFormData] = useForm({
@@ -143,43 +140,47 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
   })
 
   useEffect(() => {
-  setFormData({
-    storeName: {
-      value: inputs.storeName.value,
-      isValid: inputs.storeName.isValid
-    },
-    description: {
-      value: inputs.description.value,
-      isValid: inputs.description.isValid
-    },
-    address: {
-      value: inputs.address.value,
-      isValid: inputs.address.isValid,
-    },
-    phoneNumber: {
-      value: inputs.phoneNumber.value,
-      isValid: inputs.phoneNumber.isValid
-    },
-    priceRange:{
-      value: inputs.priceRange.value,
-      isValid: inputs.phoneNumber.isValid
+    if (inputs && !blur) {
+      setFormData({
+        storeName: {
+          value: inputs.storeName.value,
+          isValid: inputs.storeName.isValid
+        },
+        description: {
+          value: inputs.description.value,
+          isValid: inputs.description.isValid
+        },
+        address: {
+          value: inputs.address.value,
+          isValid: inputs.address.isValid,
+        },
+        phoneNumber: {
+          value: inputs.phoneNumber.value,
+          isValid: inputs.phoneNumber.isValid
+        },
+        priceRange:{
+          value: inputs.priceRange.value,
+          isValid: inputs.phoneNumber.isValid
+        }
+      }, 
+      formIsValid, 
+      {
+        tags: tags,
+        checkbox: {
+          chinese: checkbox.chinese,
+          indian: checkbox.indian,
+          mexican: checkbox.mexican,
+          korean: checkbox.korean,
+          lactoseFree: checkbox.lactoseFree,
+          vegetarianFriendly: checkbox.vegetarianFriendly,
+          veganOptions: checkbox.veganOptions,
+          glutenFree: checkbox.glutenFree
+        },
+        image: []
+      })
     }
-  }, 
-  formIsValid, 
-  {
-    tags: tags,
-    checkbox: {
-      chinese: checkbox.chinese,
-      indian: checkbox.indian,
-      mexican: checkbox.mexican,
-      korean: checkbox.korean,
-      lactoseFree: checkbox.lactoseFree,
-      vegetarianFriendly: checkbox.vegetarianFriendly,
-      veganOptions: checkbox.veganOptions,
-      glutenFree: checkbox.glutenFree
-    },
-    image: []
-  })
+
+
   }, [setFormData, props])
 
     
@@ -213,7 +214,7 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
     if (!formState.inputs.storeName.value && !blur) {
       return(
         <div>
-          <h2>loading</h2>
+          <h2>Loading</h2>
         </div>
       )
     }
@@ -359,14 +360,27 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
 
 
         </div>
-        <Button 
-        variant="contained" 
-        color="primary" 
-        type="submit"
-        disabled={!formState.isValid}
-        onSubmit={storeFormSubmitHandler} 
-        style={{ margin: "16px 0" }}
-        >{buttonTitle}</Button>
+        <div style={{ display: 'flex', justifyContent:'space-between', width: '100%' }} >
+          <Button 
+          variant="contained" 
+          color="primary" 
+          type="submit"
+          disabled={!formState.isValid}
+          onSubmit={storeFormSubmitHandler} 
+          style={{ margin: "16px 0", width: '40%' }}
+          >{blur? 'Add Store' : 'Edit Store'}</Button>
+          <Button 
+          variant="contained" 
+          color="primary" 
+          type="submit"
+          disabled={!formState.isValid}
+          onSubmit={storeFormSubmitHandler} 
+          style={{ margin: "16px 0",  width: '40%' }}
+          >Cancel</Button>
+        </div>
+      
+        
+
       </div>
 
 
