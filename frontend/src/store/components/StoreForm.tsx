@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useReducer } from 'react'
+import React, { useState, useCallback, useReducer, useEffect } from 'react'
 import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH } from '../../util/validators'
 import { useForm } from '../../shared/hooks/form-hook'
 
@@ -77,7 +77,7 @@ interface StoreFormProps {
   }
   
   tags: string[];
-  isValid: boolean
+  formIsValid: boolean
   checkbox: {
     chinese: boolean;
     indian: boolean;
@@ -89,7 +89,8 @@ interface StoreFormProps {
     glutenFree: boolean;
   },
   buttonTitle: string,
-  blur: boolean
+  blur: boolean,
+
 }
 
 
@@ -98,69 +99,99 @@ interface StoreFormProps {
 
 
 
-const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, blur, buttonTitle }) => {
+const StoreForm: React.FC<StoreFormProps> = (props) => {
   const classes = useStyles()
+  const { inputs, formIsValid, checkbox, tags, blur, buttonTitle } = props
+  
+  
+  const [formState, inputHandler, priceHandler, tagsHandler, setFormData] = useForm({
+    storeName: {
+      value: inputs.storeName.value,
+      isValid: inputs.storeName.isValid
+    },
+    description: {
+      value: inputs.description.value,
+      isValid: inputs.description.isValid
+    },
+    address: {
+      value: inputs.address.value,
+      isValid: inputs.address.isValid,
+    },
+    phoneNumber: {
+      value: inputs.phoneNumber.value,
+      isValid: inputs.phoneNumber.isValid
+    },
+    priceRange:{
+      value: inputs.priceRange.value,
+      isValid: inputs.phoneNumber.isValid
+    }
+  }, 
+  formIsValid, 
+  {
+    tags: tags,
+    checkbox: {
+      chinese: checkbox.chinese,
+      indian: checkbox.indian,
+      mexican: checkbox.mexican,
+      korean: checkbox.korean,
+      lactoseFree: checkbox.lactoseFree,
+      vegetarianFriendly: checkbox.vegetarianFriendly,
+      veganOptions: checkbox.veganOptions,
+      glutenFree: checkbox.glutenFree
+    },
+    image: []
+  })
+
+  useEffect(() => {
+  setFormData({
+    storeName: {
+      value: inputs.storeName.value,
+      isValid: inputs.storeName.isValid
+    },
+    description: {
+      value: inputs.description.value,
+      isValid: inputs.description.isValid
+    },
+    address: {
+      value: inputs.address.value,
+      isValid: inputs.address.isValid,
+    },
+    phoneNumber: {
+      value: inputs.phoneNumber.value,
+      isValid: inputs.phoneNumber.isValid
+    },
+    priceRange:{
+      value: inputs.priceRange.value,
+      isValid: inputs.phoneNumber.isValid
+    }
+  }, 
+  formIsValid, 
+  {
+    tags: tags,
+    checkbox: {
+      chinese: checkbox.chinese,
+      indian: checkbox.indian,
+      mexican: checkbox.mexican,
+      korean: checkbox.korean,
+      lactoseFree: checkbox.lactoseFree,
+      vegetarianFriendly: checkbox.vegetarianFriendly,
+      veganOptions: checkbox.veganOptions,
+      glutenFree: checkbox.glutenFree
+    },
+    image: []
+  })
+  }, [setFormData, props])
+
     
+  console.log(formState)
+
+
+  const priceRange = formState.inputs.priceRange
   const category = ['chinese', 'indian', 'korean', 'mexican']
   const dietaryRestrictions = ['lactoseFree', 'vegetarianFriendly', 'veganOptions', 'glutenFree']
   const priceLevel = ['$', '$$', '$$$', '$$$$']
 
-  const [formState, inputHandler, priceHandler, tagsHandler] = useForm({
-      // validity of original input
-      storeName: {
-        value: inputs.storeName.value,
-        isValid: inputs.storeName.isValid
-      },
-      description: {
-        value: inputs.description.value,
-        isValid: inputs.description.isValid
-      },
-      address: {
-        value: inputs.address.value,
-        isValid: inputs.address.isValid,
-      },
-      phoneNumber: {
-        value: inputs.phoneNumber.value,
-        isValid: inputs.phoneNumber.isValid
-      },
-      priceRange:{
-        value: inputs.priceRange.value,
-        isValid: inputs.phoneNumber.isValid
-      }
-    }, 
-    isValid, 
-    {
-      tags: tags,
-      checkbox: {
-        chinese: checkbox.chinese,
-        indian: checkbox.indian,
-        mexican: checkbox.mexican,
-        korean: checkbox.korean,
-        lactoseFree: checkbox.lactoseFree,
-        vegetarianFriendly: checkbox.vegetarianFriendly,
-        veganOptions: checkbox.veganOptions,
-        glutenFree: checkbox.glutenFree
-      },
-      image: []
-    })
-  
-  // // useReducer returns a dispatch function
-  // const [formState, dispatch] = useReducer(formReducer, {
-  //   inputs: ,
-  //   isValid: isValid, 
-  //   otherData: 
-  // })
 
-  console.log(formState)
-
-
-
-  // Here we have a flexible reusable input handler, so we don't need different handlers for different inputs
-  // Used useCallback so that it doesnt create a new function obj since it's a function in a function, avoiding useEffect to run again
-
-
-
-  const priceRange = formState.inputs.priceRange
 
   const imageHandler = ({ target } : any) => {
     console.log(target.files[0].name)
@@ -178,7 +209,17 @@ const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, 
       console.log(formState)
     }
 
+
+    if (!formState.inputs.storeName.value && !blur) {
+      return(
+        <div>
+          <h2>loading</h2>
+        </div>
+      )
+    }
+   
   return (
+    
     <form 
     action=""  //????
     className={classes.root} 
@@ -334,40 +375,44 @@ const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, 
 }
 export default StoreForm
 
-
-
-
-    // // initial state
-    // inputs: {
-    //   // validity of original input
-    //   storeName: {
-    //     value: inputs.storeName.value,
-    //     isValid: inputs.storeName.isValid
-    //   },
-    //   description: {
-    //     value: inputs.description.value,
-    //     isValid: inputs.description.isValid
-    //   },
-    //   address: {
-    //     value: inputs.address.value,
-    //     isValid: inputs.address.isValid,
-    //   },
-    //   phoneNumber: {
-    //     value: inputs.phoneNumber.value,
-    //     isValid: inputs.phoneNumber.isValid
-    //   },
-    //   priceRange: inputs.priceRange,
-    //   tags: inputs.tags
-    // },
-    // isValid: formIsValid, 
-    // checkbox: {
-
-    //   chinese: checkbox.chinese,
-    //   indian: checkbox.indian,
-    //   mexican: checkbox.mexican,
-    //   korean: checkbox.korean,
-    //   lactoseFree: checkbox.lactoseFree,
-    //   vegetarianFriendly: checkbox.vegetarianFriendly,
-    //   veganOptions: checkbox.veganOptions,
-    //   glutenFree: checkbox.glutenFree
-    // }
+  // const [formState, inputHandler, priceHandler, tagsHandler, setFormData] = useForm({
+  //   storeName: {
+  //     value: inputs.storeName.value,
+  //     isValid: inputs.storeName.isValid
+  //   },
+  //   description: {
+  //     value: inputs.description.value,
+  //     isValid: inputs.description.isValid
+  //   },
+  //   address: {
+  //     value: inputs.address.value,
+  //     isValid: inputs.address.isValid,
+  //   },
+  //   phoneNumber: {
+  //     value: inputs.phoneNumber.value,
+  //     isValid: inputs.phoneNumber.isValid
+  //   },
+  //   priceRange:{
+  //     value: inputs.priceRange.value,
+  //     isValid: inputs.phoneNumber.isValid
+  //   }
+  // }, 
+  // formIsValid, 
+  // {
+  //   tags: tags,
+  //   checkbox: {
+  //     chinese: checkbox.chinese,
+  //     indian: checkbox.indian,
+  //     mexican: checkbox.mexican,
+  //     korean: checkbox.korean,
+  //     lactoseFree: checkbox.lactoseFree,
+  //     vegetarianFriendly: checkbox.vegetarianFriendly,
+  //     veganOptions: checkbox.veganOptions,
+  //     glutenFree: checkbox.glutenFree
+  //   },
+  //   image: []
+  // })
+  
+  //   useEffect(() => {
+  //     setFormData
+  //   }, [setFormData, props])

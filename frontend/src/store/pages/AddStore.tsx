@@ -7,7 +7,6 @@ interface AddStoreProps {
 }
 
 const AddStore: React.FC<AddStoreProps> = ({}) => {
-
   const initialFormState = {
     inputs: {
       // validity of original input
@@ -36,10 +35,7 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
     otherData: {
       
       tags: [] as string[],
-
-  
       checkbox: {
-  
         chinese: false,
         indian: false,
         mexican: false,
@@ -64,7 +60,7 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
           <StoreForm 
           inputs={inputs}
           tags={otherData.tags}
-          isValid={isValid}
+          formIsValid={isValid}
           checkbox={otherData.checkbox}
           blur={true}
           buttonTitle="Add Store"
