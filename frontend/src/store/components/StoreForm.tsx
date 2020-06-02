@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useReducer } from 'react'
 import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH } from '../../util/validators'
-
+import { useForm } from '../../shared/hooks/form-hook'
 
 import RadioButton from '../../shared/components/UIElements/RadioButton'
 import CheckBox from '../../shared/components/UIElements/CheckBox'
@@ -94,62 +94,6 @@ interface StoreFormProps {
 
 
 
-// Form reducer - returns a new state
-
-const formReducer = (state: any, action: any) => {
-  
-  // Here we update the state in the reducer
-  switch (action.type) {
-    case 'INPUT_CHANGE':
-      // This combine with individual input ensures if one false, the overfall will be false
-      
-      let formIsValid = true
-      for (const inputId in state.inputs) {// Go through all the inputs(also samee as id)
-
-        // if current input we're looking at, which is getting updated in this currint action -- if this is the case, take info from the dispatched action on weather it is valid or not
-        if (inputId === action.inputId)  {
-          formIsValid = formIsValid && action.isValid
-          
-        } else {
-          // if looking at an input in form state which is not currently getting updated throught the running action
-          formIsValid = formIsValid && state.inputs[inputId].isValid
-
-        }
-      }
-      return {
-        ...state,
-        inputs: {
-          ...state.inputs,
-          [action.inputId]: { value: action.value, isValid: action.isValid }
-        },
-
-        isValid: formIsValid
-
-      }
-    
-
-    case 'TAGS_CHANGE': 
-      if (action.checked && !state.tags.includes(action.checkboxId)) {
-        state.tags = [...state.tags, action.checkboxId]
-      } else {
-        state.tags = state.tags.filter((tag: string) => tag !== action.checkboxId)
-        
-      }
-      
-      return {
-        ...state,
-        tags: state.tags,
-        checkbox: {
-          ...state.checkbox,
-          [action.checkboxId]: action.checked
-        }
- 
-      }
-
-    default:   // default set to unchanged state
-      return state  
-  }
-}
 
 
 
@@ -160,10 +104,8 @@ const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, 
   const category = ['chinese', 'indian', 'korean', 'mexican']
   const dietaryRestrictions = ['lactoseFree', 'vegetarianFriendly', 'veganOptions', 'glutenFree']
   const priceLevel = ['$', '$$', '$$$', '$$$$']
-  
-  // useReducer returns a dispatch function
-  const [formState, dispatch] = useReducer(formReducer, {
-      inputs: {
+
+  const [formState, inputHandler, priceHandler, tagsHandler] = useForm({
       // validity of original input
       storeName: {
         value: inputs.storeName.value,
@@ -185,47 +127,38 @@ const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, 
         value: inputs.priceRange.value,
         isValid: inputs.phoneNumber.isValid
       }
-    },
-    tags: tags,
-    isValid: isValid, 
-    checkbox: {
-      chinese: checkbox.chinese,
-      indian: checkbox.indian,
-      mexican: checkbox.mexican,
-      korean: checkbox.korean,
-      lactoseFree: checkbox.lactoseFree,
-      vegetarianFriendly: checkbox.vegetarianFriendly,
-      veganOptions: checkbox.veganOptions,
-      glutenFree: checkbox.glutenFree
-    },
-    image: []
-  })
+    }, 
+    isValid, 
+    {
+      tags: tags,
+      checkbox: {
+        chinese: checkbox.chinese,
+        indian: checkbox.indian,
+        mexican: checkbox.mexican,
+        korean: checkbox.korean,
+        lactoseFree: checkbox.lactoseFree,
+        vegetarianFriendly: checkbox.vegetarianFriendly,
+        veganOptions: checkbox.veganOptions,
+        glutenFree: checkbox.glutenFree
+      },
+      image: []
+    })
+  
+  // // useReducer returns a dispatch function
+  // const [formState, dispatch] = useReducer(formReducer, {
+  //   inputs: ,
+  //   isValid: isValid, 
+  //   otherData: 
+  // })
 
   console.log(formState)
 
-  const tagsHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch({
-      type: 'TAGS_CHANGE',
-      checkboxId: event.target.name,
-      checked: event.target.checked
 
-    })
-  }
 
   // Here we have a flexible reusable input handler, so we don't need different handlers for different inputs
   // Used useCallback so that it doesnt create a new function obj since it's a function in a function, avoiding useEffect to run again
-  const inputHandler = useCallback((id, value, isValid) => {
-    // value and other params- since we try to extract the values from the action in reducer
-    // value is the value we get from the callback func
-    dispatch({
-      type: 'INPUT_CHANGE', 
-      value: value, 
-      inputId: id, 
-      isValid: isValid
-    })
-  }, [])
 
-  const priceHandler = (event: React.ChangeEvent<HTMLInputElement>) => inputHandler('priceRange', event.target.value, true)
+
 
   const priceRange = formState.inputs.priceRange
 
@@ -363,7 +296,7 @@ const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, 
               <Typography variant="body1" className={classes.titleFont}>Category</Typography>
 
               {category.map((cat) => <CheckBox 
-              checked={formState.checkbox[cat]} 
+              checked={formState.otherData.checkbox[cat]} 
               item={cat} 
               key={cat}
               handleChange={tagsHandler} 
@@ -373,7 +306,7 @@ const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, 
 
               <Typography variant="body1" className={classes.titleFont}>Dietary Restrictions</Typography>
               {dietaryRestrictions.map((res) => <CheckBox 
-              checked={formState.checkbox[res]} 
+              checked={formState.otherData.checkbox[res]} 
               item={res} 
               key={res} 
               handleChange={tagsHandler}/>)}
@@ -381,7 +314,7 @@ const StoreForm: React.FC<StoreFormProps> = ({ inputs, isValid, checkbox, tags, 
             </FormGroup>
 
           </Paper>
-          <p>{formState.inputs.tags}</p>
+          <p>{formState.otherData.tags}</p>
 
 
         </div>
