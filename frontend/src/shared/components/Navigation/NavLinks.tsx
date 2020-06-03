@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import LoginModal from '../../../user/components/LoginModal'
+
+
 import Drawer from './NavDrawer'
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -59,16 +62,12 @@ const NavLinks: React.FC<NavLinksProps> = ({}) => {
               <IconButton >
                 <FavoriteBorderIcon />
               </IconButton>
-
+          
               <IconButton >
                 <AccountCircleIcon />
               </IconButton>
-
-            <NavLink to="/users/me" style={{ textDecoration: 'none', width: 74 }}>
-              <Button variant="contained" color="primary" style={{ boxShadow: 'none' }}>
-                LogIn
-              </Button>
-            </NavLink>
+              <LoginModal />
+            
         </Hidden>
            
 

@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { NavLink } from 'react-router-dom'
 import Modal from '../../shared/components/UIElements/Modal'
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
@@ -21,9 +22,21 @@ interface LoginModalProps {
 
 const LoginModal: React.FC<LoginModalProps> = ({}) => {
   const classes = useStyles()
+
+  const [modalOpen, setModalOpen] = useState(false);
+  
+  const handleModalOpen = () => {
+    setModalOpen(true);
+  };
+  const handleModalClose = () => {
+    console.log('set false')
+    setModalOpen(false);
+  };
+
   const preventDefault = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => event.preventDefault();
+
     return (
-      <Modal buttonText="Log In" buttonColor="primary">
+      <Modal buttonText="Log In" buttonColor="primary" open={modalOpen} onOpen={handleModalOpen} onClose={handleModalClose}>
 
         <Typography variant="h5">Log In</Typography>
         <form action="" className={classes.root} noValidate autoComplete="off">
@@ -63,9 +76,14 @@ const LoginModal: React.FC<LoginModalProps> = ({}) => {
       <Typography variant='body2'>Do not have an account?</Typography>
       <Typography>
 
-      <Link href="#" onClick={preventDefault} style={{  }}>
+      {/* <Link href="#" onClick={preventDefault} style={{  }}>
         Sign Up
-      </Link>
+      </Link> */}
+        <NavLink to="/users/me" style={{ textDecoration: 'none', width: 74 }}>
+          <Button variant="contained" color="primary" style={{ boxShadow: 'none' }} onClick={handleModalClose}>
+            Signp
+          </Button>
+        </NavLink>
       </Typography>
     </div>
 

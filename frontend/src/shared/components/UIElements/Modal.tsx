@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -23,38 +26,45 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     width: 400,
     backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
+    border: 0,
+    outline: 0,
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
+
   },
-  modal: {
-    
-    '& .makeStyles-paper-308': {
-      outline: 'none',
-      border: 0
-    }
-  },
+
 }));
 
 
 interface SharedModalProps {
-  buttonText: string,
+  buttonText?: string,
   buttonColor?: 'primary' | 'default'
+  iconButton?: boolean
+  buttonIcon?: string,
+  open: boolean
+  onOpen: () => void
+  onClose: () => void
 }
 
 const SharedModal: React.FC<SharedModalProps> = (props) => {
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
-  const [modalStyle] = React.useState(getModalStyle);
-  const [open, setOpen] = React.useState(false);
+  const [modalStyle] = useState(getModalStyle);
+  // const [open, setOpen] = useState(props.open);
+  
+  // const handleOpen = () => {
+  //   setOpen(true);
+  // };
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
+  
+  // useEffect(()=> {
+  //   console.log('close')
+  //   setOpen(false);
+  // }, [props.open])
+  // console.log(open)
 
   const body = (
     <div style={modalStyle} className={classes.paper}>
@@ -63,18 +73,35 @@ const SharedModal: React.FC<SharedModalProps> = (props) => {
     </div>
   );
 
+  const renderIcon = ()=> {
+    if (props.buttonIcon=== 'account') {
+      return <AccountCircleIcon />
+    }
+  }
+  const renderButton =() => {
+
+    if (props.iconButton) {
+      return <IconButton onClick={props.onClose} >
+      {renderIcon()}
+    </IconButton>
+    } else {
+      return <Button disableElevation variant="contained" onClick={props.onOpen} color={props.buttonColor}>
+      {props.buttonText}</Button>
+    }
+  }
+
+  
+
   return (
     <div>
-    <Button variant="contained" onClick={handleOpen} color={props.buttonColor}>
-      {props.buttonText}
-    </Button>
+      {renderButton()}
     <Modal
-      open={open}
-      onClose={handleClose}
+      open={props.open}
+      onClose={props.onClose}
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
-      style={{outline: 'none' }}
-      className={classes.modal}
+      style={{ outline: 'none', border: 'none' }}
+     
       
     >
       {body}

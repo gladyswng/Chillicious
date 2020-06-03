@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Modal from '../../shared/components/UIElements/Modal'
 import LoginModal from '../../user/components/LoginModal'
 
@@ -40,6 +40,15 @@ interface StoreItemProps {
 }
 const StoreItem: React.FC<StoreItemProps> = ({store}) => {
   const classes = useStyles();
+  const [modalOpen, setModalOpen] = useState(false);
+  
+  const handleModalOpen = () => {
+    setModalOpen(true);
+  };
+  const handleModalClose = () => {
+    console.log('set false')
+    setModalOpen(false);
+  };
 
   return (
     <Card className={classes.root} variant="outlined" style={{ }}>
@@ -67,10 +76,10 @@ const StoreItem: React.FC<StoreItemProps> = ({store}) => {
           
         <Button variant="contained" color="primary">Edit</Button>
 
-        <Modal buttonText='Delete' buttonColor="default">
+        <Modal buttonText='Delete' buttonColor="default" open={modalOpen} onOpen={handleModalOpen} onClose={handleModalClose}>
           <Typography>Are you sure?</Typography>
-          <Button>Yes</Button>
-          <Button>Cancel</Button>
+          <Button onClick={handleModalClose}>Yes</Button>
+          <Button onClick={handleModalClose}>Cancel</Button>
         </Modal>
         </div>
 
