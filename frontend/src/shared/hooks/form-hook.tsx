@@ -99,6 +99,6 @@ export const useForm = (initialInputs: object, initialFormValidity: boolean, oth
       otherData: otherData
     })
   }, [])
-  console.log(formState.isValid)
+
   return [formState, inputHandler, priceHandler, tagsHandler, setFormData ]
 }

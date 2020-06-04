@@ -30,20 +30,11 @@ const UpdateStore: React.FC<UpdateStoreProps> = ({}) => {
       address: 'where',
       priceRange: '$$',
       phoneNumber: '1234',
-      tags: ['chinese', 'mexican']
+      tags: [] as string[]
     }
   ]
   
-  // let checkbox = {
-  //   chinese: false,
-  //   indian: false,
-  //   mexican: false,
-  //   korean: false,
-  //   lactoseFree: false,
-  //   vegetarianFriendly: false,
-  //   veganOptions: false,
-  //   glutenFree: false
-  //   }
+
   const [formState, inputHandler, priceHandler, tagsHandler, setFormData] = useForm({
     storeName: {
       value: '',
@@ -66,7 +57,7 @@ const UpdateStore: React.FC<UpdateStoreProps> = ({}) => {
       isValid: false
     }
   }, 
-  false, // returns undefined?
+  false, 
   {
     tags: [],
     checkbox: {
@@ -95,7 +86,24 @@ useEffect(() => {
     if (!store) {
       return <h3>Could not find store</h3>
     }
-    console.log('ran useeffect')
+    console.log('ran useEffect')
+
+  let checkbox = {
+    chinese: false,
+    indian: false,
+    mexican: false,
+    korean: false,
+    lactoseFree: false,
+    vegetarianFriendly: false,
+    veganOptions: false,
+    glutenFree: false
+    }
+    Object.keys(checkbox).map((tag: keyof checkbox )=> {
+      if (store.tags.includes(tag)) {
+        checkbox[tag] = true
+      } 
+    })
+
     setFormData(
       {
         storeName: {
@@ -122,16 +130,8 @@ useEffect(() => {
       true, 
       {
         tags: store.tags,
-        checkbox: {
-          chinese: false,
-          indian: false,
-          mexican: false,
-          korean: false,
-          lactoseFree: false,
-          vegetarianFriendly: false,
-          veganOptions: false,
-          glutenFree: false
-        },
+        checkbox: checkbox
+        ,
         image:[]
       } 
     )
@@ -188,129 +188,3 @@ const { inputs, isValid, otherData } = formState
 export default UpdateStore
 
 
-  // const initialFormState = {
-  //   inputs: {
-  //     storeName: {
-  //       value: 'What is this',
-  //       isValid: true
-  //     },
-  //     description: {
-  //       value: 'this is something tasty',
-  //       isValid: true
-  //     },
-  //     address: {
-  //       value: 'where is it',
-  //       isValid: true
-  //     },
-  //     phoneNumber: {
-  //       value: '32qwer',
-  //       isValid: true
-  //     },
-  //     priceRange: {
-  //       value: '$$',
-  //       isValid: true
-  //     }
-  //   },
-    
-  //   formIsValid: true, 
-  //   otherData: {
-  //     tags: ['chinese', 'lactoseFree'],
-  //     checkbox: {
-  //       chinese: true,
-  //       indian: false,
-  //       mexican: false,
-  //       korean: false,
-  //       lactoseFree: true,
-  //       vegetarianFriendly: false,
-  //       veganOptions: false,
-  //       glutenFree: false
-  //     }
-  //   }
-  
-    
-  // }
-
-
-    // useEffect(() => {
-  //   if (inputs ) {
-  //     setFormData({
-  //       storeName: {
-  //         value: inputs.storeName.value,
-  //         isValid: inputs.storeName.isValid
-  //       },
-  //       description: {
-  //         value: inputs.description.value,
-  //         isValid: inputs.description.isValid
-  //       },
-  //       address: {
-  //         value: inputs.address.value,
-  //         isValid: inputs.address.isValid,
-  //       },
-  //       phoneNumber: {
-  //         value: inputs.phoneNumber.value,
-  //         isValid: inputs.phoneNumber.isValid
-  //       },
-  //       priceRange:{
-  //         value: inputs.priceRange.value,
-  //         isValid: inputs.phoneNumber.isValid
-  //       }
-  //     }, 
-  //     formIsValid, 
-  //     {
-  //       tags: tags,
-  //       checkbox: {
-  //         chinese: checkbox.chinese,
-  //         indian: checkbox.indian,
-  //         mexican: checkbox.mexican,
-  //         korean: checkbox.korean,
-  //         lactoseFree: checkbox.lactoseFree,
-  //         vegetarianFriendly: checkbox.vegetarianFriendly,
-  //         veganOptions: checkbox.veganOptions,
-  //         glutenFree: checkbox.glutenFree
-  //       },
-  //       image: []
-  //     })
-  //   }
-
-
-  // }, [setFormData, props])
-
-// const [storeForm, setStoreForm] = useState({
-//   inputs: {
-//       storeName: {
-//         value: '',
-//         isValid: false
-//       },
-//       description: {
-//         value: '',
-//         isValid: false
-//       },
-//       address: {
-//         value: '',
-//         isValid: false
-//       },
-//       phoneNumber: {
-//         value: '',
-//         isValid: false
-//       },
-//       priceRange:{
-//         value: '',
-//         isValid: false
-//       }
-//   }, 
-//   formIsValid: false, 
-//   otherData: {
-//     tags: [],
-//     checkbox: {
-//       chinese: false,
-//       indian: false,
-//       mexican: false,
-//       korean: false,
-//       lactoseFree: false,
-//       vegetarianFriendly: false,
-//       veganOptions: false,
-//       glutenFree: false
-//     },
-//     image: []
-//   }
-// })
