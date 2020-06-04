@@ -30,7 +30,7 @@ const UpdateStore: React.FC<UpdateStoreProps> = ({}) => {
       address: 'where',
       priceRange: '$$',
       phoneNumber: '1234',
-      tags: [] as string[]
+      tags: ['chinese', 'lactoseFree']
     }
   ]
   

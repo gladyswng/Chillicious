@@ -296,8 +296,6 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
           <Button 
           variant="contained" 
           color="primary" 
-          type="submit"
-          disabled={!formIsValid}
           onSubmit={storeFormSubmitHandler} 
           style={{ margin: "16px 0",  width: '40%' }}
           >Cancel</Button>

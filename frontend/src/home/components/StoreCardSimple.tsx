@@ -28,7 +28,7 @@ const StoreCard: React.FC<StoreCardProps> = (props) => {
 
 
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} >
       <CardActionArea>
         <CardMedia
           component="img"

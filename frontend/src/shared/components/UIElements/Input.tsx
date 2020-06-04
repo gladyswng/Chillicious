@@ -65,11 +65,11 @@ const Input: React.FC<InputProps> = (props) => {
     // If want to blur, meaning no content yet, meaning valid should be false
   });
 
+
   const { id, onInput } = props
   const { value, isValid } = inputState
 
   useEffect(() => {
-
     onInput(id, value, isValid)
   }, [id, value, isValid, onInput])
 
