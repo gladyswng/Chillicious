@@ -75,22 +75,26 @@ interface StoreFormProps {
     }
     
   }
-  
-  tags: string[];
-  formIsValid: boolean
-  checkbox: {
-    chinese: boolean;
-    indian: boolean;
-    mexican: boolean;
-    korean: boolean;
-    lactoseFree: boolean;
-    vegetarianFriendly: boolean;
-    veganOptions: boolean;
-    glutenFree: boolean;
-  },
+  otherData: {
+
+    tags: string[];
+    checkbox: any
+    //   chinese: boolean;
+    //   indian: boolean;
+    //   mexican: boolean;
+    //   korean: boolean;
+    //   lactoseFree: boolean;
+    //   vegetarianFriendly: boolean;
+    //   veganOptions: boolean;
+    //   glutenFree: boolean;
+    // },
+  }
+  formIsValid: boolean 
   
   blur: boolean,
-
+  inputHandler: any
+  priceHandler: any
+  tagsHandler: any
 }
 
 
@@ -98,96 +102,16 @@ interface StoreFormProps {
 
 const StoreForm: React.FC<StoreFormProps> = (props) => {
   const classes = useStyles()
-  const { inputs, formIsValid, checkbox, tags, blur } = props
+  const { inputs, formIsValid, otherData, blur, inputHandler, priceHandler, tagsHandler } = props
   
   
-  const [formState, inputHandler, priceHandler, tagsHandler, setFormData] = useForm({
-    storeName: {
-      value: inputs.storeName.value,
-      isValid: inputs.storeName.isValid
-    },
-    description: {
-      value: inputs.description.value,
-      isValid: inputs.description.isValid
-    },
-    address: {
-      value: inputs.address.value,
-      isValid: inputs.address.isValid,
-    },
-    phoneNumber: {
-      value: inputs.phoneNumber.value,
-      isValid: inputs.phoneNumber.isValid
-    },
-    priceRange:{
-      value: inputs.priceRange.value,
-      isValid: inputs.phoneNumber.isValid
-    }
-  }, 
-  formIsValid, 
-  {
-    tags: tags,
-    checkbox: {
-      chinese: checkbox.chinese,
-      indian: checkbox.indian,
-      mexican: checkbox.mexican,
-      korean: checkbox.korean,
-      lactoseFree: checkbox.lactoseFree,
-      vegetarianFriendly: checkbox.vegetarianFriendly,
-      veganOptions: checkbox.veganOptions,
-      glutenFree: checkbox.glutenFree
-    },
-    image: []
-  })
-
-  useEffect(() => {
-    if (inputs && !blur) {
-      setFormData({
-        storeName: {
-          value: inputs.storeName.value,
-          isValid: inputs.storeName.isValid
-        },
-        description: {
-          value: inputs.description.value,
-          isValid: inputs.description.isValid
-        },
-        address: {
-          value: inputs.address.value,
-          isValid: inputs.address.isValid,
-        },
-        phoneNumber: {
-          value: inputs.phoneNumber.value,
-          isValid: inputs.phoneNumber.isValid
-        },
-        priceRange:{
-          value: inputs.priceRange.value,
-          isValid: inputs.phoneNumber.isValid
-        }
-      }, 
-      formIsValid, 
-      {
-        tags: tags,
-        checkbox: {
-          chinese: checkbox.chinese,
-          indian: checkbox.indian,
-          mexican: checkbox.mexican,
-          korean: checkbox.korean,
-          lactoseFree: checkbox.lactoseFree,
-          vegetarianFriendly: checkbox.vegetarianFriendly,
-          veganOptions: checkbox.veganOptions,
-          glutenFree: checkbox.glutenFree
-        },
-        image: []
-      })
-    }
-
-
-  }, [setFormData, props])
+  
 
     
-  console.log(formState)
+  console.log(props)
 
 
-  const priceRange = formState.inputs.priceRange
+  const priceRange = inputs.priceRange
   const category = ['chinese', 'indian', 'korean', 'mexican']
   const dietaryRestrictions = ['lactoseFree', 'vegetarianFriendly', 'veganOptions', 'glutenFree']
   const priceLevel = ['$', '$$', '$$$', '$$$$']
@@ -207,11 +131,11 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
   // TO BE CHANGED
     const storeFormSubmitHandler = (event: any) => {
       event.preventDefault()
-      console.log(formState)
+      console.log(props)
     }
 
 
-    if (!formState.inputs.storeName.value && !blur) {
+    if (!inputs.storeName.value && !blur) {
       return(
         <div>
           <h2>Loading</h2>
@@ -234,7 +158,7 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
         id="storeName" 
         label="Required" 
         inputLabel="Store Name"
-        value={formState.inputs.storeName.value}
+        value={inputs.storeName.value}
         variant="outlined"
         errorMessage="Invalid store name" 
         required
@@ -248,7 +172,7 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
         required
         label="Required" 
         inputLabel="Description" 
-        value={formState.inputs.description.value}
+        value={inputs.description.value}
         variant="outlined"
         multiline
         rows={4}
@@ -262,7 +186,7 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
         id="address" 
         label="Required" 
         inputLabel="Address" 
-        value={formState.inputs.address.value}
+        value={inputs.address.value}
         variant="outlined"
         errorMessage="Invalid address" 
         required
@@ -276,7 +200,7 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
         id="phoneNumber" 
         label="Required" 
         inputLabel="Phone Number"
-        value={formState.inputs.phoneNumber.value}
+        value={inputs.phoneNumber.value}
         variant="outlined"
         errorMessage="Invalid number" 
         required
@@ -338,7 +262,7 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
               <Typography variant="body1" className={classes.titleFont}>Category</Typography>
 
               {category.map((cat) => <CheckBox 
-              checked={formState.otherData.checkbox[cat]} 
+              checked={otherData.checkbox[cat]} 
               item={cat} 
               key={cat}
               handleChange={tagsHandler} 
@@ -348,7 +272,7 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
 
               <Typography variant="body1" className={classes.titleFont}>Dietary Restrictions</Typography>
               {dietaryRestrictions.map((res) => <CheckBox 
-              checked={formState.otherData.checkbox[res]} 
+              checked={otherData.checkbox[res]} 
               item={res} 
               key={res} 
               handleChange={tagsHandler}/>)}
@@ -356,7 +280,7 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
             </FormGroup>
 
           </Paper>
-          <p>{formState.otherData.tags}</p>
+          <p>{otherData.tags}</p>
 
 
         </div>
@@ -365,7 +289,7 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
           variant="contained" 
           color="primary" 
           type="submit"
-          disabled={!formState.isValid}
+          disabled={!formIsValid}
           onSubmit={storeFormSubmitHandler} 
           style={{ margin: "16px 0", width: '40%' }}
           >{blur? 'Add Store' : 'Edit Store'}</Button>
@@ -373,7 +297,7 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
           variant="contained" 
           color="primary" 
           type="submit"
-          disabled={!formState.isValid}
+          disabled={!formIsValid}
           onSubmit={storeFormSubmitHandler} 
           style={{ margin: "16px 0",  width: '40%' }}
           >Cancel</Button>

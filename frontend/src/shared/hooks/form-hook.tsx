@@ -8,12 +8,14 @@ const formReducer = (state: any, action: any) => {
       for (const inputId in state.inputs) { 
         if (inputId === action.inputId)  {
           formIsValid = formIsValid && action.isValid
+  
           
         } else {
 
           formIsValid = formIsValid && state.inputs[inputId].isValid
         }
       }
+      
       return {
         ...state,
         inputs: {
@@ -47,7 +49,7 @@ const formReducer = (state: any, action: any) => {
     case 'SET_DATA': 
     return {
       inputs: action.inputs,
-      formIsValid: action.formIsValid,
+      isValid: action.formIsValid,
       otherData: action.otherData
     }
     
@@ -58,10 +60,12 @@ const formReducer = (state: any, action: any) => {
 
 
 export const useForm = (initialInputs: object, initialFormValidity: boolean, otherData: object) => {
+  
   const [formState, dispatch] = useReducer(formReducer, {
     inputs: initialInputs,
     isValid: initialFormValidity,
     otherData: otherData
+    
 
   })
 
@@ -95,6 +99,6 @@ export const useForm = (initialInputs: object, initialFormValidity: boolean, oth
       otherData: otherData
     })
   }, [])
-
+  console.log(formState.isValid)
   return [formState, inputHandler, priceHandler, tagsHandler, setFormData ]
 }

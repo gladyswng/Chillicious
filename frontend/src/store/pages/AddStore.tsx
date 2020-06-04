@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import StoreForm from '../components/StoreForm'
+import { useForm } from '../../shared/hooks/form-hook'
 import Typography from '@material-ui/core/Typography';
 
 interface AddStoreProps {
@@ -7,50 +8,47 @@ interface AddStoreProps {
 }
 
 const AddStore: React.FC<AddStoreProps> = ({}) => {
-  const initialFormState = {
-    inputs: {
-      // validity of original input
-      storeName: {
-        value: '',
-        isValid: false
-      },
-      description: {
-        value: '',
-        isValid: false
-      },
-      address: {
-        value: '',
-        isValid: false
-      },
-      phoneNumber: {
-        value: '',
-        isValid: false
-      },
-      priceRange: {
-        value: '',
-        isValid: false
-      }
-
+  const [formState, inputHandler, priceHandler, tagsHandler, setFormData] = useForm({
+    storeName: {
+      value: '',
+      isValid: false
     },
-    otherData: {
-      
-      tags: [] as string[],
-      checkbox: {
-        chinese: false,
-        indian: false,
-        mexican: false,
-        korean: false,
-        lactoseFree: false,
-        vegetarianFriendly: false,
-        veganOptions: false,
-        glutenFree: false
-      }
+    description: {
+      value: '',
+      isValid: false
     },
-    isValid: false
-    
-  }
+    address: {
+      value: '',
+      isValid: false
+    },
+    phoneNumber: {
+      value: '',
+      isValid: false
+    },
+    priceRange:{
+      value: '',
+      isValid: false
+    }
+  }, 
+  false, 
+  {
+    tags: [],
+    checkbox: {
+      chinese: false,
+      indian: false,
+      mexican: false,
+      korean: false,
+      lactoseFree: false,
+      vegetarianFriendly: false,
+      veganOptions: false,
+      glutenFree: false
+    },
+    image: []
+  })
 
-  const { inputs, isValid, otherData } = initialFormState
+
+  const { inputs, isValid,  otherData } = formState
+
     return (
      
         <div style={{ marginTop: 80, width: '80%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
@@ -59,10 +57,12 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
           </Typography>
           <StoreForm 
           inputs={inputs}
-          tags={otherData.tags}
           formIsValid={isValid}
-          checkbox={otherData.checkbox}
+          otherData={otherData}
           blur={true}
+          inputHandler={inputHandler}
+          priceHandler={priceHandler}
+          tagsHandler={tagsHandler}
       
        
           />
