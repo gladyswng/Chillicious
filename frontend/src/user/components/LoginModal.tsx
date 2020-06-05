@@ -4,7 +4,6 @@ import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH, VALIDATOR_EMAIL } from '../../u
 import { useForm } from '../../shared/hooks/form-hook'
 import Modal from '../../shared/components/UIElements/Modal'
 import { makeStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Input from '../../shared/components/UIElements/Input'
@@ -97,6 +96,12 @@ const LoginModal: React.FC<LoginModalProps> = () => {
         style={{ margin: 8 }}
         disabled={!isValid}
         >Log In</Button>
+        <Button 
+        variant="contained"  
+        color="primary" 
+        style={{ margin: 8 }}
+        disabled={!isValid}
+        >Cancel</Button>
           
         </div>
 

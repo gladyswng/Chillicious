@@ -50,21 +50,7 @@ const SharedModal: React.FC<SharedModalProps> = (props) => {
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = useState(getModalStyle);
-  // const [open, setOpen] = useState(props.open);
-  
-  // const handleOpen = () => {
-  //   setOpen(true);
-  // };
 
-  // const handleClose = () => {
-  //   setOpen(false);
-  // };
-  
-  // useEffect(()=> {
-  //   console.log('close')
-  //   setOpen(false);
-  // }, [props.open])
-  // console.log(open)
 
   const body = (
     <div style={modalStyle} className={classes.paper}>
