@@ -17,6 +17,7 @@ interface InputProps {
   multiline?: boolean,
   rows?: number,
   errorMessage?: string,
+  disabled?: boolean
   validators?: {
     type: string,
     val?: any
@@ -105,11 +106,13 @@ const Input: React.FC<InputProps> = (props) => {
           label={props.label}
           multiline={props.multiline}
           rows={props.rows}
-          type={props.type} 
+          type={props.type}
+          disabled={props.disabled} 
           variant={props.variant} 
           error={props.blur? !inputState.isValid && inputState.isTouched : !inputState.isValid}
           helperText={props.blur? !inputState.isValid && inputState.isTouched && props.errorMessage : !inputState.isValid&& props.errorMessage}
           onChange={changeHandler}
+         
           onBlur={touchHandler}
           value={inputState.value}
           

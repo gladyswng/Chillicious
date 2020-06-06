@@ -45,12 +45,13 @@ interface UserFormProps {
   }
   formIsValid: boolean
   blur: boolean
+  disableEmail: boolean
   inputHandler: () => void
 }
 
 const UserForm: React.FC<UserFormProps>  = (props) => {
   const classes = useStyles()
-  const { inputs, formIsValid,  blur, inputHandler } = props
+  const { inputs, formIsValid,  blur, disableEmail, inputHandler } = props
   
 
   return (
@@ -71,12 +72,15 @@ const UserForm: React.FC<UserFormProps>  = (props) => {
 
         <Input 
           id="email" 
-          label="Required" 
+          label={disableEmail? "Disabled" : "Required"}
+          disabled={disableEmail? true: false}  
           inputLabel="Email Address"
           value={inputs.email.value}
           variant="outlined"
           errorMessage="Invalid email address" 
           required
+         
+
           validators={[VALIDATOR_REQUIRE(),VALIDATOR_EMAIL() ]}
           onInput={inputHandler}
           blur={blur}
@@ -102,7 +106,7 @@ const UserForm: React.FC<UserFormProps>  = (props) => {
           inputLabel="Confirm Password"
           value={inputs.confirmPassword.value}
           variant="outlined"
-          errorMessage="Invalid password" 
+          errorMessage="Invalid match" 
           required
           validators={[VALIDATOR_REQUIRE(), VALIDATOR_MINLENGTH(6), VALIDATOR_MATCH(inputs.password.value)]}
           onInput={inputHandler}
@@ -116,7 +120,7 @@ const UserForm: React.FC<UserFormProps>  = (props) => {
           color="primary" 
           style={{ margin: 8 }}
           disabled={!formIsValid}
-          >Log In</Button>
+        >{blur? 'Register' : 'Save'}</Button>
           <Button 
           variant="contained"  
           color="primary" 

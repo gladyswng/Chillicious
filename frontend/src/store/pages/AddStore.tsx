@@ -63,8 +63,6 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
           inputHandler={inputHandler}
           priceHandler={priceHandler}
           tagsHandler={tagsHandler}
-      
-       
           />
         </div>
 

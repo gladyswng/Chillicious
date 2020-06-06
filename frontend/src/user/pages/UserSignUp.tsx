@@ -56,6 +56,7 @@ const Registration: React.FC<RegistrationProps> = ({}) => {
           formIsValid={isValid}
           blur={true}
           inputHandler={inputHandler}
+          disableEmail={false}
 
         />
       </div>

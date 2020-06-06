@@ -7,26 +7,28 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
 interface TabPanelProps {
+
   children: any
-  index: any
-  value: any
+  index: number
+  value: number
+  id: string
 }
 
 
 
 const TabPanel: React.FC<TabPanelProps> = (props) => {
-  const { children, value, index, ...other } = props;
+  const { children, value, index, id } = props;
     return (
       <div
       role="tabpanel"
       hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
+      id={id}
+      aria-labelledby={id}
+      
     >
       {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
+        <Box p={3} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          {children}
         </Box>
       )}
     </div>
