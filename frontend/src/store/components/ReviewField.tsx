@@ -117,12 +117,14 @@ const useStyles = makeStyles((theme) => ({
 
 interface ReviewFieldProps {
   reviews: {
-    name: string;
-    review: string;
-    createAt: string;
+    author: string;
+    avatar: string;
     rating: number;
+    createdAt: string;
+    text: string;
+    title: string;
     id?: string
-  } []
+  }[]
 }
 
 const ReviewField: React.FC<ReviewFieldProps> = ({reviews}) => {
@@ -135,7 +137,9 @@ const ReviewField: React.FC<ReviewFieldProps> = ({reviews}) => {
 
   const reviewList = reviews.map(review => {
     return (
-      <ReviewCard rating={review.rating} key={review.id}/>
+      <ReviewCard 
+      review={review}
+      key={review.id}/>
     )
   })
 
