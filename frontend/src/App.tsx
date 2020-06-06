@@ -1,7 +1,7 @@
 import React, { useRef } from "react"
 import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-dom"
-import UserProfile from './user/pages/UserProfile'
-import UserAccount from './user/pages/UserAccount'
+
+import UserPage from './user/pages/UserPage'
 import UserSignUp from './user/pages/UserSignUp'
 
 import UpdateStore from './store/pages/UpdateStore'
@@ -37,7 +37,7 @@ const App: React.FC = () => {
           
     <Router>
       <Layout>
-        <main style={{ marginTop: 64, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+        <main style={{ marginTop: 100, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
         <Switch>
   
           <Route path="/" exact>
@@ -65,8 +65,8 @@ const App: React.FC = () => {
               <UserSignUp />
           </Route>
           
-          <Route path="/users/me" exact>
-              <UserAccount />
+          <Route path="/user/me" exact>
+              <UserPage />
               {/* <UserProfile /> */}
               
 

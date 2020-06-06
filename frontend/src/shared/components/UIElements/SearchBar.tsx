@@ -8,8 +8,7 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MyLocationIcon from '@material-ui/icons/MyLocation';
 import SearchIcon from '@material-ui/icons/Search';
-import WhatshotIcon from '@material-ui/icons/Whatshot';
-import Typography from '@material-ui/core/Typography';
+
 
 
 const useStyles = makeStyles((theme) => ({
