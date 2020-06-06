@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH, VALIDATOR_EMAIL } from '../../util/validators'
 import { useForm } from '../../shared/hooks/form-hook'
+import { AuthContext } from '../../shared/context/authContext'
 import Modal from '../../shared/components/UIElements/Modal'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography';
@@ -23,6 +24,7 @@ interface LoginModalProps {
 
 const LoginModal: React.FC<LoginModalProps> = () => {
   const classes = useStyles()
+  const auth = useContext(AuthContext)
   const [formState, inputHandler] = useForm({
     email: {
       value: '',
@@ -49,7 +51,11 @@ const LoginModal: React.FC<LoginModalProps> = () => {
     setModalOpen(false);
   };
 
-  const authSubmitHandler = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => event.preventDefault();
+  const authSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log(inputs)
+    auth.login()
+  } 
 
   return (
     <Modal 
@@ -60,7 +66,7 @@ const LoginModal: React.FC<LoginModalProps> = () => {
     onClose={handleModalClose}>
 
       <Typography variant="h5">Log In</Typography>
-      <form action="" className={classes.root} noValidate autoComplete="off">
+      <form action="" className={classes.root} noValidate autoComplete="off" onSubmit={authSubmitHandler}>
         <div style={{ width: '70%' }}>
           <div>
           <Input 
@@ -98,6 +104,7 @@ const LoginModal: React.FC<LoginModalProps> = () => {
         <Button 
         variant="contained"  
         color="primary" 
+        type="submit"
         style={{ margin: 8 }}
         disabled={!isValid}
         >Log In</Button>
@@ -116,9 +123,6 @@ const LoginModal: React.FC<LoginModalProps> = () => {
     <Typography variant='body2'>Do not have an account?</Typography>
     <Typography>
 
-    {/* <Link href="#" onClick={preventDefault} style={{  }}>
-      Sign Up
-    </Link> */}
 
       <Button 
       component={ NavLink } 

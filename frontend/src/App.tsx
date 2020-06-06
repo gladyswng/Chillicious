@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import React, { useState, useCallback } from "react"
 import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-dom"
 
 import UserPage from './user/pages/UserPage'
@@ -8,9 +8,10 @@ import UpdateStore from './store/pages/UpdateStore'
 import Store from './store/pages/Store'
 import AddStore from './store/pages/AddStore'
 import SearchResult from './store/pages/SearchResult'
-import Layout from './util/Layout'
-
 import Homepage from './home/page/homePage'
+import Layout from './util/Layout'
+import { AuthContext } from './shared/context/authContext'
+import { makeStyles } from '@material-ui/core/styles';
 
 
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
@@ -24,59 +25,111 @@ const theme = createMuiTheme({
         secondary: {
             main: '#000000'
         }
-
-    },
-
-
+    }
 })
+
+const useStyles = makeStyles((theme) => ({
+  appRoot: {
+    marginTop: 100, 
+    display: 'flex', 
+    flexDirection: 'column', 
+    alignItems: 'center', 
+    width: '100%'
+  },
+}));
 
 
 const App: React.FC = () => {
-  return (
-  <ThemeProvider theme={theme}>
+  const classes = useStyles()
+  const [isLoggedIn, setIsLoggedIn] = useState((false))
+
+  // the function in useCallback will never be recreated
+  const login = useCallback(() => {
+    setIsLoggedIn(true)
+  }, [])
+
+  const logout = useCallback(() => {
+    setIsLoggedIn(false)
+  }, [])
+
+
+  let routes
+
+  if (isLoggedIn) {
+    routes = (
+      <Switch>
+      <Route path="/" exact>
+          <Homepage />
+      </Route>
+
+
+      <Route path="/stores" exact>
+          <SearchResult />
+      </Route>
+
+      <Route path="/store" exact>
+          <Store />
+      </Route>
+
+      <Route path="/store/add" exact>
+          <AddStore />
+      </Route>
+
+      <Route path="/store/update" exact>
+          <UpdateStore />
+      </Route>
+
+      <Route path="/user/signUp" exact>
+          <UserSignUp />
+      </Route>
+  
+      <Route path="/user/me" exact>
+          <UserPage />
+      </Route>
+
+      <Redirect to="/" />
+      </Switch>
+    )
+  } else {
+    routes = (
+      <Switch>
+      <Route path="/" exact>
+          <Homepage />
+      </Route>
+
+      <Route path="/stores" exact>
+          <SearchResult />
+      </Route>
+
+      <Route path="/store" exact>
+          <Store />
+      </Route>
+
+      <Route path="/user/signUp" exact>
+          <UserSignUp />
+      </Route>
+
+      <Redirect to="/user/signUp" />
           
+      </Switch>
+    )
+  }
+
+
+  return (
+  
+  <ThemeProvider theme={theme}>
+    {/* Here we bind the value we managed with context, which we initialize to the object in authContext, and bind this initial value to a new value, whenever this value here changes, all the componentes that listen to our context, so that active tap into the context we re-render, not all the components that are wrapped by provider but only the components where we add code to listen to our context. When bind when isLoggedIn changes, new value will be passed down*/}
+  <AuthContext.Provider value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}>
     <Router>
       <Layout>
-        <main style={{ marginTop: 100, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-        <Switch>
-  
-          <Route path="/" exact>
-              <Homepage />
-          </Route>
+        <main className={classes.appRoot}>
 
-
-          <Route path="/stores" exact>
-              <SearchResult />
-          </Route>
-
-          <Route path="/store" exact>
-              <Store />
-          </Route>
-
-          <Route path="/store/add" exact>
-              <AddStore />
-          </Route>
-
-          <Route path="/store/update" exact>
-              <UpdateStore />
-          </Route>
-
-          <Route path="/user/signUp" exact>
-              <UserSignUp />
-          </Route>
-          
-          <Route path="/user/me" exact>
-              <UserPage />
-              {/* <UserProfile /> */}
-              
-
-          </Route>
-
-          <Redirect to="/" />
-        </Switch>
-        </main>
-        </Layout>
-      </Router>
+        {routes}
+      </main>
+      </Layout>
+    </Router>
+  </AuthContext.Provider>
   </ThemeProvider>
 
   )

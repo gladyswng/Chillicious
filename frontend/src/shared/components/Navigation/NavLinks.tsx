@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import LoginModal from '../../../user/components/LoginModal'
-
+import { AuthContext } from '../../context/authContext'
 
 import Drawer from './NavDrawer'
 
@@ -36,6 +36,9 @@ interface NavLinksProps {
 
 const NavLinks: React.FC<NavLinksProps> = ({}) => {
   const classes = useStyles()
+  // useContext allow us to tap into a context to listen to it. Here we can call use context and pass in the auth context, what we get back is an obj which will hold the latest context and this component will re-render whenever the context we're listening to changes
+
+  const auth = useContext(AuthContext)
 
   const [drawerState, setDrawerState] = useState(false);
 
@@ -47,54 +50,57 @@ const NavLinks: React.FC<NavLinksProps> = ({}) => {
     setDrawerState(open);
   };
 
-    return (
+  return (
       <div className={classes.menu}>
-        <Hidden smDown>
-              <IconButton >
-                <AddCommentIcon />
-              </IconButton>
-      
-              <IconButton component={ NavLink } to="/store/add">
-                  <AddIcon />
-              </IconButton>
         
+        <Hidden smDown>
+          {auth.isLoggedIn && (
+            <IconButton >
+              <AddCommentIcon />
+            </IconButton>
+          )}
 
-              <IconButton >
-                <FavoriteBorderIcon />
-              </IconButton>
-          
-              <IconButton >
-                <AccountCircleIcon />
-              </IconButton>
-              <LoginModal />
+          {auth.isLoggedIn && (
+            <IconButton component={ NavLink } to="/store/add">
+                <AddIcon />
+            </IconButton>
+          )}
+        
+          {auth.isLoggedIn && (
+            <IconButton >
+              <FavoriteBorderIcon />
+            </IconButton>
+          )}
+
+          {auth.isLoggedIn && (
+            <IconButton component={ NavLink } to="/user/me">
+              <AccountCircleIcon />
+            </IconButton>
+          )}
             
         </Hidden>
-           
+        {!auth.isLoggedIn && (
+          <LoginModal />
+        )}
 
+        {auth.isLoggedIn && 
+          <Button onClick={auth.logout}>Logout</Button>
+        }
 
+        {auth.isLoggedIn && (
           <Hidden mdUp>
             <Drawer 
             clickHandler={toggleDrawer(true)}
             openHandler={toggleDrawer(true)}
             closeHandler={toggleDrawer(false)}
-            open={drawerState}
-          
+            open={drawerState}       
             />
-            {/* <React.Fragment>
-
-              {drawerIsOpen && (
-                <SideDrawer>
-                  <Nav></Nav>
-                </SideDrawer>
-              )}
-            </React.Fragment> */}
-
 
           </Hidden>
-        
+        )}
 
+      
 
       </div>
-    );
-}
+)}
 export default NavLinks

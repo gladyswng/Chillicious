@@ -120,26 +120,26 @@ const FilterList: React.FC<FilterListProps> = ({}) => {
     
 
       <Typography variant="body1" className={classes.titleFont}>Spice Level</Typography>
-      {spiceLevel.map((spiciness: keyof IState) => <CheckBox checked={checkbox[spiciness]} item={spiciness} handleChange={handleChange}/>)}
+      {spiceLevel.map((spiciness: keyof IState) => <CheckBox checked={checkbox[spiciness]} item={spiciness} handleChange={handleChange} key={spiciness}/>)}
 
       <Divider variant="middle" className={classes.divider}/>
 
         
       <Typography variant="body1" className={classes.titleFont}>Price</Typography>
 
-      {priceRange.map((price: keyof IState) => <CheckBox checked={checkbox[price]} item={price} handleChange={handleChange}/>)}
+      {priceRange.map((price: keyof IState) => <CheckBox checked={checkbox[price]} item={price} handleChange={handleChange} key={price}/>)}
 
         
       <Divider variant="middle" className={classes.divider}/>
 
       <Typography variant="body1" className={classes.titleFont}>Category</Typography>
 
-      {category.map((cat: keyof IState) => <CheckBox checked={checkbox[cat]} item={cat} handleChange={handleChange}/>)}
+      {category.map((cat: keyof IState) => <CheckBox checked={checkbox[cat]} item={cat} handleChange={handleChange} key={cat}/>)}
 
       <Divider variant="middle" className={classes.divider}/>  
    
       <Typography variant="body1" className={classes.titleFont}>Dietary Restrictions</Typography>
-      {dietaryRestrictions.map((res: keyof IState) => <CheckBox checked={checkbox[res]} item={res} handleChange={handleChange}/>)}
+      {dietaryRestrictions.map((res: keyof IState) => <CheckBox checked={checkbox[res]} item={res} handleChange={handleChange} key={res}/>)}
 
       
   
