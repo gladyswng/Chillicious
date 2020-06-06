@@ -59,28 +59,13 @@ const SharedModal: React.FC<SharedModalProps> = (props) => {
     </div>
   );
 
-  const renderIcon = ()=> {
-    if (props.buttonIcon=== 'account') {
-      return <AccountCircleIcon />
-    }
-  }
-  const renderButton =() => {
-
-    if (props.iconButton) {
-      return <IconButton onClick={props.onClose} >
-      {renderIcon()}
-    </IconButton>
-    } else {
-      return <Button disableElevation variant="contained" onClick={props.onOpen} color={props.buttonColor}>
-      {props.buttonText}</Button>
-    }
-  }
 
   
 
   return (
     <div>
-      {renderButton()}
+    <Button disableElevation variant="contained" onClick={props.onOpen} color={props.buttonColor}>
+    {props.buttonText}</Button>
     <Modal
       open={props.open}
       onClose={props.onClose}

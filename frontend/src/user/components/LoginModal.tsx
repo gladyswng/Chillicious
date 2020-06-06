@@ -49,10 +49,15 @@ const LoginModal: React.FC<LoginModalProps> = () => {
     setModalOpen(false);
   };
 
-  const preventDefault = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => event.preventDefault();
+  const authSubmitHandler = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => event.preventDefault();
 
   return (
-    <Modal buttonText="Log In" buttonColor="primary" open={modalOpen} onOpen={handleModalOpen} onClose={handleModalClose}>
+    <Modal 
+    buttonText="Log In" 
+    buttonColor="primary" 
+    open={modalOpen} 
+    onOpen={handleModalOpen} 
+    onClose={handleModalClose}>
 
       <Typography variant="h5">Log In</Typography>
       <form action="" className={classes.root} noValidate autoComplete="off">
@@ -114,11 +119,15 @@ const LoginModal: React.FC<LoginModalProps> = () => {
     {/* <Link href="#" onClick={preventDefault} style={{  }}>
       Sign Up
     </Link> */}
-      <NavLink to="/users/me" style={{ textDecoration: 'none', width: 74 }}>
-        <Button variant="contained" color="primary" style={{ boxShadow: 'none' }} onClick={handleModalClose}>
-          Signp
-        </Button>
-      </NavLink>
+
+      <Button 
+      component={ NavLink } 
+      to="/user/signUp" 
+      color="primary" 
+      style={{ boxShadow: 'none' }} onClick={handleModalClose}>
+        Sign Up Here
+      </Button>
+  
     </Typography>
   </div>
 

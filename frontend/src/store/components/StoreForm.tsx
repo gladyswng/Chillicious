@@ -148,7 +148,7 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
     <form 
     action=""  //????
     className={classes.root} 
-    // onSubmit={storeFormSubmitHandler}
+    onSubmit={storeFormSubmitHandler}
     noValidate //??
     autoComplete="off" 
     >
@@ -290,7 +290,7 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
           color="primary" 
           type="submit"
           disabled={!formIsValid}
-          onSubmit={storeFormSubmitHandler} 
+
           style={{ margin: "16px 0", width: '40%' }}
           >{blur? 'Add Store' : 'Edit Store'}</Button>
           <Button 

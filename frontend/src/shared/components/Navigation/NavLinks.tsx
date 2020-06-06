@@ -53,11 +53,11 @@ const NavLinks: React.FC<NavLinksProps> = ({}) => {
               <IconButton >
                 <AddCommentIcon />
               </IconButton>
-            <NavLink to="/store/add">
-              <IconButton >
+      
+              <IconButton component={ NavLink } to="/store/add">
                   <AddIcon />
               </IconButton>
-            </NavLink>
+        
 
               <IconButton >
                 <FavoriteBorderIcon />
