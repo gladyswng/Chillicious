@@ -42,8 +42,8 @@ const Store: React.FC<StoreProps> = ({}) => {
     image: [] as string[],
     address: '123 chops, 456 pork',
     location: {
-      lat: 40,
-      lng: -20
+      lat: 31.3,
+      lng: 121.5
     },
     tags: ['chinese', 'noodle'],
     reviews: [

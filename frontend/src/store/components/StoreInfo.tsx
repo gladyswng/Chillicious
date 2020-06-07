@@ -1,6 +1,7 @@
 import React from 'react'
-import ReviewCard from '../components/ReviewCard'
 
+
+import Map from '../../shared/components/UIElements/Map'
 
 import Layout from '../../util/Layout'
 import { Typography } from '@material-ui/core'
@@ -57,6 +58,10 @@ interface StoreInfoProps {
     image?: string[];
     address?: string;
     tags?: string[]
+    location: {
+      lat: number
+      lng: number
+    }
 
   }
 
@@ -64,14 +69,15 @@ interface StoreInfoProps {
 }
 
 const StoreInfo: React.FC<StoreInfoProps> = (props) => {
-  const { name, description, rating, priceRange, image, address, tags } = props.store
+  const { name, description, rating, priceRange, image, address, tags, location } = props.store
   const classes = useStyles()
+ 
 
   const tagChips = tags.map(tag => {
-    return <Chip label={tag} color="primary" />
+    return <Chip label={tag} color="primary" key={tag}/>
   })
     return (
-      <Paper variant="outlined" style={{ padding: 12 }}>
+      <Paper variant="outlined" style={{ padding: 12, height: 160, display: 'flex', justifyContent: 'space-between' }}>
         <div>
         <Typography variant="h5">{name}</Typography>
         <Typography >{description}</Typography>
@@ -92,10 +98,13 @@ const StoreInfo: React.FC<StoreInfoProps> = (props) => {
             {tagChips}
             </div>
           </Grid>
+
+          <Typography className={classes.contactInfo}><RoomIcon className={classes.icon}/>{address}</Typography>
         </div>
 
-        <div>
-          <Typography className={classes.contactInfo}><RoomIcon className={classes.icon}/>{address}</Typography>
+        <div style={{ width: '50%', height: '100%' }} id="map">
+          
+          <Map center={location} zoom={16}/>
         </div>
 
         
