@@ -39,8 +39,8 @@ const useStyles = makeStyles((theme) => ({
 interface SharedModalProps {
   buttonText?: string,
   buttonColor?: 'primary' | 'default'
-  iconButton?: boolean
-  buttonIcon?: string,
+  disableElevation?: boolean
+  size?: "small" | "medium" | "large"
   open: boolean
   onOpen: () => void
   onClose: () => void
@@ -64,13 +64,15 @@ const SharedModal: React.FC<SharedModalProps> = (props) => {
 
   return (
     <div>
-    <Button disableElevation variant="contained" onClick={props.onOpen} color={props.buttonColor}>
+    <Button disableElevation={props.disableElevation} 
+    size={props.size}
+    variant="contained" onClick={props.onOpen} color={props.buttonColor}>
     {props.buttonText}</Button>
     <Modal
       open={props.open}
       onClose={props.onClose}
-      aria-labelledby="simple-modal-title"
-      aria-describedby="simple-modal-description"
+      aria-labelledby="title"
+      aria-describedby="description"
       style={{ outline: 'none', border: 'none' }}
      
       

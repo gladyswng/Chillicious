@@ -1,5 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import ReviewCard from './ReviewCard'
+import { AuthContext } from '../../shared/context/authContext'
+
+import ReviewModal from './ReviewModal'
+import LoginModal from '../../user/components/LoginModal'
+
+
 import SearchBar from '../../shared/components/UIElements/SearchBar'
 import SortByForm from '../../shared/components/UIElements/SortByForm'
 
@@ -12,7 +18,6 @@ import Button from '@material-ui/core/Button';
 
 import RateReviewIcon from '@material-ui/icons/RateReview';
 import Pagination from '@material-ui/lab/Pagination'
-
 
 
 
@@ -54,6 +59,7 @@ interface ReviewFieldProps {
 const ReviewField: React.FC<ReviewFieldProps> = ({reviews}) => {
 
   const classes = useStyles()
+  const auth = useContext(AuthContext)
   const [sortBy, setSortBy] = React.useState('Latest')
   const handleChange = (event: any) => {
     setSortBy(event.target.value);
@@ -72,10 +78,19 @@ const ReviewField: React.FC<ReviewFieldProps> = ({reviews}) => {
         <div className={classes.reviewTitle}>
 
           <Typography variant="h5">Reviews</Typography>
-          <Button variant="contained" color="primary" size="small" >
-            <RateReviewIcon style={{ marginRight: 4}}/>
-            Write a review
-          </Button>
+
+          {/* {auth.isLoggedIn && ( */}
+            <ReviewModal />
+    
+          {/* ) */}
+            
+          {/* } */}
+          {!auth.isLoggedIn && 
+          
+            <LoginModal buttonText='Login to review' size='small'/>
+          }
+
+          
         </div>
 
         <div className={classes.searchFieldContainer}>

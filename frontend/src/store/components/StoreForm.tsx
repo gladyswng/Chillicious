@@ -100,10 +100,6 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
   const classes = useStyles()
   const { inputs, formIsValid, otherData, blur, inputHandler, priceHandler, tagsHandler } = props
   
-  
-  
-
-    
   console.log(props)
 
 
@@ -293,45 +289,3 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
   );
 }
 export default StoreForm
-
-  // const [formState, inputHandler, priceHandler, tagsHandler, setFormData] = useForm({
-  //   storeName: {
-  //     value: inputs.storeName.value,
-  //     isValid: inputs.storeName.isValid
-  //   },
-  //   description: {
-  //     value: inputs.description.value,
-  //     isValid: inputs.description.isValid
-  //   },
-  //   address: {
-  //     value: inputs.address.value,
-  //     isValid: inputs.address.isValid,
-  //   },
-  //   phoneNumber: {
-  //     value: inputs.phoneNumber.value,
-  //     isValid: inputs.phoneNumber.isValid
-  //   },
-  //   priceRange:{
-  //     value: inputs.priceRange.value,
-  //     isValid: inputs.phoneNumber.isValid
-  //   }
-  // }, 
-  // formIsValid, 
-  // {
-  //   tags: tags,
-  //   checkbox: {
-  //     chinese: checkbox.chinese,
-  //     indian: checkbox.indian,
-  //     mexican: checkbox.mexican,
-  //     korean: checkbox.korean,
-  //     lactoseFree: checkbox.lactoseFree,
-  //     vegetarianFriendly: checkbox.vegetarianFriendly,
-  //     veganOptions: checkbox.veganOptions,
-  //     glutenFree: checkbox.glutenFree
-  //   },
-  //   image: []
-  // })
-  
-  //   useEffect(() => {
-  //     setFormData
-  //   }, [setFormData, props])

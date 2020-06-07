@@ -26,9 +26,9 @@ interface LoginModalProps {
 const LoginModal: React.FC<LoginModalProps> = () => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
-  const [formState, inputHandler] = useForm({
+  const [formState, inputHandler, setFormData] = useForm({
     rating: {
-      value: '',
+      value: 0,
       isValid: false
     },
     title: {
@@ -45,7 +45,7 @@ const LoginModal: React.FC<LoginModalProps> = () => {
 
   const { inputs, isValid } = formState
 
-
+ 
   const [modalOpen, setModalOpen] = useState(false);
   
   const handleModalOpen = () => {
@@ -53,6 +53,7 @@ const LoginModal: React.FC<LoginModalProps> = () => {
   };
   const handleModalClose = () => {
     setModalOpen(false);
+
   };
 
   const authSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
@@ -60,6 +61,7 @@ const LoginModal: React.FC<LoginModalProps> = () => {
     console.log(inputs)
     auth.login()
   } 
+console.log(inputs)
 
   return (
     <Modal 
@@ -73,16 +75,20 @@ const LoginModal: React.FC<LoginModalProps> = () => {
       <form action="" className={classes.root} noValidate autoComplete="off" onSubmit={authSubmitHandler}>
         <div style={{ width: '70%' }}>
           <div>
-          <RatingBar readOnly={false}/>
+          <RatingBar 
+          readOnly={false} 
+          rating={inputs.rating.value} 
+          onInput={inputHandler}/>
+
           <Input 
             id="title" 
             label="Required" 
-            inputLabel="Email Address"
-            value={inputs.email.value}
+            inputLabel="Title"
+            value={inputs.title.value}
             variant="outlined"
-            errorMessage="Invalid email address" 
+            errorMessage="Invalid title" 
             required
-            validators={[VALIDATOR_REQUIRE(), VALIDATOR_EMAIL()]}
+            validators={[VALIDATOR_REQUIRE()]}
             onInput={inputHandler}
             blur={true}
             />
@@ -91,15 +97,14 @@ const LoginModal: React.FC<LoginModalProps> = () => {
           
           <div>
           <Input 
-            id="password" 
+            id="text" 
             label="Required" 
-            type="password"
-            inputLabel="Password"
-            value={inputs.password.value}
+            inputLabel="Review"
+            value={inputs.text.value}
             variant="outlined"
-            errorMessage="Invalid password" 
+            errorMessage="Please provide more than 40 characters" 
             required
-            validators={[VALIDATOR_REQUIRE(), VALIDATOR_MINLENGTH(8)]}
+            validators={[VALIDATOR_REQUIRE(), VALIDATOR_MINLENGTH(40)]}
             onInput={inputHandler}
             blur={true}
             />
@@ -112,7 +117,7 @@ const LoginModal: React.FC<LoginModalProps> = () => {
         type="submit"
         style={{ margin: 8 }}
         disabled={!isValid}
-        >Log In</Button>
+        >Save</Button>
         <Button 
         variant="contained"  
         color="primary" 
@@ -122,23 +127,8 @@ const LoginModal: React.FC<LoginModalProps> = () => {
           
         </div>
 
-  </form>
+      </form>
 
-  <div>
-    <Typography variant='body2'>Do not have an account?</Typography>
-    <Typography>
-
-
-      <Button 
-      component={ NavLink } 
-      to="/user/signUp" 
-      color="primary" 
-      style={{ boxShadow: 'none' }} onClick={handleModalClose}>
-        Sign Up Here
-      </Button>
-  
-    </Typography>
-  </div>
 
     </Modal>
   );

@@ -19,10 +19,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface LoginModalProps {
- 
+ buttonText: string
+ disableElevation?: boolean
+ size?: "medium" | "large" | "small"
 }
 
-const LoginModal: React.FC<LoginModalProps> = () => {
+const LoginModal: React.FC<LoginModalProps> = (props) => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
   const [formState, inputHandler] = useForm({
@@ -59,8 +61,9 @@ const LoginModal: React.FC<LoginModalProps> = () => {
 
   return (
     <Modal 
-    buttonText="Log In" 
+    buttonText={props.buttonText}
     buttonColor="primary" 
+    disableElevation={props.disableElevation}
     open={modalOpen} 
     onOpen={handleModalOpen} 
     onClose={handleModalClose}>
@@ -104,6 +107,7 @@ const LoginModal: React.FC<LoginModalProps> = () => {
         <Button 
         variant="contained"  
         color="primary" 
+        size={props.size}
         type="submit"
         style={{ margin: 8 }}
         disabled={!isValid}

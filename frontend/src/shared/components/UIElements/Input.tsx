@@ -23,7 +23,7 @@ interface InputProps {
     val?: any
   }[]
   blur?: boolean
-  onInput: (id: any, value: any, isValid: any) => void
+  onInput: (id: any, value: any, isValid: boolean) => void
   
 }
 

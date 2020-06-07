@@ -80,7 +80,7 @@ const NavLinks: React.FC<NavLinksProps> = ({}) => {
             
         </Hidden>
         {!auth.isLoggedIn && (
-          <LoginModal />
+          <LoginModal buttonText='log in' disableElevation={true} />
         )}
 
         {auth.isLoggedIn && 
