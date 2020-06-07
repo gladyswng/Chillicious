@@ -8,7 +8,7 @@ import WhatshotIcon from '@material-ui/icons/Whatshot';
 
 import { withStyles } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles'
-import Rating from '@material-ui/lab/Rating';
+import RatingBar from '../../shared/components/UIElements/RatingBar'
 import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider'
 
@@ -21,15 +21,6 @@ import LaptopMacIcon from '@material-ui/icons/LaptopMac';
 import AccessTimeIcon from '@material-ui/icons/AccessTime'
 
 
-const StyledRating = withStyles({
-  iconFilled: {
-    color: '#FF351F',
-  },
-  iconHover: {
-    color: '#FC1C04',
-  },
-  
-})(Rating);
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -44,28 +35,31 @@ const useStyles = makeStyles((theme) => ({
 
 
 interface StoreInfoProps {
+  store: {
+    id: string;
+    name: string;
+    description: string;
+    rating: number
+    image?: string[];
+    location?: string;
+
+  }
+
 
 }
 
-const StoreInfo: React.FC<StoreInfoProps> = ({}) => {
+const StoreInfo: React.FC<StoreInfoProps> = (props) => {
+  const { name, description, rating, image, location } = props.store
   const classes = useStyles()
     return (
       <Paper variant="outlined" style={{ padding: 12 }}>
         <div>
-          <Typography variant="h5">What The Chopsticks</Typography>
+    <Typography variant="h5">{name}</Typography>
 
 
 
           <Box component="fieldset" mb={3} borderColor="transparent" style={{ margin: 0, padding: 0, display:'inline-block' }}>
-            <StyledRating
-              
-              name="customized-color"
-              readOnly
-              defaultValue={3}
-              getLabelText={(value) => `${value} Hot${value !== 1 ? 's' : ''}`}
-              precision={0.5}
-              icon={<WhatshotIcon fontSize="inherit" />}
-            /> 
+           <RatingBar rating={rating} readOnly={true} />
             
             <Typography variant="body1" component="span" style={{ fontWeight: 'bold', marginLeft: 6, display: 'inline-block', verticalAlign: 'text-bottom' }}>50 Reviews</Typography>
           </Box>

@@ -61,14 +61,10 @@ interface StoreFormProps {
       value: string;
       isValid: boolean;
     };
-    address: {
+    location: {
       value: string;
       isValid: boolean;
-    };
-    phoneNumber: {
-      value: string;
-      isValid: boolean;
-    };
+    }
     priceRange: {
       value: string
       isValid: boolean
@@ -183,10 +179,10 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
         />
         
         <Input 
-        id="address" 
+        id="location" 
         label="Required" 
         inputLabel="Address" 
-        value={inputs.address.value}
+        value={inputs.location.value}
         variant="outlined"
         errorMessage="Invalid address" 
         required
@@ -195,19 +191,6 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
         blur={blur}
         />
         
-
-        <Input 
-        id="phoneNumber" 
-        label="Required" 
-        inputLabel="Phone Number"
-        value={inputs.phoneNumber.value}
-        variant="outlined"
-        errorMessage="Invalid number" 
-        required
-        validators={[VALIDATOR_REQUIRE()]}
-        onInput={inputHandler}
-        blur={blur}
-        />
 
         <div>
           <Typography>Picture</Typography>

@@ -30,7 +30,7 @@ const theme = createMuiTheme({
 
 const useStyles = makeStyles((theme) => ({
   appRoot: {
-    marginTop: 100, 
+    marginTop: 64, 
     display: 'flex', 
     flexDirection: 'column', 
     alignItems: 'center', 

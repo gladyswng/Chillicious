@@ -3,7 +3,7 @@ import Divider from '@material-ui/core/Divider';
 import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles'
 import Avatar from '@material-ui/core/Avatar';
-import RatingBar from './RatingBar'
+import RatingBar from '../../shared/components/UIElements/RatingBar'
 
 const useStyles = makeStyles((theme) => ({
   box: { 
@@ -56,7 +56,7 @@ const ReviewCard: React.FC<ReviewCardProps> = (props) => {
             
 
           <div className={classes.comment}>
-            <RatingBar rating={rating}/>
+            <RatingBar rating={rating} readOnly={true}/>
             <Typography variant="h6" style={{ fontWeight: 'normal' }}>{title}</Typography>
             <Typography>{text}</Typography>
             

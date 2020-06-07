@@ -73,7 +73,7 @@ const Store: React.FC<StoreProps> = ({}) => {
     id: 'asdf',
     name: 'qwer',
     description: 'wasdfa',
-    rating: '3',
+    rating: 3,
     image: [] as string[],
     location: '',
     reviews: [
@@ -114,7 +114,7 @@ const Store: React.FC<StoreProps> = ({}) => {
 
         
           
-            <StoreInfo />
+            <StoreInfo store={store}/>
             
           
 

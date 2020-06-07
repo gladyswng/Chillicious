@@ -4,7 +4,7 @@ import StoreCard from './StoreCard'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Pagination from '@material-ui/lab/Pagination';
-import RatingBar from '../components/RatingBar'
+import RatingBar from '../../shared/components/UIElements/RatingBar'
 
 interface StoreListProps {
   storeList: Store[]
