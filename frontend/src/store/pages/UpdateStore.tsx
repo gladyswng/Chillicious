@@ -26,7 +26,7 @@ const UpdateStore: React.FC<UpdateStoreProps> = ({}) => {
       name: "foodiee",
       description: "description1",
       image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=60",
-      location: 'asdfasdf',
+      address: 'asdfasdf',
       priceRange: '$$',
       phoneNumber: '1234',
       tags: ['chinese', 'lactoseFree']
@@ -114,7 +114,7 @@ useEffect(() => {
           isValid: true
         },
         address: {
-          value: store.location,
+          value: store.address,
           isValid: true
         },
         phoneNumber: {

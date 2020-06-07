@@ -17,7 +17,7 @@ interface Store {
   image?: string,
   tags: string[],
   priceRange: string
-  location: string
+  address: string
 
 }
 

@@ -17,7 +17,7 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
       value: '',
       isValid: false
     },
-    location: {
+    address: {
       value: '',
       isValid: false
     },

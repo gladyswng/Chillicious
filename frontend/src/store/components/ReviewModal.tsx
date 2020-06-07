@@ -42,7 +42,7 @@ const LoginModal: React.FC<LoginModalProps> = () => {
   }, 
   false,
   {})
-
+  // USE EFFEECT FOR UPDATE REVIEW IF ALREADY SET REVIEW
   const { inputs, isValid } = formState
 
  
@@ -71,14 +71,16 @@ console.log(inputs)
     onOpen={handleModalOpen} 
     onClose={handleModalClose}>
 
-      <Typography variant="h5">Tell people how hot it is</Typography>
+      <Typography variant="h5">Tell others how hot it is</Typography>
       <form action="" className={classes.root} noValidate autoComplete="off" onSubmit={authSubmitHandler}>
         <div style={{ width: '70%' }}>
           <div>
           <RatingBar 
           readOnly={false} 
           rating={inputs.rating.value} 
-          onInput={inputHandler}/>
+          onInput={inputHandler}
+          inputIsValid={inputs.rating.isValid}
+          />
 
           <Input 
             id="title" 
@@ -99,6 +101,8 @@ console.log(inputs)
           <Input 
             id="text" 
             label="Required" 
+            multiline={true}
+            rows={4}
             inputLabel="Review"
             value={inputs.text.value}
             variant="outlined"

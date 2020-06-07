@@ -32,7 +32,11 @@ const SearchResult: React.FC<SearchResultProps> = () => {
       description: "description1",
       priceRange: '$$$',
       image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=60",
-      location: 'asdfasdf',
+      address: 'asdfasdf',
+      location: {
+        lat: 40,
+        lng: -20
+      },
       
       tags: ['asian']
     },
@@ -42,7 +46,11 @@ const SearchResult: React.FC<SearchResultProps> = () => {
       description: "description2",
       image : "https://images.unsplash.com/photo-1577859623802-b5e3ca51f885?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80",
       priceRange: '$$',
-      location: 'asdfas',
+      address: 'asdfas',
+      location: {
+        lat: 40,
+        lng: -20
+      },
       tags: ['asian']
     },
     {
@@ -51,7 +59,11 @@ const SearchResult: React.FC<SearchResultProps> = () => {
       description: "description2",
       priceRange: '$$$',
       image : "https://images.unsplash.com/photo-1580212206172-dbea2d1b64dc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80",
-      location: 'asdfa',
+      address: 'asdfa',
+      location: {
+        lat: 40,
+        lng: -20
+      },
       tags: ['asian', '']
     }
   ]

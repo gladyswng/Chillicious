@@ -61,7 +61,7 @@ interface StoreFormProps {
       value: string;
       isValid: boolean;
     };
-    location: {
+    address: {
       value: string;
       isValid: boolean;
     }
@@ -175,10 +175,10 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
         />
         
         <Input 
-        id="location" 
+        id="address" 
         label="Required" 
         inputLabel="Address" 
-        value={inputs.location.value}
+        value={inputs.address.value}
         variant="outlined"
         errorMessage="Invalid address" 
         required

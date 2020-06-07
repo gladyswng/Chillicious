@@ -49,7 +49,9 @@ interface StoreItemProps {
     description: string,
     image?: string,
     tags: string[],
-    location: Object
+    address: string
+    location?: Object
+
 
   }
 }

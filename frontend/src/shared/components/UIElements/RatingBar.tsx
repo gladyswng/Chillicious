@@ -30,13 +30,16 @@ interface RatingBarProps {
   rating?: number
   readOnly: boolean
   onInput?: (id: any, value: any, isValid: boolean) => void
+  inputIsValid?: boolean
 }
 
-const RatingBar: React.FC<RatingBarProps> = ({ rating, readOnly, onInput }) => {
+const RatingBar: React.FC<RatingBarProps> = ({ rating, inputIsValid, readOnly, onInput }) => {
   const classes = useStyles()
   const [ rate, setRate ] = useState(rating)
-
+  const [ isValid, setValid ] = useState(inputIsValid)
+  /// TOOOOO LAZY TO USE A REDUCER RIGHT NOW
   const changeHandler = (event: any, newRate: number) => {
+    setValid(true)
     if (newRate === null) {
       setRate(1)
     } else {
@@ -44,10 +47,9 @@ const RatingBar: React.FC<RatingBarProps> = ({ rating, readOnly, onInput }) => {
     }
   } 
 
-
 if (onInput) {
   useEffect(() => {
-    onInput('rating', rate, true)
+    onInput('rating', rate, isValid)
   }, [rate, onInput])
 }
 

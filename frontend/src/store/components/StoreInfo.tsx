@@ -55,7 +55,7 @@ interface StoreInfoProps {
     rating: number
     priceRange: string
     image?: string[];
-    location?: string;
+    address?: string;
     tags?: string[]
 
   }
@@ -64,7 +64,7 @@ interface StoreInfoProps {
 }
 
 const StoreInfo: React.FC<StoreInfoProps> = (props) => {
-  const { name, description, rating, priceRange, image, location, tags } = props.store
+  const { name, description, rating, priceRange, image, address, tags } = props.store
   const classes = useStyles()
 
   const tagChips = tags.map(tag => {
@@ -95,7 +95,7 @@ const StoreInfo: React.FC<StoreInfoProps> = (props) => {
         </div>
 
         <div>
-          <Typography className={classes.contactInfo}><RoomIcon className={classes.icon}/>{location}</Typography>
+          <Typography className={classes.contactInfo}><RoomIcon className={classes.icon}/>{address}</Typography>
         </div>
 
         

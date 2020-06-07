@@ -79,12 +79,10 @@ const ReviewField: React.FC<ReviewFieldProps> = ({reviews}) => {
 
           <Typography variant="h5">Reviews</Typography>
 
-          {/* {auth.isLoggedIn && ( */}
+          {auth.isLoggedIn && (
             <ReviewModal />
-    
-          {/* ) */}
-            
-          {/* } */}
+          )}
+
           {!auth.isLoggedIn && 
           
             <LoginModal buttonText='Login to review' size='small'/>
