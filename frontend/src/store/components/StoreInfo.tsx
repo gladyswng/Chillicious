@@ -9,6 +9,7 @@ import WhatshotIcon from '@material-ui/icons/Whatshot';
 import { withStyles } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles'
 import RatingBar from '../../shared/components/UIElements/RatingBar'
+import Chip from '@material-ui/core/Chip';
 import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider'
 
@@ -29,6 +30,18 @@ const useStyles = makeStyles((theme) => ({
   contactInfo: {
     display: 'flex',
     alignItems: 'center'
+  },
+  chips: {
+    '& > *': {
+      margin: theme.spacing(0.5),
+    },
+    
+  },
+  reviewNumber: {
+    fontWeight: 'bold', 
+    marginLeft: 6, 
+    display: 'inline-block', 
+    verticalAlign: 'text-bottom'
   }
 }));
 
@@ -40,8 +53,10 @@ interface StoreInfoProps {
     name: string;
     description: string;
     rating: number
+    priceRange: string
     image?: string[];
     location?: string;
+    tags?: string[]
 
   }
 
@@ -49,36 +64,38 @@ interface StoreInfoProps {
 }
 
 const StoreInfo: React.FC<StoreInfoProps> = (props) => {
-  const { name, description, rating, image, location } = props.store
+  const { name, description, rating, priceRange, image, location, tags } = props.store
   const classes = useStyles()
+
+  const tagChips = tags.map(tag => {
+    return <Chip label={tag} color="primary" />
+  })
     return (
       <Paper variant="outlined" style={{ padding: 12 }}>
         <div>
-    <Typography variant="h5">{name}</Typography>
+        <Typography variant="h5">{name}</Typography>
+        <Typography >{description}</Typography>
 
 
 
           <Box component="fieldset" mb={3} borderColor="transparent" style={{ margin: 0, padding: 0, display:'inline-block' }}>
            <RatingBar rating={rating} readOnly={true} />
             
-            <Typography variant="body1" component="span" style={{ fontWeight: 'bold', marginLeft: 6, display: 'inline-block', verticalAlign: 'text-bottom' }}>50 Reviews</Typography>
+            <Typography variant="body1" component="span" className={classes.reviewNumber}>50 Reviews</Typography>
           </Box>
 
           <Grid container alignItems="center">
 
-            <Typography>$$</Typography>
+            <Typography>{priceRange}</Typography>
             <Divider orientation="vertical" variant="middle" flexItem/>
-            <Typography component="span">Asian, Noodle</Typography>
+            <div className={classes.chips}>
+            {tagChips}
+            </div>
           </Grid>
         </div>
 
         <div>
-          <Typography className={classes.contactInfo}><RoomIcon className={classes.icon}/>Fork 13, Knives 14567, Plates</Typography>
-
-          <Typography className={classes.contactInfo}><PhoneIcon className={classes.icon} />+47 123456789</Typography>
-          <Typography className={classes.contactInfo}><LaptopMacIcon className={classes.icon} />www.noooodle.com</Typography>
-          <Typography className={classes.contactInfo}><AccessTimeIcon className={classes.icon} />Opening Hours</Typography>
-
+          <Typography className={classes.contactInfo}><RoomIcon className={classes.icon}/>{location}</Typography>
         </div>
 
         

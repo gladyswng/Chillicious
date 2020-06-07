@@ -30,8 +30,9 @@ const SearchResult: React.FC<SearchResultProps> = () => {
       id: "store1",
       name: "foodiee",
       description: "description1",
+      priceRange: '$$$',
       image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=60",
-      location: {},
+      location: 'asdfasdf',
       
       tags: ['asian']
     },
@@ -40,15 +41,17 @@ const SearchResult: React.FC<SearchResultProps> = () => {
       name: "Just some food",
       description: "description2",
       image : "https://images.unsplash.com/photo-1577859623802-b5e3ca51f885?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80",
-      location: {},
+      priceRange: '$$',
+      location: 'asdfas',
       tags: ['asian']
     },
     {
       id: "store3",
       name: "Long Noooooodle",
       description: "description2",
+      priceRange: '$$$',
       image : "https://images.unsplash.com/photo-1580212206172-dbea2d1b64dc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80",
-      location: {},
+      location: 'asdfa',
       tags: ['asian', '']
     }
   ]

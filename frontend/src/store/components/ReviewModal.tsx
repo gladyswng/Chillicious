@@ -75,7 +75,7 @@ const LoginModal: React.FC<LoginModalProps> = () => {
           <div>
           <RatingBar readOnly={false}/>
           <Input 
-            id="" 
+            id="title" 
             label="Required" 
             inputLabel="Email Address"
             value={inputs.email.value}

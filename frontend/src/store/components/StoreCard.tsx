@@ -45,6 +45,7 @@ interface StoreItemProps {
   store: {
     id: string,
     name: string,
+    priceRange: string
     description: string,
     image?: string,
     tags: string[],
@@ -78,7 +79,10 @@ const StoreItem: React.FC<StoreItemProps> = ({store}) => {
           <Typography variant="body2" component="p">
             {store.description}
             <br />
+            {store.priceRange}
+            <br />
             {store.tags}
+
           </Typography>
             
             <CardActions>
