@@ -1,7 +1,7 @@
 
 const Store = require('../models/Store')
 const User = require('../models/User')
-
+const HttpError = require('../models/http-error')
 
 exports.getStores = async (req, res) => {
 
@@ -69,10 +69,20 @@ exports.getHearts = async (req, res) => {
     const user = await User.findById(req.user._id).populate('hearts', '-slug -_id -__v')
     res.send(user)
 }
-
+/// I DID SOME CHANGE HERE!
 exports.addStore = (req, res) => {
-    //Auth
-    // TODO - render edit store page
+    const { name, description, coordinates, address, author } = req.body
+    const addedStore = {
+      name,
+      description,
+      location: coordinates,
+      address,
+      author
+    }
+    // push store to database HERE!
+    new Store(addedStore) //? right?
+    .save()
+    res.status(201).json({store: addedStore})
 }
 
 
@@ -100,8 +110,9 @@ const confirmOwner = (store, user) => {
 
     // equals() is a method that comes along since the store.author is going to be an ObjectID. In order to compare an ObjectID with an actual string we need to use the .equals() that lives inside of it
     if (!store.author.equals(user._id)) {
-        throw Error('You must own the store in order to edit it!')
+        throw new HttpError('You must own the store in order to edit it!', 401)
     }
+    res.json({ })
 }
 
 exports.editStore = async (req, res) => {

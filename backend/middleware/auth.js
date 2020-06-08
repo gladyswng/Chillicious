@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/User')
+const HttpError = require('../models/http-error')
 
 const auth = async (req, res, next) => {
 
@@ -12,7 +13,9 @@ const auth = async (req, res, next) => {
         const user = await User.findOne({ _id: decoded._id, 'tokens.token': token })
 
         if (!user) {
-            throw new Error ()
+            return next(
+              new HttpError ('Cannot authorize', 401)
+            )
         }
         
         req.token = token

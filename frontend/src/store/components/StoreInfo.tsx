@@ -102,9 +102,9 @@ const StoreInfo: React.FC<StoreInfoProps> = (props) => {
           <Typography className={classes.contactInfo}><RoomIcon className={classes.icon}/>{address}</Typography>
         </div>
 
-        <div style={{ width: '50%', height: '100%' }} id="map">
+        <div style={{ width: '50%', height: '100%' }}>
           
-          <Map center={location} zoom={16}/>
+          {/* <Map center={location} zoom={16}/> */}
         </div>
 
         

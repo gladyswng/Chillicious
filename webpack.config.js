@@ -26,8 +26,10 @@ module.exports = {
     },
     plugins : [
         new HtmlWebpackPlugin ({
-            template : 'frontend/public/index.html'
+            template : 'frontend/public/index.html',
+            // apiUrl: `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_MAP_API_KEY}`
         })
+
     ]
 
 }

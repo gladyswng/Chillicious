@@ -23,14 +23,16 @@ const storeSchema = new mongoose.Schema({
            type: String,
            default: 'Point'
         },
+        //// CHANGED LOCATION OF ADDRESS
         coordinates: {
             type: [Number],
             // required: 'You must supply coordinates'
-        },
-        address: {
-            type: String,
-            // required: 'You must supply an address'
         }
+       
+    },
+    address: {
+      type: String,
+      // required: 'You must supply an address'
     },
     photo: String, 
 

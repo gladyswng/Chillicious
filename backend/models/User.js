@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-
+const HttpError = require('../models/http-error')
 const validator = require('validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
@@ -28,7 +28,7 @@ const userSchema = new Schema({
         validate(value) {
 
             if (value.toLowerCase().includes('password')) {
-                throw new Error('Must not contain the word "password".')
+                throw new HttpError('Must not contain the word "password".', 422)
             }
         }
 
@@ -56,13 +56,17 @@ userSchema.statics.findByCredentials = async (email, password) => {
     const user = await User.findOne({ email })
 
     if (!user) {
-        throw new Error ('Unable to log in')
+      return next (
+        new HttpError ('Unable to log in', 422)
+      )
     }
 
     const isMatch = await bcrypt.compare(password, user.password)
 
     if (!isMatch) {
-        throw new Error ('Unable to log in')
+        return next (
+          new HttpError ('Unable to log in', 422)
+        )
     }
 
     return user
