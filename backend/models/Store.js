@@ -5,41 +5,44 @@ const storeSchema = new mongoose.Schema({
     name: {
         type: String,
         trim: true,
-        required: 'Please supply a store name'
+        required: true
     },
     slug: String,
     description: {
         type: String,
         trim: true,
-        required: 'Please supply a description'
+        required: true
+    },
+    priceRange: {
+      type: String,
+      required: true,
     },
     tags: [String],
-    created: {
-        type: Date,
-        default: Date.now
-    },
+    
     location: {
-        type: {
-           type: String,
-           default: 'Point'
+        lat: { 
+          type: Number,
+          required: true
         },
-        //// CHANGED LOCATION OF ADDRESS
-        coordinates: {
-            type: [Number],
-            // required: 'You must supply coordinates'
+        lng: {
+          type: Number,
+          required: true
         }
-       
     },
     address: {
       type: String,
-      // required: 'You must supply an address'
+      required: true
     },
     photo: String, 
 
     author: {
         type: mongoose.Schema.Types.ObjectId,
-        required: 'You must supply an author',
+        required: true,
         ref: 'User' 
+    },
+    created: {
+      type: Date,
+      default: Date.now
     },
 
     ratingsQuantity: {

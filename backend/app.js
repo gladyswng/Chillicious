@@ -3,7 +3,7 @@ const express = require('express')
 const app = express()
 const routes = require('./routes/index')
 const bodyParser = require('body-parser')
-
+const HttpError = require('./models/http-error')
 
 
 
@@ -13,6 +13,12 @@ app.use(bodyParser.json())
 
 app.use(routes)
 app.use(express.json())
+
+
+app.use((req, res, next) => {
+  const error = new HttpError('Could not find this page', 404)
+  throw error
+})
 
 app.use((error, req, res, next) => {
   if (res.headerSent) {

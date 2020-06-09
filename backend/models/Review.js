@@ -19,13 +19,13 @@ const reviewSchema = new Schema({
     },
     text: {
         type: String,
-        required: 'Your review must have text'
+        required: true
     },
     rating: {
         type: Number,
         min: 1,
         max:5,
-        required: 'You must give rating'
+        required: true
     }
     
 

@@ -69,7 +69,7 @@ exports.getHearts = async (req, res) => {
     const user = await User.findById(req.user._id).populate('hearts', '-slug -_id -__v')
     res.send(user)
 }
-/// I DID SOME CHANGE HERE!
+
 exports.addStore = (req, res) => {
     const { name, description, coordinates, address, author } = req.body
     const addedStore = {
@@ -81,7 +81,7 @@ exports.addStore = (req, res) => {
     }
     // push store to database HERE!
     new Store(addedStore) //? right?
-    .save()
+    .save
     res.status(201).json({store: addedStore})
 }
 
@@ -112,7 +112,7 @@ const confirmOwner = (store, user) => {
     if (!store.author.equals(user._id)) {
         throw new HttpError('You must own the store in order to edit it!', 401)
     }
-    res.json({ })
+    res.send(user)
 }
 
 exports.editStore = async (req, res) => {
@@ -130,11 +130,10 @@ exports.editStore = async (req, res) => {
 
 }
 
-exports.updateStore = async (req, res) => {
-    // req.body.location.type = 'Point'
-
+exports.updateStore = async (req, res, next) => {
     const updates = Object.keys(req.body)
     // allowed updates?
+    // const { name, description, address, location, priceRange } = req.body
 
     try {
 

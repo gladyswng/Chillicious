@@ -1,5 +1,6 @@
 
 const Review = require('../models/Review')
+const HttpError = require('../models/http-error')
 
 exports.addReview = async (req, res) => {
     req.body.author = req.user._id
@@ -51,7 +52,7 @@ exports.deleteReview = async (req, res) => {
         const review = await Review.findOneAndDelete({  author: req.user._id, store: req.params.id })
 
         if (!review) {
-            res.status(404).send()
+            throw new HttpError('Review not found', 404)
         }
 
         await Review.calcAverageRatings(req.params.id)
