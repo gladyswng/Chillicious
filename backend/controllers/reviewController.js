@@ -22,7 +22,16 @@ exports.addReview = async (req, res) => {
 
 exports.updateReview = async (req, res) => {
     console.log(req.user._id)
-    
+    const updates = Object.keys(req.body)
+    const allowedUpdates = ['text', 'description', 'rating']
+    const isValidOperation = updates.every(update => {
+        return allowedUpdates.includes(update)
+    })
+
+    if (!isValidOperation) {
+      throw new HttpError('Invalid update!', 422)
+        // res.status(400).send({ error: 'Not valid update' })
+    }
     try {
 
         const review = await Review.findOneAndUpdate(
@@ -33,6 +42,11 @@ exports.updateReview = async (req, res) => {
                 rating: req.body.rating
             }
         )
+        if (!review) {
+          return next(
+            new HttpError('Could not find matched review.', 422)
+          )
+        }
 
         const updatedStore = await Review.calcAverageRatings(req.params.id)
 
@@ -40,7 +54,9 @@ exports.updateReview = async (req, res) => {
         
 
     } catch(e) {
-        res.status(400).send(e)
+      return next(
+        new HttpError('Something went wrong, could not proceed to update review', 500)
+      )
     }
  
 }
@@ -62,7 +78,9 @@ exports.deleteReview = async (req, res) => {
         res.send(review)
 
     } catch(e) {
-        res.status(400).send(e)
+      return next(
+        new HttpError('Something went wrong, could not proceed to delete review', 500)
+      )
     }
  
 }

@@ -12,7 +12,10 @@ exports.getStores = async (req, res) => {
         })
 
     } catch(e) {
-        res.status(400).send(e)
+        return next(
+          new HttpError('Something went wrong, could not fetch the results.', 500)
+        )
+       
     }
     
 }
@@ -25,10 +28,18 @@ exports.getStoreBySlug = async (req, res) => {
             slug: req.params.slug
         }).populate('author', '-_id -__v')
         
-
+        if (!store) {
+          return next(
+            new HttpError('Something went wrong, could not find store.', 404)
+          )
+            
+        }
         res.send(store)
     } catch (e) {
-        res.status(400).send(e)
+      return next(
+        new HttpError('Something went wrong, could not fetch store', 500)
+      )
+        
     }
 }
 
@@ -45,65 +56,86 @@ exports.getStoresByTag = async (req, res) => {
 
         if (!storeList) {
           return next(
-            new HttpError('Could not fetch the result.', 404)
+            new HttpError('Could not find matched stores', 404)
           )
             // res.status(404).send()
         }
         res.send(storeList)
 
     } catch(e) {
-        res.status(500).send(e)
+      return next(
+        new HttpError('Something went wrong, could not fetch stores.', 500)
+      )
     }
 }
 
 exports.heartStore = async (req, res) => {
 
     const hearts = req.user.hearts.map(storeIdObj => storeIdObj.toString())
+    try {
+      // If already exist, pull - when send same id twice - disapear
+      const operator = hearts.includes(req.params.id) ? '$pull' : '$addToSet'
+      const user = await User.findByIdAndUpdate(req.user._id, {
+          [operator]: { hearts: req.params.id }
+      }, { new: true })
+      if (!user) {
+        return next(
+          new HttpError('Could not find user', 404)
+        )
+      }
+      res.send(user)
+      
+    } catch (e) {
+      return next(
+        new HttpError('Something went wrong. Could not fetch result', 500)
+      )
+    }
 
-    // If already exist, pull - when send same id twice - disapear
-    const operator = hearts.includes(req.params.id) ? '$pull' : '$addToSet'
-    const user = await User.findByIdAndUpdate(req.user._id, {
-        [operator]: { hearts: req.params.id }
-    }, { new: true })
-
-    res.send(user)
+    
 }
 exports.getHearts = async (req, res) => {
     const user = await User.findById(req.user._id).populate('hearts', '-slug -_id -__v')
-    res.send(user)
+    if (!user) {
+      return next(
+        new HttpError('Could not find user', 404)
+      )
+    }
+    res.send({ user })
 }
 
 exports.addStore = (req, res) => {
-    const { name, description, coordinates, address, author } = req.body
-    const addedStore = {
-      name,
-      description,
-      location: coordinates,
-      address,
-      author
-    }
-    // push store to database HERE!
-    new Store(addedStore) //? right?
-    .save
-    res.status(201).json({store: addedStore})
+    res.send('addStoreForm')
 }
 
 
 exports.createStore = async (req, res) => {
-
+  const { name, description, coordinates, address, image, priceRange, tags } = req.body
+  const addedStore = {
+    name,
+    description,
+    location: coordinates,
+    address,
+    image,
+    priceRange,
+    tags
+  }
     // Auth
     // send req.body 
     const store = new Store({
-        ...req.body,
+        // ...req.body,
+        ...addedStore,
         author: req.user._id
         
     })
+
     try {
 
         await store.save()
         res.status(201).send(store)
     } catch(e) {
-        res.status(500).send(e)
+      return next(
+        new HttpError('Something went wrong, could not proceed to create store', 500)
+      )
     }
     // res.redirect(`/store/${store.slug}`)
 
@@ -125,9 +157,17 @@ exports.editStore = async (req, res) => {
         // TODO - edit store page
         // render store info in page
         confirmOwner(store, req.user)
+        if (!store) {
+          return next(
+            new HttpError('Could not find store', 404)
+          )
+        }
+
         res.send(store)
     } catch(e) {
-        res.status(400).send(e)
+      return next(
+        new HttpError('Something went wrong, could not proceed to edit store', 500)
+      )
     }
     
 
@@ -141,7 +181,7 @@ exports.updateStore = async (req, res, next) => {
     })
 
     if (!isValidOperation) {
-      throw new HttpError('You must own the store in order to edit it!', 422)
+      throw new HttpError('Invalid update!', 422)
         // res.status(400).send({ error: 'Not valid update' })
     }
 
@@ -163,7 +203,9 @@ exports.updateStore = async (req, res, next) => {
         res.send(store)
         // res.redirect(`/stores/${store._id}/edit`)
     } catch(e) {
-        res.status(400).send(e)
+      return next(
+        new HttpError('Something went wrong, could not proceed to update store', 500)
+      )
     }
     
 }
@@ -182,10 +224,12 @@ exports.deleteStore = async (req, res) => {
           )
           // res.status(404).send()
         } 
-        
-        res.send(store)
+
+        res.send({ message: 'Deleted store.' })
     } catch(e) {
-        res.status(500).send(e)
+      return next(
+        new HttpError('Something went wrong, could not proceed to delete store', 500)
+      )
     }
 
 }
