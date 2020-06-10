@@ -1,4 +1,5 @@
 const User = require('../models/User')
+const HttpError = require('../models/http-error')
 const { body, validationResult } = require('express-validator')
 
 
@@ -59,9 +60,8 @@ exports.userValidationRules = () => {
         
         body('password')
         .not().isEmpty().withMessage('You must create a password')
-        .isLength({ min: 4 }).withMessage('must be at least 4 chars long')
-        .not().matches('password').withMessage('Must not contain the word "password"'),
-        
+        .isLength({ min: 4 }).withMessage('Password must be at least 6 chars long'),
+        // .not().matches('password').withMessage('Must not contain the word "password"'),
         body('name')
         .trim(),
     
@@ -79,13 +79,24 @@ exports.validateRegister = (req, res, next) => {
       return next()
     }
     
+    // const extractedErrors = {}
+    // errors.array().map(err => { 
+    //   return {
+    //     ...extractedErrors,
+    //     message: err.msg
+    //   }
+    // })
+  
+  
     const extractedErrors = []
     errors.array().map(err => extractedErrors.push({ [err.param]: err.msg }))
+
+    // return res.status(422).json(exetractedErrors)
   
     return res.status(422).json({
       errors: extractedErrors
     })
-    
+ 
 }
 
 exports.updateProfile = async (req, res) => {
@@ -95,7 +106,9 @@ exports.updateProfile = async (req, res) => {
     const isValidOperation = updates.every(update => allowedUpdates.includes(update))
 
     if (!isValidOperation) {
-        return res.status(400).send({ error: 'Invalid updates' })
+      return next(
+        new HttpError('Invalid updates.', 400)
+      )
     }
 
     try {

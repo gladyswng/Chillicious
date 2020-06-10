@@ -52,7 +52,9 @@ exports.deleteReview = async (req, res) => {
         const review = await Review.findOneAndDelete({  author: req.user._id, store: req.params.id })
 
         if (!review) {
-            throw new HttpError('Review not found', 404)
+            return next (
+              new HttpError('Review not found', 404)
+            )
         }
 
         await Review.calcAverageRatings(req.params.id)

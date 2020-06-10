@@ -44,7 +44,10 @@ exports.getStoresByTag = async (req, res) => {
         const storeList = await Store.find({ tags: {$all: tagQuery} }).sort({ratingsAverage: -1})
 
         if (!storeList) {
-            res.status(404).send()
+          return next(
+            new HttpError('Could not fetch the result.', 404)
+          )
+            // res.status(404).send()
         }
         res.send(storeList)
 
@@ -132,8 +135,15 @@ exports.editStore = async (req, res) => {
 
 exports.updateStore = async (req, res, next) => {
     const updates = Object.keys(req.body)
-    // allowed updates?
-    // const { name, description, address, location, priceRange } = req.body
+    const allowedUpdates = ['name', 'description', 'tags', 'priceRange', 'location', 'address', 'photo']
+    const isValidOperation = updates.every(update => {
+        return allowedUpdates.includes(update)
+    })
+
+    if (!isValidOperation) {
+      throw new HttpError('You must own the store in order to edit it!', 422)
+        // res.status(400).send({ error: 'Not valid update' })
+    }
 
     try {
 
@@ -141,7 +151,10 @@ exports.updateStore = async (req, res, next) => {
         //, owner: req.user_id?
 
         if (!store) {
-            res.status(404).send()
+          return next(
+            new HttpError('Could not find matched store.', 404)
+          )
+          // res.status(404).send()
         } 
         updates.forEach(update => {
             store[update] = req.body[update]
@@ -164,8 +177,12 @@ exports.deleteStore = async (req, res) => {
         const store = await Store.findByIdAndDelete(req.params.id)
 
         if (!store) {
-            res.status(404).send()
-        }
+          return next(
+            new HttpError('Could not find matched store.', 404)
+          )
+          // res.status(404).send()
+        } 
+        
         res.send(store)
     } catch(e) {
         res.status(500).send(e)
