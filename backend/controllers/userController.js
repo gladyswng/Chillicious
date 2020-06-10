@@ -24,7 +24,9 @@ exports.register = async (req, res) => {
         res.status(201).send({user, token})
 
     } catch (e) {
-        res.status(400).send(e)
+      return next(
+        new HttpError('Something went wrong, could not proceed your request', 500)
+      )
     }
 
 }
@@ -40,12 +42,19 @@ exports.login = async (req, res) => {
     try {
 
         const user = await User.findByCredentials(req.body.email, req.body.password)
+        if (!user) {
+          return next(
+            new HttpError('Could not find user.', 404)
+          )
+        }
         const token = await user.generateAuthToken()
-
+        
         res.send({user, token})
         // we don't need to send every information in user like tokens and password
     } catch (e) {
-        res.status(400).send()
+      return next(
+        new HttpError('Something went wrong, could not proceed your request', 500)
+      )
     }
     
 }
@@ -120,7 +129,9 @@ exports.updateProfile = async (req, res) => {
         res.send(req.user)
 
     } catch (e) {
-        res.status(400).send(e)
+      return next(
+        new HttpError('Something went wrong, could not proceed to update profile', 500)
+      )
     }
 }
 
@@ -132,7 +143,9 @@ exports.logout = async (req, res) => {
         await req.user.save()
         res.send('ok')
     } catch (e) {
-        res.status(500).send(e)
+      return next(
+        new HttpError('Something went wrong, could not proceed your request', 500)
+      )
     }
 }
 
@@ -142,7 +155,9 @@ exports.logoutAll = async (req, res) => {
         await req.user.save()
         res.send()
     } catch (e) {
-        res.status(500).send()
+      return next(
+        new HttpError('Something went wrong, could not proceed to log out', 500)
+      )
     }
 }
 
@@ -153,6 +168,8 @@ exports.deleteProfile = async (req, res) => {
 
         await req.user.remove()
     } catch (e) {
-        res.status(500).send()
+      return next(
+        new HttpError('Something went wrong, could not proceed to delete profile.', 500)
+      )
     }
 }   

@@ -14,7 +14,9 @@ exports.addReview = async (req, res) => {
         res.send(updatedStore)
         // res.redirect('back')
     } catch(e) {
-        res.status(400).send(e)
+      return next(
+        new HttpError('Something went wrong, could not proceed your request', 500)
+      )
     }
     
     
@@ -55,7 +57,7 @@ exports.updateReview = async (req, res) => {
 
     } catch(e) {
       return next(
-        new HttpError('Something went wrong, could not proceed to update review', 500)
+        new HttpError('Something went wrong, could not proceed your request', 500)
       )
     }
  
