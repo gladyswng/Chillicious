@@ -2,6 +2,7 @@
 const Store = require('../models/Store')
 const User = require('../models/User')
 const HttpError = require('../models/http-error')
+const { body, validationResult } = require('express-validator')
 
 exports.getStores = async (req, res) => {
 
@@ -108,7 +109,7 @@ exports.addStore = (req, res) => {
 }
 
 
-exports.createStore = async (req, res) => {
+exports.createStore = async (req, res, next) => {
   const { name, description, coordinates, address, image, priceRange, tags } = req.body
   const addedStore = {
     name,
@@ -133,11 +134,61 @@ exports.createStore = async (req, res) => {
         await store.save()
         res.status(201).send(store)
     } catch(e) {
-      return next(
-        new HttpError('Something went wrong, could not proceed to create store', 500)
-      )
+      return next(e)
+      // return next(
+      //   new HttpError('Something went wrong, could not proceed to create store', 500)
+      // )
     }
     // res.redirect(`/store/${store.slug}`)
+
+}
+exports.storeValidationRules = () => {
+  return [
+      body('name')
+      .not().isEmpty().withMessage('You must supply a name'),
+      
+      body('description')
+      .not().isEmpty().withMessage('You must supply a description')
+      .isLength({ min: 15 }).withMessage('Description must be at least 15 chars long'),
+
+      body('priceRange')
+      .not().isEmpty().withMessage('You must supply price range'),
+
+      body('address')
+      .not().isEmpty().withMessage('You must supply an address'),
+      
+      // .not().matches('password').withMessage('Must not contain the word "password"'),
+      body('name')
+      .trim(),
+      body('description')
+      .trim(),
+      body('address')
+      .trim(),
+      body('priceRange')
+      .trim()
+  ]
+  
+}
+
+exports.validateRegister = (req, res, next) => {
+  const errors = validationResult(req)
+  if (errors.isEmpty()) {
+      console.log(req.body)
+    return next()
+  }
+  
+
+
+  
+  const extractedErrors =  errors.array().map(err => { 
+    return {
+      message: err.msg
+    }
+  })
+
+
+
+  return res.status(422).json(extractedErrors)
 
 }
 
@@ -174,18 +225,19 @@ exports.editStore = async (req, res) => {
 }
 
 exports.updateStore = async (req, res, next) => {
-    const updates = Object.keys(req.body)
-    const allowedUpdates = ['name', 'description', 'tags', 'priceRange', 'location', 'address', 'photo']
-    const isValidOperation = updates.every(update => {
-        return allowedUpdates.includes(update)
-    })
-
-    if (!isValidOperation) {
-      throw new HttpError('Invalid update!', 422)
-        // res.status(400).send({ error: 'Not valid update' })
-    }
 
     try {
+      const updates = Object.keys(req.body)
+      const allowedUpdates = ['name', 'description', 'tags', 'priceRange', 'address', 'photo']
+      const isValidOperation = updates.every(update => {
+          return allowedUpdates.includes(update)
+      })
+  
+      if (!isValidOperation) {
+        throw new HttpError('Invalid update!', 422)
+          // res.status(400).send({ error: 'Not valid update' })
+      }
+  
 
         const store = await Store.findOne({ _id: req.params.id })
         //, owner: req.user_id?
@@ -193,14 +245,13 @@ exports.updateStore = async (req, res, next) => {
         if (!store) {
           return next(
             new HttpError('Could not find matched store.', 404)
-          )
-          // res.status(404).send()
+          ) //Message not showing, showing mongodb's message instead
         } 
         updates.forEach(update => {
             store[update] = req.body[update]
         })
         await store.save()
-        res.send(store)
+        res.send({ message: 'Store updated!' })
         // res.redirect(`/stores/${store._id}/edit`)
     } catch(e) {
       return next(
@@ -213,7 +264,7 @@ exports.updateStore = async (req, res, next) => {
 
 
 
-exports.deleteStore = async (req, res) => {
+exports.deleteStore = async (req, res, next) => {
 
     try {
         const store = await Store.findByIdAndDelete(req.params.id)
@@ -221,7 +272,7 @@ exports.deleteStore = async (req, res) => {
         if (!store) {
           return next(
             new HttpError('Could not find matched store.', 404)
-          )
+          )// error message not showing 
           // res.status(404).send()
         } 
 

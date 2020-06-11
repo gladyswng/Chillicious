@@ -10,12 +10,17 @@ exports.registerForm = (req, res) => {
     res.send('registerForm')
 }
 
-exports.register = async (req, res) => {
-    
-    const user = new User(req.body)
+exports.register = async (req, res, next) => {
     
     
     try {
+      const existed = User.find({ email: req.body.email })
+      if (existed) {
+        return next(
+          new HttpError('User already exists.', 404)
+        )
+      }
+      const user = new User(req.body)
         
         await User.init()
         await user.save()
@@ -24,9 +29,7 @@ exports.register = async (req, res) => {
         res.status(201).send({user, token})
 
     } catch (e) {
-      return next(
-        new HttpError('Something went wrong, could not proceed your request', 500)
-      )
+      return next(e)
     }
 
 }
@@ -37,24 +40,17 @@ exports.loginForm = (req, res) => {
     res.send('loginForm')
 }
 
-exports.login = async (req, res) => {
+exports.login = async (req, res, next) => {
 
     try {
 
-        const user = await User.findByCredentials(req.body.email, req.body.password)
-        if (!user) {
-          return next(
-            new HttpError('Could not find user.', 404)
-          )
-        }
-        const token = await user.generateAuthToken()
-        
-        res.send({user, token})
-        // we don't need to send every information in user like tokens and password
+      const user = await User.findByCredentials(req.body.email, req.body.password)
+     
+      const token = await user.generateAuthToken()
+      
+      res.send({ message: 'Logged in!', token })
     } catch (e) {
-      return next(
-        new HttpError('Something went wrong, could not proceed your request', 500)
-      )
+      return next(e)
     }
     
 }
@@ -88,30 +84,41 @@ exports.validateRegister = (req, res, next) => {
       return next()
     }
     
-    // const extractedErrors = {}
-    // errors.array().map(err => { 
-    //   return {
-    //     ...extractedErrors,
-    //     message: err.msg
-    //   }
-    // })
+    const extractedErrors =  errors.array().map(err => { 
+      return {
+        message: err.msg
+      }
+    })
   
   
-    const extractedErrors = []
-    errors.array().map(err => extractedErrors.push({ [err.param]: err.msg }))
+    // const extractedErrors = []
+    // errors.array().map(err => extractedErrors.push({ message: err.msg }))
 
     // return res.status(422).json(exetractedErrors)
   
-    return res.status(422).json({
-      errors: extractedErrors
-    })
+    return res.status(422).json(extractedErrors)
  
 }
 
-exports.updateProfile = async (req, res) => {
+exports.userUpdateValidationRules = () => {
+  return [
+      body('name')
+      .not().isEmpty().withMessage('You must supply a name'),
+      
+      body('password')
+      .not().isEmpty().withMessage('You must create a password')
+      .isLength({ min: 6 }).withMessage('Password must be at least 6 chars long'),
+      // .not().matches('password').withMessage('Must not contain the word "password"'),
+      body('name')
+      .trim()
+  ]
+  
+}
+
+exports.updateProfile = async (req, res, next) => {
 
     const updates = Object.keys(req.body)
-    const allowedUpdates = ['name', 'email', 'password']
+    const allowedUpdates = ['name', 'password']
     const isValidOperation = updates.every(update => allowedUpdates.includes(update))
 
     if (!isValidOperation) {
@@ -161,7 +168,7 @@ exports.logoutAll = async (req, res) => {
     }
 }
 
-exports.deleteProfile = async (req, res) => {
+exports.deleteProfile = async (req, res, next) => {
     try {
         // Remember we attached user on auth 
         // const user = await User.findByIdAndDelete(req.user._id)

@@ -20,14 +20,16 @@ const storeSchema = new mongoose.Schema({
     tags: [String],
     
     location: {
+      type: {
+
         lat: { 
-          type: Number,
-          required: true
+          type: Number
+    
         },
         lng: {
-          type: Number,
-          required: true
+          type: Number
         }
+      }
     },
     address: {
       type: String,

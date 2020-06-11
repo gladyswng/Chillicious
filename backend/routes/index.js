@@ -14,11 +14,16 @@ router.get('/stores/:slug', storeController.getStoreBySlug)
 // Render storeForm
 router.get('/add', auth, storeController.addStore)
 // Submit storeForm - when add''
-router.post('/add', auth, storeController.createStore)
+router.post('/add', auth, 
+storeController.storeValidationRules(),
+storeController.validateRegister,
+storeController.createStore)
 // Render storeForm?
 router.get('/stores/:id/edit', auth, storeController.editStore)
 // Submit storeForm - when add'update/:id'
-router.patch('/update/:id', auth, 
+router.patch('/stores/update/:id', auth, 
+storeController.storeValidationRules(),
+storeController.validateRegister,
 storeController.updateStore) 
 
 
@@ -47,7 +52,12 @@ router.post('/login', userController.login)
 router.get('/logout', auth, userController.logout)
 router.get('/logoutAll', auth, userController.logoutAll)
 
-router.patch('/user/me/profile', auth, userController.updateProfile)
+router.patch('/user/me/profile', 
+  auth, 
+  userController.userUpdateValidationRules(),
+  userController.validateRegister,
+  userController.updateProfile
+)
 
 router.delete('/user/me', auth, userController.deleteProfile)
 // router.post('/login', authController.login)
