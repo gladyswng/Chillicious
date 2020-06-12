@@ -104,7 +104,7 @@ const StoreInfo: React.FC<StoreInfoProps> = (props) => {
 
         <div style={{ width: '50%', height: '100%' }}>
           
-          {/* <Map center={location} zoom={16}/> */}
+          <Map center={location} zoom={16}/>
         </div>
 
         

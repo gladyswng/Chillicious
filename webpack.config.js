@@ -14,7 +14,9 @@ module.exports = {
     module : {
         rules : [
             {test: /\.tsx?$/, loader: 'awesome-typescript-loader'},
-            {test : /\.(js)$/, use:'babel-loader'},
+            {test : /\.(js)$/, 
+            exclude: /node_modules/,use:'babel-loader',
+            },
             {test : /\.css$/, use:['style-loader', 'css-loader']},
             {test: /\.svg$/, use: ['@svgr/webpack', 'svg-url-loader']}
         ]
