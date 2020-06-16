@@ -26,7 +26,7 @@ exports.register = async (req, res, next) => {
         await user.save()
         const token = await user.generateAuthToken()
         
-        res.status(201).json({user: user.toObject({ getters: true })})
+        res.status(201).send({user, token})
 
     } catch (e) {
       return next(e)
@@ -49,7 +49,7 @@ exports.login = async (req, res, next) => {
      
       const token = await user.generateAuthToken()
       
-      res.json({ message: 'Logged in!' })
+      res.send({ message: 'Logged in!', token })
     } catch (e) {
       return next(e)
     }
