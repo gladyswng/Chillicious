@@ -58,10 +58,12 @@ const NavDrawer: React.FC<NavDrawerProps> = (props) => {
        </List>
       <Divider />
       <List>
+        <NavLink to='/store/add' className={classes.navLinks} >
         <ListItem button >
          <ListItemIcon><AddIcon /></ListItemIcon>
          <ListItemText primary={'Add Store'} />
         </ListItem>
+        </NavLink>
       </List>
     </div>
   )}

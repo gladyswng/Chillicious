@@ -1,12 +1,17 @@
 import React, { useState, useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH, VALIDATOR_EMAIL } from '../../util/validators'
+import Message from '../../shared/components/UIElements/Message'
 import { useForm } from '../../shared/hooks/form-hook'
+import { useHttpClient } from '../../shared/hooks/http-hook' 
+
 import { AuthContext } from '../../shared/context/authContext'
 import Modal from '../../shared/components/UIElements/Modal'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 import Input from '../../shared/components/UIElements/Input'
 
 const useStyles = makeStyles((theme) => ({
@@ -27,6 +32,12 @@ interface LoginModalProps {
 const LoginModal: React.FC<LoginModalProps> = (props) => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
+  const { isLoading, error, sendRequest, clearError } = useHttpClient()
+
+  // const [isLoading, setIsLoading] = useState(false)
+  // const [error, setError] = useState<string>()
+
+
   const [formState, inputHandler] = useForm({
     email: {
       value: '',
@@ -51,13 +62,38 @@ const LoginModal: React.FC<LoginModalProps> = (props) => {
   };
   const handleModalClose = () => {
     setModalOpen(false);
+    clearError()
   };
 
-  const authSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log(inputs)
-    auth.login()
-  } 
+
+  const authSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    try {
+
+      await sendRequest('http://localhost:3000/login', 'POST', JSON.stringify({
+        email: inputs.email.value,
+        password: inputs.password.value
+      }), {
+          'Content-Type': 'application/json'
+        }
+      )
+      // const data = await response.json()
+      // console.log(data)
+      // if (!response.ok) {
+      //   console.log(data)
+      //   throw new Error(data.message)
+      // }
+   
+      // setIsLoading(false)
+      // setError(null)
+      auth.login()
+    } catch (e) {
+      // setIsLoading(false)
+      // setError(e.message || 'Something went wrong, please try again')
+
+    }
+  }
+
 
   return (
     <Modal 
@@ -67,9 +103,13 @@ const LoginModal: React.FC<LoginModalProps> = (props) => {
     open={modalOpen} 
     onOpen={handleModalOpen} 
     onClose={handleModalClose}>
+      {isLoading && <CircularProgress />}
 
       <Typography variant="h5">Log In</Typography>
-      <form action="" className={classes.root} noValidate autoComplete="off" onSubmit={authSubmitHandler}>
+
+      {error && <Message message={error} />}
+
+      <form  className={classes.root} noValidate autoComplete="off" onSubmit={authSubmitHandler}>
         <div style={{ width: '70%' }}>
           <div>
           <Input 
@@ -97,7 +137,7 @@ const LoginModal: React.FC<LoginModalProps> = (props) => {
             variant="outlined"
             errorMessage="Invalid password" 
             required
-            validators={[VALIDATOR_REQUIRE(), VALIDATOR_MINLENGTH(8)]}
+            validators={[VALIDATOR_REQUIRE(), VALIDATOR_MINLENGTH(6)]}
             onInput={inputHandler}
             blur={true}
             />

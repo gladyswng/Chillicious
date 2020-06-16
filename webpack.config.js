@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin =  require('html-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 
 module.exports = {
@@ -9,7 +10,7 @@ module.exports = {
         filename: 'index_bundle.js',
         publicPath: '/'
     },
-    resolve: {extensions: ['.js', '.jsx', '.react.js', '.ts', '.tsx']},
+    resolve: {extensions: ['.ts', '.tsx','.js', '.jsx', '.react.js']},
     devtool: 'source-map',
     module : {
         rules : [
@@ -29,8 +30,11 @@ module.exports = {
     plugins : [
         new HtmlWebpackPlugin ({
             template : 'frontend/public/index.html',
-            // apiUrl: `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_MAP_API_KEY}`
-        })
+       
+        }),
+      
+        new Dotenv()
+   
 
     ]
 

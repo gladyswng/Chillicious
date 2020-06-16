@@ -1,13 +1,11 @@
 import React from 'react'
 
+import ReactDependentScript from 'react-dependent-script'
 
 import Map from '../../shared/components/UIElements/Map'
 
-import Layout from '../../util/Layout'
-import { Typography } from '@material-ui/core'
-import WhatshotIcon from '@material-ui/icons/Whatshot';
 
-import { withStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import RatingBar from '../../shared/components/UIElements/RatingBar'
 import Chip from '@material-ui/core/Chip';
@@ -18,9 +16,10 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 
 import RoomIcon from '@material-ui/icons/Room';
-import PhoneIcon from '@material-ui/icons/Phone';
-import LaptopMacIcon from '@material-ui/icons/LaptopMac';
-import AccessTimeIcon from '@material-ui/icons/AccessTime'
+// import PhoneIcon from '@material-ui/icons/Phone';
+// import LaptopMacIcon from '@material-ui/icons/LaptopMac';
+// import AccessTimeIcon from '@material-ui/icons/AccessTime'
+
 
 
 
@@ -102,10 +101,13 @@ const StoreInfo: React.FC<StoreInfoProps> = (props) => {
           <Typography className={classes.contactInfo}><RoomIcon className={classes.icon}/>{address}</Typography>
         </div>
 
-        <div style={{ width: '50%', height: '100%' }}>
-          
-          <Map center={location} zoom={16}/>
-        </div>
+
+
+     
+              
+            <Map center={location} zoom={16}/>
+
+      
 
         
       </Paper>

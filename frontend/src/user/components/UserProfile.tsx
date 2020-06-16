@@ -54,6 +54,11 @@ true,
 
 const { inputs, isValid } = formState
 
+const submitHandler = async (e: any) => {
+  e.preventDefault()
+  fetch('')
+}
+
   return (
     <>
 
@@ -87,6 +92,7 @@ const { inputs, isValid } = formState
         blur={false}
         inputHandler={inputHandler}
         disableEmail={true}
+        submitHandler={submitHandler}
 
         />
       

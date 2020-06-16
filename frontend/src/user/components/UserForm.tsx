@@ -46,16 +46,17 @@ interface UserFormProps {
   formIsValid: boolean
   blur: boolean
   disableEmail: boolean
-  inputHandler: () => void
+  inputHandler: () => void,
+  submitHandler: any
 }
 
 const UserForm: React.FC<UserFormProps>  = (props) => {
   const classes = useStyles()
-  const { inputs, formIsValid,  blur, disableEmail, inputHandler } = props
+  const { inputs, formIsValid,  blur, disableEmail, inputHandler, submitHandler } = props
   
 
   return (
-    <form action="" className={classes.root} noValidate autoComplete="off">
+    <form action="" onSubmit={submitHandler} className={classes.root} noValidate autoComplete="off">
       <div style={{ width: '100%' }}>
         <Input 
           id="userName" 
@@ -120,6 +121,7 @@ const UserForm: React.FC<UserFormProps>  = (props) => {
           color="primary" 
           style={{ margin: 8 }}
           disabled={!formIsValid}
+          type='submit'
         >{blur? 'Register' : 'Save'}</Button>
           <Button 
           variant="contained"  

@@ -12,9 +12,9 @@ router.get('/', storeController.getStores)
 router.get('/stores', storeController.getStores) 
 router.get('/stores/:slug', storeController.getStoreBySlug)
 // Render storeForm
-router.get('/add', auth, storeController.addStore)
+router.get('store/add', auth, storeController.addStore)
 // Submit storeForm - when add''
-router.post('/add', auth, 
+router.post('/store/add', auth, 
 storeController.storeValidationRules(),
 storeController.validateRegister,
 storeController.createStore)
@@ -40,7 +40,7 @@ router.get('/user/me/hearts', auth, storeController.getHearts)
 // USER
 router.get('/register', userController.registerForm)
 
-router.post('/register', 
+router.post('/user/register', 
     userController.userValidationRules(),
     userController.validateRegister,
     userController.register,
@@ -66,6 +66,7 @@ router.delete('/user/me', auth, userController.deleteProfile)
 // REVIEW
 router.post('/stores/:id/addReview', auth, reviewController.addReview)
 router.patch('/stores/:id/updateReview', auth, reviewController.updateReview)
+// router.patch('/user/me/profile', auth, reviewController.updateReview)
 router.delete('/stores/:id/deleteReview', auth, reviewController.deleteReview)
 
 module.exports = router

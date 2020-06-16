@@ -9,5 +9,7 @@
   "esModuleInterop": true,
   },
   
-  "include": ["./frontend/src/**/*"],
+  "include": ["./frontend/src/**/*"
+    // "backend/location.tsx"
+  ],
 }

@@ -3,6 +3,7 @@ const Store = require('../models/Store')
 const User = require('../models/User')
 
 const HttpError = require('../models/http-error')
+const getCoordsForAddress = require('../util/location')
 const { body, validationResult } = require('express-validator')
 
 exports.getStores = async (req, res) => {
@@ -111,7 +112,20 @@ exports.addStore = (req, res) => {
 
 
 exports.createStore = async (req, res, next) => {
-  const { name, description, coordinates, address, image, priceRange, tags } = req.body
+  const { name, description, address, image, priceRange, tags } = req.body
+  
+  let coordinates
+  
+  try {
+    coordinates = await getCoordsForAddress(address)
+    
+    
+  } catch (e) {
+    return next(e)
+  }
+  
+  // Auth
+  // send req.body 
   const addedStore = {
     name,
     description,
@@ -121,14 +135,12 @@ exports.createStore = async (req, res, next) => {
     priceRange,
     tags
   }
-    // Auth
-    // send req.body 
-    const store = new Store({
-        // ...req.body,
-        ...addedStore,
-        author: req.user._id
-        
-    })
+
+  const store = new Store({
+    // ...req.body,
+    ...addedStore,
+    author: req.user._id
+  })
 
     try {
 
@@ -226,10 +238,11 @@ exports.editStore = async (req, res) => {
 }
 
 exports.updateStore = async (req, res, next) => {
+  const updates = Object.keys(req.body)
+  const allowedUpdates = ['name', 'description', 'tags', 'priceRange', 'address', 'photo']
+  
 
     try {
-      const updates = Object.keys(req.body)
-      const allowedUpdates = ['name', 'description', 'tags', 'priceRange', 'address', 'photo']
       const isValidOperation = updates.every(update => {
           return allowedUpdates.includes(update)
       })
@@ -238,22 +251,30 @@ exports.updateStore = async (req, res, next) => {
         throw new HttpError('Invalid update!', 422)
           // res.status(400).send({ error: 'Not valid update' })
       }
-  
+      
 
-        const store = await Store.findOne({ _id: req.params.id })
-        //, owner: req.user_id?
+      const store = await Store.findOne({ _id: req.params.id,  author: req.user._id})
+      //, author: req.user_id
 
-        if (!store) {
-          return next(
-            new HttpError('Could not find matched store.', 404)
-          ) //Message not showing, showing mongodb's message instead
-        } 
-        updates.forEach(update => {
-            store[update] = req.body[update]
-        })
-        await store.save()
-        res.send({ message: 'Store updated!' })
-        // res.redirect(`/stores/${store._id}/edit`)
+      if (!store) {
+        return next(
+          new HttpError('Could not find matched store, you have to be the author to edit store page', 404)
+        ) //Message not showing, showing mongodb's message instead
+      } 
+      updates.forEach(update => {
+          store[update] = req.body[update]
+      })
+      let coordinates
+        try {
+          coordinates = await getCoordsForAddress(req.body.address)         
+        } catch (e) {
+          return next(e)
+        }
+      store.location = coordinates
+
+      await store.save()
+      res.send(store)
+      // res.redirect(`/stores/${store._id}/edit`)
     } catch(e) {
       return next(
         new HttpError('Something went wrong, could not proceed to update store', 500)

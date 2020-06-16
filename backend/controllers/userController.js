@@ -12,9 +12,9 @@ exports.registerForm = (req, res) => {
 
 exports.register = async (req, res, next) => {
     
-    
     try {
-      const existed = User.find({ email: req.body.email })
+      const existed = await User.findOne({ email: req.body.email})
+      
       if (existed) {
         return next(
           new HttpError('User already exists.', 404)
@@ -26,7 +26,7 @@ exports.register = async (req, res, next) => {
         await user.save()
         const token = await user.generateAuthToken()
         
-        res.status(201).send({user, token})
+        res.status(201).json({user: user.toObject({ getters: true })})
 
     } catch (e) {
       return next(e)
@@ -45,10 +45,11 @@ exports.login = async (req, res, next) => {
     try {
 
       const user = await User.findByCredentials(req.body.email, req.body.password)
+      
      
       const token = await user.generateAuthToken()
       
-      res.send({ message: 'Logged in!', token })
+      res.json({ message: 'Logged in!' })
     } catch (e) {
       return next(e)
     }
@@ -65,7 +66,7 @@ exports.userValidationRules = () => {
         
         body('password')
         .not().isEmpty().withMessage('You must create a password')
-        .isLength({ min: 4 }).withMessage('Password must be at least 6 chars long'),
+        .isLength({ min: 6 }).withMessage('Password must be at least 6 chars long'),
         // .not().matches('password').withMessage('Must not contain the word "password"'),
         body('name')
         .trim(),
@@ -84,19 +85,18 @@ exports.validateRegister = (req, res, next) => {
       return next()
     }
     
-    const extractedErrors =  errors.array().map(err => { 
-      return {
-        message: err.msg
-      }
-    })
+    const extractedErrors = errors.errors[0].msg
+    // errors.array().map(err => { 
+    //   return {
+    //     message: err.msg
+    //   }
+    // })
   
   
     // const extractedErrors = []
     // errors.array().map(err => extractedErrors.push({ message: err.msg }))
 
-    // return res.status(422).json(exetractedErrors)
-  
-    return res.status(422).json(extractedErrors)
+    return res.status(422).json({message: extractedErrors})
  
 }
 
@@ -148,7 +148,7 @@ exports.logout = async (req, res) => {
 
         req.user.tokens = req.user.tokens.filter(tokenObj => tokenObj.token !== req.token )
         await req.user.save()
-        res.send('ok')
+        res.send({ message: 'You are logged out!' })
     } catch (e) {
       return next(
         new HttpError('Something went wrong, could not proceed your request', 500)
