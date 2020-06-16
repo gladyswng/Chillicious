@@ -11,7 +11,8 @@ exports.getStores = async (req, res) => {
     //stores?limit=10&skip=20
     try {
         await Store.find({}, function (err, stores) {
-            res.send(stores)
+       
+            res.json(stores)
         })
 
     } catch(e) {

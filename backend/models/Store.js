@@ -65,6 +65,7 @@ const storeSchema = new mongoose.Schema({
 
 
 
+
 // SAVE SLUG IN STORE
 storeSchema.pre('save', async function(next) {
 
@@ -84,6 +85,13 @@ storeSchema.pre('save', async function(next) {
     next()
 
 })
+
+
+// VIRTUAL STORE ID
+storeSchema.virtual('id').get(function(){
+  return this._id.toHexString();
+});
+
 
 // VIRTUAL REVIEWS
 

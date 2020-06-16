@@ -70,7 +70,7 @@ const StoreItem: React.FC<StoreItemProps> = ({store}) => {
 
   return (
     <Card className={classes.storeCardRoot} variant="outlined" >
-       <CardMedia className={classes.cardMedia}  image={store.image}/>
+       <CardMedia className={classes.cardMedia}  image={store.image? store.image : "https://images.unsplash.com/photo-1506368144590-cf6438f1cdb5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80"}/>
 
       <CardContent  className={classes.cardContent}>
         <div>
