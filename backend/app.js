@@ -17,11 +17,7 @@ app.use((req, res, next) => {
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept, Authorization'
   );
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
-    req.header('Access-Control-Allow-Origin', '*')
-    req.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-    req.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    req.header('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE')
 
   next();
 });

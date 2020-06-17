@@ -100,8 +100,7 @@ interface StoreFormProps {
 const StoreForm: React.FC<StoreFormProps> = (props) => {
   const classes = useStyles()
   const { inputs, formIsValid, otherData, blur, inputHandler, priceHandler, tagsHandler, submitHandler } = props
-  
-  console.log(props)
+
 
 
   const priceRange = inputs.priceRange

@@ -196,7 +196,7 @@ exports.validateRegister = (req, res, next) => {
   
   const extractedErrors = errors.errors[0].msg
 
-  return res.status(422).json(extractedErrors)
+  return res.status(422).json({message: extractedErrors})
 
 }
 

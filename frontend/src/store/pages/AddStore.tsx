@@ -61,14 +61,20 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
           formData.append('priceRange', inputs.priceRange.value);
           formData.append('tags', otherData.tags.value)
           
-          console.log(auth.token)
-          // await sendRequest(
-          //   'http://localhost:3000/store/add', 
-          //   'POST', formData, 
-          //   { 
-          //     Authorization: 'Bearer ' + auth.token
-          //   } 
-          // )
+  
+          await sendRequest(
+            'http://localhost:3000/store/add', 
+            'POST', JSON.stringify({
+              name: inputs.StoreName.value,
+              description: inputs.description.value,
+              address: inputs.address.value,
+              priceRange: inputs.priceRange.value
+              }), 
+            { 
+              Authorization: 'Bearer ' + auth.token,
+              'Content-Type': 'application/json'
+            } 
+          )
             console.log('sendt requests')
           //Redirect to different page
         } catch (e) {
