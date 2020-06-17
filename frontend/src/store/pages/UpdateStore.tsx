@@ -163,7 +163,9 @@ useEffect(() => {
 
 const { inputs, isValid, otherData } = formState
 
-
+const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+}
 
   return (
     <div style={{ marginTop: 80, width: '80%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
@@ -178,6 +180,7 @@ const { inputs, isValid, otherData } = formState
         inputHandler={inputHandler}
         priceHandler={priceHandler}
         tagsHandler={tagsHandler}
+        submitHandler={submitHandler}
 
         />
     </div>

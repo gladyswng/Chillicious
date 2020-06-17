@@ -88,9 +88,10 @@ interface StoreFormProps {
   formIsValid: boolean 
   
   blur: boolean,
-  inputHandler: any
-  priceHandler: any
-  tagsHandler: any
+  inputHandler: (id: any, value: any, isValid: any) => void
+  priceHandler: (event: React.ChangeEvent<HTMLInputElement>) => void
+  tagsHandler: (event: React.ChangeEvent<HTMLInputElement>) => void
+  submitHandler: (event: React.FormEvent<HTMLFormElement>) => void
 }
 
 
@@ -98,7 +99,7 @@ interface StoreFormProps {
 
 const StoreForm: React.FC<StoreFormProps> = (props) => {
   const classes = useStyles()
-  const { inputs, formIsValid, otherData, blur, inputHandler, priceHandler, tagsHandler } = props
+  const { inputs, formIsValid, otherData, blur, inputHandler, priceHandler, tagsHandler, submitHandler } = props
   
   console.log(props)
 
@@ -120,11 +121,6 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
 
   }
 
-  // TO BE CHANGED
-    const storeFormSubmitHandler = (event: any) => {
-      event.preventDefault()
-      console.log(props)
-    }
 
 
     if (!inputs.storeName.value && !blur) {
@@ -138,9 +134,9 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
   return (
     
     <form 
-    action=""  //????
+  
     className={classes.root} 
-    onSubmit={storeFormSubmitHandler}
+    onSubmit={submitHandler}
     noValidate //??
     autoComplete="off" 
     >
@@ -275,7 +271,7 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
           <Button 
           variant="contained" 
           color="primary" 
-          onSubmit={storeFormSubmitHandler} 
+          // onSubmit={storeFormSubmitHandler} 
           style={{ margin: "16px 0",  width: '40%' }}
           >Cancel</Button>
         </div>

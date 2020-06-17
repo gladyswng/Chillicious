@@ -104,6 +104,11 @@ const App: React.FC = () => {
       <Route path="/store" exact>
           <Store />
       </Route>
+      <Route path="/store/add" exact>
+          <AddStore />
+      </Route>
+
+
 
       <Route path="/user/signUp" exact>
           <UserSignUp />

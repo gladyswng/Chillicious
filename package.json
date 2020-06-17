@@ -11,10 +11,10 @@
   },
   "scripts": {
     "start": "webpack-dev-server",
-    "startfrontend": "env-cmd -e dev webpack-dev-server",
+    
     "build": "node scripts/build.js",
     "startbackend": "nodemon ./backend/index.js",
-    "devbackend": "env-cmd -f ./config/dev.env nodemon ./backend/index.js"
+    "devbackend": "env-cmd -f ./backend/config/dev.env nodemon ./backend/index.js"
   },
   "keywords": [],
   "author": "",
