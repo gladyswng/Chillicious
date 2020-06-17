@@ -70,7 +70,7 @@ const LoginModal: React.FC<LoginModalProps> = (props) => {
     e.preventDefault()
     try {
 
-      await sendRequest('http://localhost:3000/login', 'POST', JSON.stringify({
+      const responseData = await sendRequest('http://localhost:3000/login', 'POST', JSON.stringify({
         email: inputs.email.value,
         password: inputs.password.value
       }), {
@@ -86,7 +86,7 @@ const LoginModal: React.FC<LoginModalProps> = (props) => {
    
       // setIsLoading(false)
       // setError(null)
-      auth.login()
+      auth.login(responseData.user.id, responseData.token)
     } catch (e) {
       // setIsLoading(false)
       // setError(e.message || 'Something went wrong, please try again')

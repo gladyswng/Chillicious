@@ -59,7 +59,7 @@ const LoginModal: React.FC<LoginModalProps> = () => {
   const authSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(inputs)
-    auth.login()
+    // auth.login()
   } 
 console.log(inputs)
 

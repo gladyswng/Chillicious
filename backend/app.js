@@ -18,6 +18,10 @@ app.use((req, res, next) => {
     'Origin, X-Requested-With, Content-Type, Accept, Authorization'
   );
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
+    req.header('Access-Control-Allow-Origin', '*')
+    req.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+    req.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    req.header('Access-Control-Allow-Credentials', true);
 
   next();
 });
@@ -35,7 +39,7 @@ app.use((req, res, next) => {
 
 app.use((error, req, res, next) => {
   if (res.headerSent) {
-    // if response has already been sent
+    // if response has  been sent
     return next(error)  
     // send response on its own
   }

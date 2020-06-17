@@ -47,9 +47,17 @@ const userSchema = new Schema({
     photo: {
         type: Buffer
     }
+}, {
+    
+    id: false,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+
 })
 
-
+userSchema.virtual('id').get(function(){
+  return this._id.toHexString();
+});
 
 
 userSchema.statics.findByCredentials = async (email, password) => {

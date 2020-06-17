@@ -1,16 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import StoreForm from '../components/StoreForm'
 import { useForm } from '../../shared/hooks/form-hook'
 import { useHttpClient } from '../../shared/hooks/http-hook'
 import Typography from '@material-ui/core/Typography';
 import Message from '../../shared/components/UIElements/Message'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { AuthContext } from '../../shared/context/authContext'
 
 interface AddStoreProps {
 
 }
 
 const AddStore: React.FC<AddStoreProps> = ({}) => {
+  const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
   
   const [formState, inputHandler, priceHandler, tagsHandler, setFormData] = useForm({
@@ -52,22 +54,25 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         try {
-          await sendRequest(
-            'http://localhost:3000/store/add', 
-            'POST', 
-            JSON.stringify({
-              name: inputs.storeName.value,
-              description: inputs.description.value,
-              address: inputs.address.value,
-              priceRange: inputs.priceRange.value,
-              tags: otherData.tags.value,
-            }), 
-            { 'Content-Type': 'application/json' } 
-          )
+          const formData = new FormData()
+          formData.append('name', inputs.storeName.value);
+          formData.append('description', inputs.description.value);
+          formData.append('address', inputs.address.value);
+          formData.append('priceRange', inputs.priceRange.value);
+          formData.append('tags', otherData.tags.value)
+          
+          console.log(auth.token)
+          // await sendRequest(
+          //   'http://localhost:3000/store/add', 
+          //   'POST', formData, 
+          //   { 
+          //     Authorization: 'Bearer ' + auth.token
+          //   } 
+          // )
             console.log('sendt requests')
           //Redirect to different page
         } catch (e) {
-     
+         
         }
       }
 

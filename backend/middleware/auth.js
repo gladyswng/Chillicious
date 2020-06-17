@@ -4,9 +4,20 @@ const HttpError = require('../models/http-error')
 
 const auth = async (req, res, next) => {
 
+  // This will not allow to post request to continue as options request
+  if (req.method === 'OPTIONS') {
+    return next()
+
+  }
+
     try {
 
-        const token = req.header('Authorization').replace('Bearer ', '')
+        const token = req.headers.authorization.replace('Bearer ', '')
+        // const token = req.headers.authorization.split(' ')[1]
+
+        if (!token) {
+          throw new Error('Authentication failed!')
+        }
 
         const decoded = jwt.verify(token, process.env.SECRET_KEY)
 
@@ -14,7 +25,7 @@ const auth = async (req, res, next) => {
 
         if (!user) {
             return next(
-              new HttpError ('Cannot authorize', 401)
+              new HttpError ('Authentication failed!', 401)
             )
         }
         
@@ -23,7 +34,7 @@ const auth = async (req, res, next) => {
         next()
         
     } catch (e) {
-        res.status(401).send({ error: 'Please authenticate' })
+        res.status(401).send({ message: 'Please authenticate' })
     }
 
 

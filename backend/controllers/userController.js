@@ -49,7 +49,7 @@ exports.login = async (req, res, next) => {
      
       const token = await user.generateAuthToken()
       
-      res.send({ message: 'Logged in!', token })
+      res.send({ user: user.id, token })
     } catch (e) {
       return next(e)
     }

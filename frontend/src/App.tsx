@@ -41,21 +41,26 @@ const useStyles = makeStyles((theme) => ({
 
 const App: React.FC = () => {
   const classes = useStyles()
-  const [isLoggedIn, setIsLoggedIn] = useState((false))
+  const [token, setToken] = useState(false)
+  const [userId, setUserId] = useState(false)
+
+  // const [isLoggedIn, setIsLoggedIn] = useState((false))
 
   // the function in useCallback will never be recreated
-  const login = useCallback(() => {
-    setIsLoggedIn(true)
+  const login = useCallback((uid, token) => {
+    setToken(token)
+    setUserId(uid)
   }, [])
 
   const logout = useCallback(() => {
-    setIsLoggedIn(false)
+    setToken(null)
+    setUserId(null)
   }, [])
 
 
   let routes
 
-  if (isLoggedIn) {
+  if (token) {
     routes = (
       <Switch>
       <Route path="/" exact>
@@ -125,7 +130,14 @@ const App: React.FC = () => {
   
   <ThemeProvider theme={theme}>
     {/* Here we bind the value we managed with context, which we initialize to the object in authContext, and bind this initial value to a new value, whenever this value here changes, all the componentes that listen to our context, so that active tap into the context we re-render, not all the components that are wrapped by provider but only the components where we add code to listen to our context. When bind when isLoggedIn changes, new value will be passed down*/}
-  <AuthContext.Provider value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}>
+  <AuthContext.Provider 
+    value={{ 
+      isLoggedIn: !!token, 
+      token: token,
+      userId: userId,
+      login: login, 
+      logout: logout 
+    }}>
     <Router>
       <Layout>
         <main className={classes.appRoot}>
