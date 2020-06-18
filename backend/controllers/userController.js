@@ -96,7 +96,7 @@ exports.validateRegister = (req, res, next) => {
     // const extractedErrors = []
     // errors.array().map(err => extractedErrors.push({ message: err.msg }))
 
-    return res.status(422).json({message: extractedErrors})
+    return res.status(422).json({ message: extractedErrors })
  
 }
 

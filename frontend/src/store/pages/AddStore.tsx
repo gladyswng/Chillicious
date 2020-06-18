@@ -51,18 +51,19 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
 
 
   const { inputs, isValid,  otherData } = formState
-  const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+  const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+    console.log('clicked')
         event.preventDefault()
         try {
-          const formData = new FormData()
-          formData.append('name', inputs.storeName.value);
-          formData.append('description', inputs.description.value);
-          formData.append('address', inputs.address.value);
-          formData.append('priceRange', inputs.priceRange.value);
-          formData.append('tags', otherData.tags.value)
+          // const formData = new FormData()
+          // formData.append('name', inputs.storeName.value);
+          // formData.append('description', inputs.description.value);
+          // formData.append('address', inputs.address.value);
+          // formData.append('priceRange', inputs.priceRange.value);
+          // formData.append('tags', otherData.tags.value)
           
   
-          await sendRequest(
+          return sendRequest(
             'http://localhost:3000/store/add', 
             'POST', JSON.stringify({
               name: inputs.StoreName.value,
@@ -74,8 +75,12 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
               Authorization: 'Bearer ' + auth.token,
               'Content-Type': 'application/json'
             } 
-          )
-            console.log('sendt requests')
+          ).then(res=>{
+            console.log(res)
+          }).catch(e => {
+            console.log(e)
+          })
+           
           //Redirect to different page
         } catch (e) {
          

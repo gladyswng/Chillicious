@@ -10,21 +10,28 @@ export const useHttpClient = () => {
   const activeHttpRequest = useRef([])
 
   const sendRequest = useCallback(async (url: string, method = 'GET', body:any = null, headers = {}) => {
+    console.log('asdfa???????')
     setIsLoading(true)
     // An Api supported in modern browsers and will add the active http request which will cancel the connect
     const httpAbortCtrl = new AbortController()
     activeHttpRequest.current.push(httpAbortCtrl)
 
     try {
+      console.log(url, body, headers)
+      console.log("sendRequest")
 
       const response = await fetch(url, {
         method,
         body,
         headers,
         signal: httpAbortCtrl.signal
+      }).then(res=>{
+        console.log(res)
+        return res
       })
   
       const data = await response.json()
+    
 
       // when request completed, filter out the controller for this request - the old controller, 
       activeHttpRequest.current = activeHttpRequest.current.filter(reqCtrl => reqCtrl !== httpAbortCtrl)
@@ -36,6 +43,7 @@ export const useHttpClient = () => {
       return data
 
     } catch (e) {
+      console.log(e)
       setError(e.message)
       setIsLoading(false)
       throw e
