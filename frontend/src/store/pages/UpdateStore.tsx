@@ -2,9 +2,11 @@ import React, { useEffect, useState, useContext } from 'react'
 import { useHttpClient } from '../../shared/hooks/http-hook'  
 import { useParams } from "react-router-dom";
 import StoreForm from '../components/StoreForm'
+import Message from '../../shared/components/UIElements/Message'
 import Typography from '@material-ui/core/Typography'
 import { useForm } from '../../shared/hooks/form-hook'
 import { AuthContext } from '../../shared/context/authContext'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 interface UpdateStoreProps {
 
@@ -23,7 +25,9 @@ interface checkbox {
 const UpdateStore: React.FC<UpdateStoreProps> = ({}) => {
   const auth = useContext(AuthContext)
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
-  const [loadedStore, setLoaededStore] = useState()
+  const [loadedStore, setLoadedStore] = useState()
+  const { id } = useParams()
+
   
   const stores = [
     {
@@ -80,72 +84,96 @@ const UpdateStore: React.FC<UpdateStoreProps> = ({}) => {
   console.log(formState)
 
 
-useEffect(() => {
-  const storeId  = "store1"   //useParams()
+  useEffect(() => {
+    const fetchStore = async () => {
+      try {
 
-  const fetchStore = async () => {
+        const responseData = await sendRequest(`http://localhost:3000/store/edit/${id}`, 'GET', null , { 
+          Authorization: 'Bearer ' + auth.token,
+          'Content-Type': 'application/json'
+        })
+        console.log(responseData)
+        const store = responseData.store
+        setLoadedStore(store)
+
+
+        let checkbox = {
+          chinese: false,
+          indian: false,
+          mexican: false,
+          korean: false,
+          lactoseFree: false,
+          vegetarianFriendly: false,
+          veganOptions: false,
+          glutenFree: false
+          }
+          Object.keys(checkbox).map((tag: keyof checkbox )=> {
+            if (store.tags.includes(tag)) {
+              checkbox[tag] = true
+            } 
+          })
+      
+          setFormData(
+            {
+              storeName: {
+                value: store.name,
+                isValid: true
+              },
+              description: {
+                value: store.description,
+                isValid: true
+              },
+              address: {
+                value: store.address,
+                isValid: true
+              },
+              phoneNumber: {
+                value: store.phoneNumber,
+                isValid: true
+              },
+              priceRange: {
+                value: store.priceRange,
+                isValid: true
+              }
+            },
+            true, 
+            {
+              tags: store.tags,
+              checkbox: checkbox
+              ,
+              image:[]
+            } 
+          )
+
+
+      } catch (e) {
+
+      }
+    }
+    fetchStore()
+  }, [sendRequest, id, setFormData])
+
+
+// useEffect(() => {
+//   const storeId  = "store1"   //useParams()
+
+//   const fetchStore = async () => {
 
       
-  //  const store = useParams().id
-    const store =  stores.find(store => store.id === storeId)
-    if (!store) {
-      return <h3>Could not find store</h3>
-    }
-    console.log('ran useEffect')
+//   //  const store = useParams().id
+//     const store =  stores.find(store => store.id === storeId)
+//     if (!store) {
+//       return <h3>Could not find store</h3>
+//     }
+//     console.log('ran useEffect')
 
-  let checkbox = {
-    chinese: false,
-    indian: false,
-    mexican: false,
-    korean: false,
-    lactoseFree: false,
-    vegetarianFriendly: false,
-    veganOptions: false,
-    glutenFree: false
-    }
-    Object.keys(checkbox).map((tag: keyof checkbox )=> {
-      if (store.tags.includes(tag)) {
-        checkbox[tag] = true
-      } 
-    })
-
-    setFormData(
-      {
-        storeName: {
-          value: store.name,
-          isValid: true
-        },
-        description: {
-          value: store.description,
-          isValid: true
-        },
-        address: {
-          value: store.address,
-          isValid: true
-        },
-        phoneNumber: {
-          value: store.phoneNumber,
-          isValid: true
-        },
-        priceRange: {
-          value: store.priceRange,
-          isValid: true
-        }
-      },
-      true, 
-      {
-        tags: store.tags,
-        checkbox: checkbox
-        ,
-        image:[]
-      } 
-    )
+ 
    
-  }
+//   }
     
-  fetchStore()
+//   fetchStore()
     
-}, [])
+// }, [])
 
 
 const { inputs, isValid, otherData } = formState
@@ -159,6 +187,15 @@ const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     // } catch (e) {
 
     // }
+
+  if (!loadedStore && !error) {
+    return (
+      <div>
+        <h2>Could not find store!</h2>
+      </div>
+
+    )
+  }
 }
 
   return (
@@ -166,6 +203,9 @@ const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
       <Typography variant="h5">
       Edit Store
       </Typography>
+      {error && <Message message={error}/>}
+      {isLoading && <CircularProgress />}
+      {!isLoading&& loadedStore &&
       <StoreForm 
         inputs={inputs}
         formIsValid={isValid}
@@ -177,6 +217,7 @@ const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         submitHandler={submitHandler}
 
         />
+      }
     </div>
 
 );

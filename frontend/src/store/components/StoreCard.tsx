@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import Modal from '../../shared/components/UIElements/Modal'
 import { AuthContext } from '../../shared/context/authContext'
+import { useHttpClient } from '../../shared/hooks/http-hook' 
 
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -9,6 +10,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+
 
 
 const useStyles = makeStyles({
@@ -71,6 +73,14 @@ const StoreItem: React.FC<StoreItemProps> = ({store}) => {
     setModalOpen(false);
   };
 
+  const editHandler = (e:any) => {
+    e.preventDefault()
+    // sendRequest(`http://localhost:3000/store/edit/${id}`, 'GET', null , { 
+    //       Authorization: 'Bearer ' + auth.token,
+    //       'Content-Type': 'application/json'
+    // })
+  }
+
   return (
     <Card className={classes.storeCardRoot} variant="outlined" >
        <CardMedia className={classes.cardMedia}  image={store.image? store.image : "https://images.unsplash.com/photo-1506368144590-cf6438f1cdb5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80"}/>
@@ -99,7 +109,7 @@ const StoreItem: React.FC<StoreItemProps> = ({store}) => {
         <div hidden={false} className={classes.cardButtons}>
 
          {store.author === auth.userId &&
-        <Button variant="contained" color="primary">Edit</Button>
+        <Button variant="contained" color="primary" onClick={editHandler}>Edit</Button>
         } 
 
         {store.author === auth.userId && 

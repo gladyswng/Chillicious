@@ -80,7 +80,7 @@ const App: React.FC = () => {
           <AddStore />
       </Route>
 
-      <Route path="/store/update" exact>
+      <Route path="/store/update/:id" exact>
           <UpdateStore />
       </Route>
 
@@ -111,6 +111,9 @@ const App: React.FC = () => {
       </Route>
       <Route path="/store/add" exact>
           <AddStore />
+      </Route>
+      <Route path="/store/update/:id" exact>
+          <UpdateStore />
       </Route>
 
 
