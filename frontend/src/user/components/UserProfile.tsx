@@ -62,7 +62,7 @@ const submitHandler = async (e: any) => {
   return (
     <>
 
-        <Avatar alt={userName} src={avatar} className={classes.avatarSize}/>
+        <Avatar alt={userName} src={avatar? avatar : "https://images.unsplash.com/photo-1562153889-3847e21e5d3b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80"} className={classes.avatarSize}/>
           <div style={{ padding: 20 }}>
             <input
               accept="image/*"

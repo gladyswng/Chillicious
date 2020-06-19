@@ -52,7 +52,7 @@ router.post('/login', userController.login)
 router.get('/logout', auth, userController.logout)
 router.get('/logoutAll', auth, userController.logoutAll)
 
-router.patch('/user/me/profile', 
+router.patch('/user/me', 
   auth, 
   userController.userUpdateValidationRules(),
   userController.validateRegister,

@@ -115,6 +115,8 @@ exports.userUpdateValidationRules = () => {
   
 }
 
+
+
 exports.updateProfile = async (req, res, next) => {
 
     const updates = Object.keys(req.body)
