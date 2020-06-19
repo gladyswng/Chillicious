@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import Modal from '../../shared/components/UIElements/Modal'
 import { AuthContext } from '../../shared/context/authContext'
 import { useHttpClient } from '../../shared/hooks/http-hook' 
-
+import { useHistory } from 'react-router-dom'
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -61,7 +61,9 @@ interface StoreItemProps {
 const StoreItem: React.FC<StoreItemProps> = ({store}) => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
-  const [modalOpen, setModalOpen] = useState(false);
+  const history = useHistory()
+  const [modalOpen, setModalOpen] = useState(false)
+  const { isLoading, error, sendRequest, clearError } = useHttpClient()
   // console.log(store.author)
   // console.log(auth.userId)
   
@@ -73,9 +75,10 @@ const StoreItem: React.FC<StoreItemProps> = ({store}) => {
     setModalOpen(false);
   };
 
-  const editHandler = (e:any) => {
+  const editHandler = async (e:any) => {
     e.preventDefault()
-    // sendRequest(`http://localhost:3000/store/edit/${id}`, 'GET', null , { 
+    history.push(`/store/edit/${store.id}`)
+    // await sendRequest(`http://localhost:3000/store/edit/${store.id}`, 'GET', null , { 
     //       Authorization: 'Bearer ' + auth.token,
     //       'Content-Type': 'application/json'
     // })

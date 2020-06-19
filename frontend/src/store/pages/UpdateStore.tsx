@@ -93,7 +93,9 @@ const UpdateStore: React.FC<UpdateStoreProps> = ({}) => {
           'Content-Type': 'application/json'
         })
         console.log(responseData)
-        const store = responseData.store
+        
+        const store = responseData
+        console.log(store)
         setLoadedStore(store)
 
 

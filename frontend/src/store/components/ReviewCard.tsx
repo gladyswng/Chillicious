@@ -41,6 +41,7 @@ interface ReviewCardProps {
 const ReviewCard: React.FC<ReviewCardProps> = (props) => {
   const classes = useStyles()
   const { rating, avatar, author, title, text, createdAt } = props.review
+  
     return (
       <div>
         <Divider variant="middle" />
