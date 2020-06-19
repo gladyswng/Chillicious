@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react'
+import { useHistory } from 'react-router-dom'
 import StoreForm from '../components/StoreForm'
 import { useForm } from '../../shared/hooks/form-hook'
 import { useHttpClient } from '../../shared/hooks/http-hook'
@@ -13,6 +14,8 @@ interface AddStoreProps {
 
 const AddStore: React.FC<AddStoreProps> = ({}) => {
   const auth = useContext(AuthContext);
+  const history = useHistory()
+  
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
   
   const [formState, inputHandler, priceHandler, tagsHandler, setFormData] = useForm({
@@ -51,8 +54,12 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
 
 
   const { inputs, isValid,  otherData } = formState
-  const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
-    console.log('clicked')
+
+
+  
+
+  const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+    
         event.preventDefault()
         try {
           // const formData = new FormData()
@@ -62,11 +69,11 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
           // formData.append('priceRange', inputs.priceRange.value);
           // formData.append('tags', otherData.tags.value)
           
-  
-          return sendRequest(
+          console.log('clicked')
+          await sendRequest(
             'http://localhost:3000/store/add', 
             'POST', JSON.stringify({
-              name: inputs.StoreName.value,
+              name: inputs.storeName.value,
               description: inputs.description.value,
               address: inputs.address.value,
               priceRange: inputs.priceRange.value
@@ -75,11 +82,10 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
               Authorization: 'Bearer ' + auth.token,
               'Content-Type': 'application/json'
             } 
-          ).then(res=>{
-            console.log(res)
-          }).catch(e => {
-            console.log(e)
-          })
+
+            )
+            
+            history.push('/')
            
           //Redirect to different page
         } catch (e) {
@@ -97,7 +103,7 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
           {isLoading && <CircularProgress />}
           <StoreForm 
           inputs={inputs}
-          formIsValid={true}
+          formIsValid={isValid}
           otherData={otherData}
           blur={true}
           inputHandler={inputHandler}

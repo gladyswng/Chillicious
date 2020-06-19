@@ -86,7 +86,8 @@ const LoginModal: React.FC<LoginModalProps> = (props) => {
    
       // setIsLoading(false)
       // setError(null)
-      auth.login(responseData.user.id, responseData.token)
+ 
+      auth.login(responseData.user, responseData.token)
     } catch (e) {
       // setIsLoading(false)
       // setError(e.message || 'Something went wrong, please try again')

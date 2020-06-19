@@ -84,7 +84,7 @@ useEffect(() => {
   const storeId  = "store1"   //useParams()
 
   const fetchStore = async () => {
-    const timer = setTimeout(() => {
+
       
   //  const store = useParams().id
     const store =  stores.find(store => store.id === storeId)
@@ -140,7 +140,7 @@ useEffect(() => {
         image:[]
       } 
     )
-    }, 1000)
+   
   }
     
   fetchStore()

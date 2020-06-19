@@ -11,13 +11,14 @@ interface StoreListProps {
 }
 
 interface Store {
-  id: string,
-  name: string,
-  description: string,
-  image?: string,
-  tags: string[],
+  id: string
+  name: string
+  description: string
+  image?: string
+  tags: string[]
   priceRange: string
   address: string
+  author: string
 
 }
 

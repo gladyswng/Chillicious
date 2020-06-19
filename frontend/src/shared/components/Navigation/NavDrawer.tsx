@@ -55,7 +55,7 @@ const NavDrawer: React.FC<NavDrawerProps> = (props) => {
           <ListItemText primary={'Log In'} />
           </ListItem>
         </NavLink>
-       </List>
+      </List>
       <Divider />
       <List>
         <NavLink to='/store/add' className={classes.navLinks} >
@@ -65,6 +65,17 @@ const NavDrawer: React.FC<NavDrawerProps> = (props) => {
         </ListItem>
         </NavLink>
       </List>
+
+      <List>
+        <NavLink to='/user/me' className={classes.navLinks} >
+        <ListItem button >
+         <ListItemIcon><AddIcon /></ListItemIcon>
+         <ListItemText primary={'Profile'} />
+        </ListItem>
+        </NavLink>
+      </List>
+
+      
     </div>
   )}
     

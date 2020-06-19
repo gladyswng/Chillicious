@@ -50,7 +50,8 @@ interface StoreItemProps {
     image?: string,
     tags: string[],
     address: string
-    location?: Object
+    location?: Object,
+    author: string
 
 
   }
@@ -59,6 +60,8 @@ const StoreItem: React.FC<StoreItemProps> = ({store}) => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
   const [modalOpen, setModalOpen] = useState(false);
+  // console.log(store.author)
+  // console.log(auth.userId)
   
   const handleModalOpen = () => {
     setModalOpen(true);
@@ -95,11 +98,11 @@ const StoreItem: React.FC<StoreItemProps> = ({store}) => {
 
         <div hidden={false} className={classes.cardButtons}>
 
-         {auth.isLoggedIn &&
+         {store.author === auth.userId &&
         <Button variant="contained" color="primary">Edit</Button>
         } 
 
-        {auth.isLoggedIn && 
+        {store.author === auth.userId && 
         <Modal buttonText='Delete' buttonColor="default" open={modalOpen} onOpen={handleModalOpen} onClose={handleModalClose}>
           <Typography>Are you sure?</Typography>
           <Button onClick={handleModalClose}>Yes</Button>
