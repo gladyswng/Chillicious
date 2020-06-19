@@ -21,7 +21,7 @@ storeController.createStore)
 // Render storeForm?
 router.get('/stores/:id/edit', auth, storeController.editStore)
 // Submit storeForm - when add'update/:id'
-router.patch('/stores/update/:id', auth, 
+router.patch('/store/update/:id', auth, 
 storeController.storeValidationRules(),
 storeController.validateRegister,
 storeController.updateStore) 

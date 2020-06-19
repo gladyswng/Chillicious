@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
+import { useHttpClient } from '../../shared/hooks/http-hook'  
 import { useParams } from "react-router-dom";
 import StoreForm from '../components/StoreForm'
-import Typography from '@material-ui/core/Typography';
+import Typography from '@material-ui/core/Typography'
 import { useForm } from '../../shared/hooks/form-hook'
+import { AuthContext } from '../../shared/context/authContext'
+
 interface UpdateStoreProps {
 
 }
@@ -18,12 +21,14 @@ interface checkbox {
 }
 
 const UpdateStore: React.FC<UpdateStoreProps> = ({}) => {
-
-
+  const auth = useContext(AuthContext)
+  const { isLoading, error, sendRequest, clearError } = useHttpClient()
+  const [loadedStore, setLoaededStore] = useState()
+  
   const stores = [
     {
-      id: "store1",
-      name: "foodiee",
+      id: "5eea54ffab616d6153c51eb2",
+      name: "test1234",
       description: "description1",
       image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=60",
       address: 'asdfasdf',
@@ -74,13 +79,14 @@ const UpdateStore: React.FC<UpdateStoreProps> = ({}) => {
 
   console.log(formState)
 
+
 useEffect(() => {
   const storeId  = "store1"   //useParams()
 
   const fetchStore = async () => {
     const timer = setTimeout(() => {
       
-   
+  //  const store = useParams().id
     const store =  stores.find(store => store.id === storeId)
     if (!store) {
       return <h3>Could not find store</h3>
@@ -141,30 +147,18 @@ useEffect(() => {
     
 }, [])
 
-// const getStore :any = async () => {
-//   try {
-    
-//     // Object.keys(checkbox).map((tag: keyof checkbox )=> {
-//     //   if (store.tags.includes(tag)) {
-//     //     checkbox[tag] = true
-//     //   }
-//     //   console.log(checkbox)
-//     // })
-    
-//     return 
-//     // const json = await identifyStore.json()
-
-//   } catch (error) {
-//     console.log(error)
-//   }
-
-// }
-
 
 const { inputs, isValid, otherData } = formState
 
 const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    // try {
+    //   await sendRequest(
+    //     `http://localhost:3000/store/update/{}`
+    //   )
+    // } catch (e) {
+
+    // }
 }
 
   return (

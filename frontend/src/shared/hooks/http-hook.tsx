@@ -17,17 +17,12 @@ export const useHttpClient = () => {
     activeHttpRequest.current.push(httpAbortCtrl)
 
     try {
-      console.log(url, body, headers)
-      console.log("sendRequest")
 
       const response = await fetch(url, {
         method,
         body,
         headers,
         signal: httpAbortCtrl.signal
-      }).then(res=>{
-        console.log(res)
-        return res
       })
   
       const data = await response.json()

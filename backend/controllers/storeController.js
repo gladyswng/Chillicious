@@ -284,6 +284,11 @@ exports.updateStore = async (req, res, next) => {
 exports.deleteStore = async (req, res, next) => {
 
     try {
+      // const task = await Task.findOneAndDelete({ _id: req.params.id, owner: req.user._id })
+
+      // if (!task) {
+      //     res.status(404).send()
+      // }
         const store = await Store.findByIdAndDelete(req.params.id)
 
         if (!store) {
