@@ -61,6 +61,8 @@ interface StoreInfoProps {
       lat: number
       lng: number
     }
+    ratingsQuantity: number
+    ratingsAverage: number
 
   }
 
@@ -68,7 +70,7 @@ interface StoreInfoProps {
 }
 
 const StoreInfo: React.FC<StoreInfoProps> = (props) => {
-  const { name, description, rating, priceRange, image, address, tags, location } = props.store
+  const { name, description, ratingsAverage, priceRange, image, address, tags, location, ratingsQuantity } = props.store
   const classes = useStyles()
  
 
@@ -84,9 +86,9 @@ const StoreInfo: React.FC<StoreInfoProps> = (props) => {
 
 
           <Box component="fieldset" mb={3} borderColor="transparent" style={{ margin: 0, padding: 0, display:'inline-block' }}>
-           <RatingBar rating={rating} readOnly={true} />
+           <RatingBar rating={ratingsAverage} readOnly={true} />
             
-            <Typography variant="body1" component="span" className={classes.reviewNumber}>50 Reviews</Typography>
+    <Typography variant="body1" component="span" className={classes.reviewNumber}>{ ratingsQuantity || "0"} {ratingsQuantity>1? 'Reviews' : 'Review'}</Typography>
           </Box>
 
           <Grid container alignItems="center">
@@ -105,7 +107,7 @@ const StoreInfo: React.FC<StoreInfoProps> = (props) => {
 
      
               
-            <Map center={location} zoom={16}/>
+          <Map center={location} zoom={16}/>
 
       
 
