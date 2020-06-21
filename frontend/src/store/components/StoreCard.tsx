@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import Modal from '../../shared/components/UIElements/Modal'
+import Link from '@material-ui/core/Link'
 import { AuthContext } from '../../shared/context/authContext'
 import { useHttpClient } from '../../shared/hooks/http-hook' 
 import { useHistory } from 'react-router-dom'
@@ -42,7 +43,7 @@ const useStyles = makeStyles({
   },
   chip: {
 
-    margin: 2,
+    marginRight: 4,
 
   }
 });
@@ -58,7 +59,8 @@ interface StoreItemProps {
     tags: string[],
     address: string
     location?: Object,
-    author: string
+    author: string,
+    slug: string
 
 
   }, 
@@ -86,6 +88,11 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete }) => {
     history.push(`/store/edit/${store.id}`)
   }
 
+  const storeHandler = async (e: any) => {
+    e.preventDefault()
+    history.push(`/store/${store.slug}`)
+  }
+
   const deleteHander = async (e: any) => {
     e.preventDefault()
     setModalOpen(false)
@@ -94,6 +101,8 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete }) => {
     })
     onDelete(store.id)
   }
+
+  
 
   return (
     <Card className={classes.storeCardRoot} variant="outlined" >
@@ -120,14 +129,20 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete }) => {
               className={classes.chip}/>
             })}
           </div>
-          
-
             
-            <CardActions>
-              <Button size="small"> More</Button>
-            </CardActions>
+            <Typography>
+             <Link 
+             onClick={storeHandler}
+             color="inherit"
+             style={{ cursor: 
+             "pointer" }}
+             >
+             More
+             </Link>
+            </Typography>
+  
 
-              </div>
+        </div>
 
         <div hidden={false} className={classes.cardButtons}>
 

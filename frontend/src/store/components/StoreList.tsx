@@ -20,6 +20,7 @@ interface Store {
   priceRange: string
   address: string
   author: string
+  slug: string
 
 }
 

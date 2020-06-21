@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 interface ReviewCardProps {
  review: {
   author: string
-  avatar: string
+  avatar?: string
   rating: number
   createdAt: string
   text: string
@@ -47,7 +47,7 @@ const ReviewCard: React.FC<ReviewCardProps> = (props) => {
         <Divider variant="middle" />
         <div className={classes.review}>
           <div className={classes.user}>
-            <Avatar alt='sth' src={avatar} style={{height: 80, width: 80 }}/>
+            <Avatar alt='avatar' src={avatar? avatar : "https://images.unsplash.com/photo-1562153889-3847e21e5d3b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"} style={{height: 80, width: 80 }}/>
   
 
             <Typography variant="caption">{author}</Typography>

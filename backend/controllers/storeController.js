@@ -25,12 +25,12 @@ exports.getStores = async (req, res) => {
 }
 
 // Store page - individual
-exports.getStoreBySlug = async (req, res) => {
-  
+exports.getStoreBySlug = async (req, res, next) => {
     try {
-        const store = await Store.findOne( {
+        const store = await Store.findOne({
             slug: req.params.slug
-        }).populate('author', '-_id -__v')
+        }).populate({ path: 'author', select: 'name' }).exec()
+        // TODO - EXCLUDE ID
         
         if (!store) {
           return next(

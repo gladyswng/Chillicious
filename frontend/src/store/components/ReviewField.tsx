@@ -102,8 +102,8 @@ const ReviewField: React.FC<ReviewFieldProps> = ({reviews}) => {
         </div>
         
 
-
-        {reviewList}
+        {reviews.length===0? <Typography variant="h6" style={{ padding: 12 }}>No reviews yet :(</Typography> : reviewList}
+        {/* {reviewList} */}
         <Pagination count={5} shape="rounded" />
       </Paper>
     );

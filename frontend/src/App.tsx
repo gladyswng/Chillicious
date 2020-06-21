@@ -72,7 +72,7 @@ const App: React.FC = () => {
           <SearchResult />
       </Route>
 
-      <Route path="/store" exact>
+      <Route path="/store/:slug" exact>
           <Store />
       </Route>
 
@@ -107,6 +107,9 @@ const App: React.FC = () => {
       </Route>
 
       <Route path="/store" exact>
+          <Store />
+      </Route>
+      <Route path="/store/:slug" exact>
           <Store />
       </Route>
       <Route path="/store/add" exact>
