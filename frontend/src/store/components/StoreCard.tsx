@@ -61,9 +61,10 @@ interface StoreItemProps {
     author: string
 
 
-  }
+  }, 
+  onDelete: (store: string) => void
 }
-const StoreItem: React.FC<StoreItemProps> = ({store}) => {
+const StoreItem: React.FC<StoreItemProps> = ({store, onDelete }) => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
   const history = useHistory()
@@ -83,10 +84,15 @@ const StoreItem: React.FC<StoreItemProps> = ({store}) => {
   const editHandler = async (e:any) => {
     e.preventDefault()
     history.push(`/store/edit/${store.id}`)
-    // await sendRequest(`http://localhost:3000/store/edit/${store.id}`, 'GET', null , { 
-    //       Authorization: 'Bearer ' + auth.token,
-    //       'Content-Type': 'application/json'
-    // })
+  }
+
+  const deleteHander = async (e: any) => {
+    e.preventDefault()
+    setModalOpen(false)
+    await sendRequest(`http://localhost:3000/store/${store.id}`, 'DELETE', null , { 
+          Authorization: 'Bearer ' + auth.token
+    })
+    onDelete(store.id)
   }
 
   return (
@@ -132,7 +138,7 @@ const StoreItem: React.FC<StoreItemProps> = ({store}) => {
         {store.author === auth.userId && 
         <Modal buttonStyle='outlined' buttonText='Delete' buttonColor="default" open={modalOpen} onOpen={handleModalOpen} onClose={handleModalClose}>
           <Typography>Are you sure?</Typography>
-          <Button onClick={handleModalClose}>Yes</Button>
+          <Button onClick={deleteHander}>Yes</Button>
           <Button onClick={handleModalClose}>Cancel</Button>
         </Modal>
         }

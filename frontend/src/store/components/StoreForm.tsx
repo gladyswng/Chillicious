@@ -266,7 +266,7 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
           disabled={!formIsValid}
 
           style={{ margin: "16px 0", width: '40%' }}
-          >{blur? 'Add Store' : 'Edit Store'}</Button>
+          >{blur? 'Add Store' : 'Update Store'}</Button>
           <Button 
           variant="contained" 
           color="primary" 

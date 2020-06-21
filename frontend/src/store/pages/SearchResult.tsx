@@ -43,23 +43,12 @@ const SearchResult: React.FC<SearchResultProps> = () => {
     }
     fetchStores()
   }, [sendRequest])
+
+  const storeDeleteHandler = (storeId: string) => {
+    // TODO - CHANG TYPE ANY 
+    setLoadedStores((prevStores: any) => prevStores.filter((store: any)=> store.id !== storeId))
+  }
  
-  const storeList = [
-    {
-      id: "store1",
-      name: "foodiee",
-      description: "description1",
-      priceRange: '$$$',
-      image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=60",
-      address: 'asdfasdf',
-      location: {
-        lat: 40,
-        lng: -20
-      },
-      
-      tags: ['asian']
-    }
-  ]
   
     return (
   
@@ -82,7 +71,7 @@ const SearchResult: React.FC<SearchResultProps> = () => {
             </div>
 
             <div style={{ padding: 8 , width: '80%'}}>
-              <StoreList storeList={loadedStores} />
+              <StoreList storeList={loadedStores} onDelete={storeDeleteHandler}/>
             </div>
 
           </div>

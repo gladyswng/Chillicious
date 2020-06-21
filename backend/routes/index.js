@@ -10,7 +10,7 @@ const auth = require('../middleware/auth')
 
 router.get('/', storeController.getStores) 
 router.get('/stores', storeController.getStores) 
-router.get('/stores/:slug', storeController.getStoreBySlug)
+router.get('/store/:slug', storeController.getStoreBySlug)
 // Render storeForm
 router.get('store/add', auth, storeController.addStore)
 // Submit storeForm - when add''
@@ -27,8 +27,8 @@ storeController.validateRegister,
 storeController.updateStore) 
 
 
-router.delete('/stores/:id', auth, storeController.deleteStore)
-// 
+router.delete('/store/:id', auth, storeController.deleteStore)
+// TODO - CHANGE FILTER METHOD HERE
 router.get('/tags', storeController.getStoresByTag)
 router.get('/tags/:tag', storeController.getStoresByTag)
 

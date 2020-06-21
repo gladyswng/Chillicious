@@ -8,6 +8,7 @@ import RatingBar from '../../shared/components/UIElements/RatingBar'
 
 interface StoreListProps {
   storeList: Store[]
+  onDelete: (store: string)=> void
 }
 
 interface Store {
@@ -57,7 +58,7 @@ const StoreList: React.FC<StoreListProps> = (props) => {
       <Grid container className={classes.root}>
         <div style={{padding: 0, margin: 0, width: '100%'}}>
           {props.storeList.map((store: Store) => {
-            return <StoreCard key={store.id} store={store}/>
+            return <StoreCard key={store.id} store={store} onDelete={props.onDelete}/>
           })}
         </div>
 
