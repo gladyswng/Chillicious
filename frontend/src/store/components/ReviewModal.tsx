@@ -1,7 +1,8 @@
-import React, { useState, useContext } from 'react'
-import { NavLink } from 'react-router-dom'
+import React, { useState, useContext,  } from 'react'
+import { NavLink, useHistory } from 'react-router-dom'
 import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH, VALIDATOR_EMAIL } from '../../util/validators'
 import { useForm } from '../../shared/hooks/form-hook'
+import { useHttpClient } from '../../shared/hooks/http-hook' 
 import { AuthContext } from '../../shared/context/authContext'
 import RatingBar from '../../shared/components/UIElements/RatingBar'
 import Modal from '../../shared/components/UIElements/Modal'
@@ -9,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Input from '../../shared/components/UIElements/Input'
+import Message from '../../shared/components/UIElements/Message'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,12 +22,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface LoginModalProps {
- 
+  storeId: string
+  storeSlug: string
+
 }
 
-const LoginModal: React.FC<LoginModalProps> = () => {
+const LoginModal: React.FC<LoginModalProps> = ({ storeId, storeSlug }) => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
+  const history = useHistory()
+  const { isLoading, error, sendRequest, clearError } = useHttpClient()
+
   const [formState, inputHandler, setFormData] = useForm({
     rating: {
       value: 0,
@@ -35,7 +42,7 @@ const LoginModal: React.FC<LoginModalProps> = () => {
       value: '',
       isValid: false
     },
-    text: {
+    description: {
       value: '',
       isValid: false
     }
@@ -56,9 +63,25 @@ const LoginModal: React.FC<LoginModalProps> = () => {
 
   };
 
-  const authSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+  const reviewSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(inputs)
+    const responseData = await sendRequest(
+      `http://localhost:3000/store/${storeId}/addReview`, 
+      'POST', JSON.stringify({
+        title: inputs.title.value,
+        description: inputs.description.value,
+        rating: inputs.rating.value,
+        }),
+      { 
+        Authorization: 'Bearer ' + auth.token,
+        'Content-Type': 'application/json'
+      } 
+
+      )
+   
+    setModalOpen(false)
+    
+
     // auth.login()
   } 
 console.log(inputs)
@@ -70,9 +93,10 @@ console.log(inputs)
     open={modalOpen} 
     onOpen={handleModalOpen} 
     onClose={handleModalClose}>
+      {error && <Message message={error}/>}
 
       <Typography variant="h5">Tell others how hot it is</Typography>
-      <form action="" className={classes.root} noValidate autoComplete="off" onSubmit={authSubmitHandler}>
+      <form className={classes.root} noValidate autoComplete="off" onSubmit={reviewSubmitHandler}>
         <div style={{ width: '70%' }}>
           <div>
           <RatingBar 
@@ -99,12 +123,12 @@ console.log(inputs)
           
           <div>
           <Input 
-            id="text" 
+            id="description" 
             label="Required" 
             multiline={true}
             rows={4}
             inputLabel="Review"
-            value={inputs.text.value}
+            value={inputs.description.value}
             variant="outlined"
             errorMessage="Please provide more than 40 characters" 
             required

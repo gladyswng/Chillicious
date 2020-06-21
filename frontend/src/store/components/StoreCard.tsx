@@ -79,7 +79,6 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete }) => {
     setModalOpen(true);
   };
   const handleModalClose = () => {
-    console.log('set false')
     setModalOpen(false);
   };
 

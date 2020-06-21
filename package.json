@@ -11,7 +11,6 @@
   },
   "scripts": {
     "start": "webpack-dev-server",
-    
     "build": "node scripts/build.js",
     "startbackend": "nodemon ./backend/index.js",
     "devbackend": "env-cmd -f ./backend/config/dev.env nodemon ./backend/index.js"
@@ -38,6 +37,7 @@
     "express": "^4.17.1",
     "express-validator": "^6.4.0",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.27.0",
     "mongodb": "^3.5.5",
     "mongoose": "^5.9.5",
     "multer": "^1.4.2",

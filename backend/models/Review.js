@@ -17,9 +17,13 @@ const reviewSchema = new Schema({
         ref: 'Store',
         required: true
     },
-    text: {
+    title: {
         type: String,
         required: true
+    },
+    description: {
+      type: String,
+      required: true
     },
     rating: {
         type: Number,

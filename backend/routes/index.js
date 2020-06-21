@@ -64,9 +64,9 @@ router.delete('/user/me', auth, userController.deleteProfile)
 
 
 // REVIEW
-router.post('/stores/:id/addReview', auth, reviewController.addReview)
-router.patch('/stores/:id/updateReview', auth, reviewController.updateReview)
+router.post('/store/:id/addReview', auth, reviewController.addReview)
+router.patch('/store/:id/updateReview', auth, reviewController.updateReview)
 // router.patch('/user/me/profile', auth, reviewController.updateReview)
-router.delete('/stores/:id/deleteReview', auth, reviewController.deleteReview)
+router.delete('/store/:id/deleteReview', auth, reviewController.deleteReview)
 
 module.exports = router

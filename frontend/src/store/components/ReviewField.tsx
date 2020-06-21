@@ -46,7 +46,10 @@ const useStyles = makeStyles((theme) => ({
 
 interface ReviewFieldProps {
   reviews: {
-    author: string;
+    author: {
+      name: string
+      id: string
+    }
     avatar: string;
     rating: number;
     created: string;
@@ -54,9 +57,11 @@ interface ReviewFieldProps {
     title: string;
     id?: string
   }[]
+  storeId: string
+  storeSlug: string
 }
 
-const ReviewField: React.FC<ReviewFieldProps> = ({reviews}) => {
+const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId, storeSlug }) => {
 
   const classes = useStyles()
   const auth = useContext(AuthContext)
@@ -69,6 +74,7 @@ const ReviewField: React.FC<ReviewFieldProps> = ({reviews}) => {
     return (
       <ReviewCard 
       review={review}
+      
       key={review.id}/>
     )
   })
@@ -80,7 +86,9 @@ const ReviewField: React.FC<ReviewFieldProps> = ({reviews}) => {
           <Typography variant="h5">Reviews</Typography>
 
           {auth.isLoggedIn && (
-            <ReviewModal />
+            <ReviewModal 
+            storeId={storeId} storeSlug={storeSlug}
+            />
           )}
 
           {!auth.isLoggedIn && 

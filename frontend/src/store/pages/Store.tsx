@@ -34,7 +34,9 @@ const Store: React.FC<StoreProps> = ({}) => {
   const [loadedStore, setLoadedStore] = useState<any>()
   const { slug } = useParams()
 
-
+  // const addReviewHandler = (reviewId: string) => {
+  //   setLoadedStore((prevloadedStore) => prevloadedStore.reviews.filter(review.id===reviewId))
+  // }
   useEffect(()=> {
     const fetchStore = async () => {
       try {
@@ -64,7 +66,12 @@ const Store: React.FC<StoreProps> = ({}) => {
             
           
           <div>
-            <ReviewField reviews={loadedStore.reviews}/>
+            <ReviewField 
+            reviews={loadedStore.reviews} 
+            storeId={loadedStore.id}
+            storeSlug={loadedStore.slug}
+           
+            />
             
             
           </div> 
