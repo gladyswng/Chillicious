@@ -106,7 +106,7 @@ function autopopulate (next) {
     next()
 }
 
-storeSchema.pre('find', autopopulate)
+// storeSchema.pre('find', autopopulate)
 
 storeSchema.pre('findOne', autopopulate)
 

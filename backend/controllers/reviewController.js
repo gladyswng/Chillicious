@@ -6,13 +6,19 @@ exports.addReview = async (req, res, next) => {
     req.body.author = req.user._id
     req.body.store = req.params.id
     const review = new Review(req.body)
+    
     try {
-        
+      reviewExisted = await Review.findOne({ author: req.user._id, store: req.params.id })
+      if (reviewExisted) {
+        return next(
+          new HttpError('Cannot send more than one review to the same store', 500)
+        )
+      }
+
         await review.save()
         const updatedStore = await Review.calcAverageRatings(req.params.id)
-
-        res.send(updatedStore)
-        // res.redirect('back')
+        res.send({updatedStore, review})
+  
     } catch(e) {
       return next(
         new HttpError('Something went wrong, could not proceed your request', 500)

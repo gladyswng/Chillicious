@@ -29,7 +29,7 @@ interface ReviewCardProps {
   author: string
   avatar?: string
   rating: number
-  createdAt: string
+  created: string
   text: string
   title: string
 
@@ -40,7 +40,7 @@ interface ReviewCardProps {
 
 const ReviewCard: React.FC<ReviewCardProps> = (props) => {
   const classes = useStyles()
-  const { rating, avatar, author, title, text, createdAt } = props.review
+  const { rating, avatar, author, title, text, created } = props.review
   
     return (
       <div>
@@ -51,7 +51,7 @@ const ReviewCard: React.FC<ReviewCardProps> = (props) => {
   
 
             <Typography variant="caption">{author}</Typography>
-            <Typography variant="caption">Created: {createdAt}</Typography>
+            <Typography variant="caption">Created: {created}</Typography>
              
           </div>
             

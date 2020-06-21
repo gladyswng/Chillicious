@@ -49,7 +49,7 @@ interface ReviewFieldProps {
     author: string;
     avatar: string;
     rating: number;
-    createdAt: string;
+    created: string;
     text: string;
     title: string;
     id?: string
@@ -64,7 +64,7 @@ const ReviewField: React.FC<ReviewFieldProps> = ({reviews}) => {
   const handleChange = (event: any) => {
     setSortBy(event.target.value);
   };
-
+ 
   const reviewList = reviews.map(review => {
     return (
       <ReviewCard 

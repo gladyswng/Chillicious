@@ -8,12 +8,12 @@ const reviewSchema = new Schema({
         default: Date.now
     },
     author: {
-        type: Schema.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
     store: {
-        type: Schema.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'Store',
         required: true
     },
@@ -62,16 +62,24 @@ reviewSchema.statics.calcAverageRatings =  async function(storeId) {
 
     console.log(stats[0].ratings)
 
-
+  
     const updatedStore = await Store.findByIdAndUpdate(storeId, {
         ratingsQuantity: stats[0].ratings,
         ratingsAverage: stats[0].avgRating
-    }, { new: true })
+    }, { new: true }).populate('reviews')
   
     return updatedStore
 
 
 }
+
+function autopopulate (next) {
+  this.populate('author', 'name')
+  next()
+}
+
+reviewSchema.pre('find', autopopulate)
+
 
 module.exports = mongoose.model('Review', reviewSchema)
 
