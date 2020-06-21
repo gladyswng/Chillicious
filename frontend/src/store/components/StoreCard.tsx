@@ -10,7 +10,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-
+import Chip from '@material-ui/core/Chip'
 
 
 const useStyles = makeStyles({
@@ -40,6 +40,11 @@ const useStyles = makeStyles({
   pos: {
     marginBottom: 12,
   },
+  chip: {
+
+    margin: 2,
+
+  }
 });
 
 
@@ -96,15 +101,24 @@ const StoreItem: React.FC<StoreItemProps> = ({store}) => {
 
           <Typography variant="body2" component="p">
             {store.description}
-            <br />
-            {store.priceRange}
-            <br />
-            {store.tags}
-
           </Typography>
+          <Typography variant="subtitle1">{store.priceRange}</Typography>
+         
+          <div>
+
+            {store.tags.map(tag => {
+              return <Chip 
+              key={tag} label={tag}
+              size="small" 
+              color="primary" 
+              className={classes.chip}/>
+            })}
+          </div>
+          
+
             
             <CardActions>
-              <Button size="small">Learn More</Button>
+              <Button size="small"> More</Button>
             </CardActions>
 
               </div>
@@ -112,11 +126,11 @@ const StoreItem: React.FC<StoreItemProps> = ({store}) => {
         <div hidden={false} className={classes.cardButtons}>
 
          {store.author === auth.userId &&
-        <Button variant="contained" color="primary" onClick={editHandler}>Edit</Button>
+        <Button variant="outlined" color="primary" onClick={editHandler}>Edit</Button>
         } 
 
         {store.author === auth.userId && 
-        <Modal buttonText='Delete' buttonColor="default" open={modalOpen} onOpen={handleModalOpen} onClose={handleModalClose}>
+        <Modal buttonStyle='outlined' buttonText='Delete' buttonColor="default" open={modalOpen} onOpen={handleModalOpen} onClose={handleModalClose}>
           <Typography>Are you sure?</Typography>
           <Button onClick={handleModalClose}>Yes</Button>
           <Button onClick={handleModalClose}>Cancel</Button>

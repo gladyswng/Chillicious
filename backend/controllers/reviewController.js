@@ -2,7 +2,7 @@
 const Review = require('../models/Review')
 const HttpError = require('../models/http-error')
 
-exports.addReview = async (req, res) => {
+exports.addReview = async (req, res, next) => {
     req.body.author = req.user._id
     req.body.store = req.params.id
     const review = new Review(req.body)

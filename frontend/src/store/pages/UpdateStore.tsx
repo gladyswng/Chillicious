@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { useHttpClient } from '../../shared/hooks/http-hook'  
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import StoreForm from '../components/StoreForm'
 import Message from '../../shared/components/UIElements/Message'
 import Typography from '@material-ui/core/Typography'
@@ -24,23 +24,11 @@ interface checkbox {
 
 const UpdateStore: React.FC<UpdateStoreProps> = ({}) => {
   const auth = useContext(AuthContext)
+  const history = useHistory()
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
   const [loadedStore, setLoadedStore] = useState()
   const { id } = useParams()
 
-  
-  const stores = [
-    {
-      id: "5eea54ffab616d6153c51eb2",
-      name: "test1234",
-      description: "description1",
-      image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=60",
-      address: 'asdfasdf',
-      priceRange: '$$',
-      phoneNumber: '1234',
-      tags: ['chinese', 'lactoseFree']
-    }
-  ]
   
 
   const [formState, inputHandler, priceHandler, tagsHandler, setFormData] = useForm({
@@ -92,10 +80,9 @@ const UpdateStore: React.FC<UpdateStoreProps> = ({}) => {
           Authorization: 'Bearer ' + auth.token,
           'Content-Type': 'application/json'
         })
-        console.log(responseData)
         
         const store = responseData
-        console.log(store)
+        
         setLoadedStore(store)
 
 
@@ -156,39 +143,28 @@ const UpdateStore: React.FC<UpdateStoreProps> = ({}) => {
   }, [sendRequest, id, setFormData])
 
 
-// useEffect(() => {
-//   const storeId  = "store1"   //useParams()
-
-//   const fetchStore = async () => {
-
-      
-//   //  const store = useParams().id
-//     const store =  stores.find(store => store.id === storeId)
-//     if (!store) {
-//       return <h3>Could not find store</h3>
-//     }
-//     console.log('ran useEffect')
-
- 
-   
-//   }
-    
-//   fetchStore()
-    
-// }, [])
-
 
 const { inputs, isValid, otherData } = formState
 
-const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+const updateSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    // try {
-    //   await sendRequest(
-    //     `http://localhost:3000/store/update/{}`
-    //   )
-    // } catch (e) {
+    try {
+      await sendRequest(
+        `http://localhost:3000/store/update/${id}`, 'PATCH', JSON.stringify({
+          name: inputs.storeName.value,
+          description: inputs.description.value,
+          address: inputs.address.value,
+          priceRange: inputs.priceRange.value,
+          tags: otherData.tags
+        }),  { 
+          Authorization: 'Bearer ' + auth.token,
+          'Content-Type': 'application/json'
+        } 
+      )
+      history.push('/stores') // TODO - CHANGE PAGE HERE TO USER STORE PAGE
+    } catch (e) {
 
-    // }
+    }
 
   if (!loadedStore && !error) {
     return (
@@ -216,7 +192,7 @@ const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         inputHandler={inputHandler}
         priceHandler={priceHandler}
         tagsHandler={tagsHandler}
-        submitHandler={submitHandler}
+        submitHandler={updateSubmitHandler}
 
         />
       }

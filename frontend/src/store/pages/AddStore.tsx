@@ -76,7 +76,8 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
               name: inputs.storeName.value,
               description: inputs.description.value,
               address: inputs.address.value,
-              priceRange: inputs.priceRange.value
+              priceRange: inputs.priceRange.value,
+              tags: otherData.tags
               }), 
             { 
               Authorization: 'Bearer ' + auth.token,

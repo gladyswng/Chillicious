@@ -201,8 +201,6 @@ exports.validateRegister = (req, res, next) => {
 }
 
 const confirmOwner = (store, user) => {
- 
-
     // equals() is a method that comes along since the store.author is going to be an ObjectID. In order to compare an ObjectID with an actual string we need to use the .equals() that lives inside of it
     if (!store.author.equals(user._id)) {
         throw new HttpError('You must own the store in order to edit it!', 401)
@@ -212,28 +210,34 @@ const confirmOwner = (store, user) => {
 }
 
 exports.editStore = async (req, res, next) => {
-    try {
-        // Auth
-       
-        const store = await Store.findById(req.params.id)
-     
-        // TODO - edit store page
-        // render store info in page
-        confirmOwner(store, req.user)
-      
-        if (!store) {
-          return next(
-            new HttpError('Could not find store', 404)
-          )
-        }
-
-        res.send(store)
-    } catch(e) {
-      return next(
-        new HttpError('Something went wrong, could not proceed to edit store', 500)
-      )
-    }
+  try {
+    const store = await Store.findById(req.params.id, function (err, store) {
+      if (!store) {
+        return next(
+          new HttpError('Could not find store', 404)
+        )
+      } 
+      if (err) {
+        return next(
+          new HttpError('Something went wrong, could not proceed to edit store', 500)
+        )
+      }
+    })
     
+    // if (!store) {
+    //   return next(
+    //     new HttpError('Could not find store', 404)
+    //   )
+    // }
+    confirmOwner(store, req.user)
+  
+
+    res.send(store)
+} catch(e) {
+  return next(
+    new HttpError('Something went wrong, could not proceed to edit store', 500)
+  )
+}   
 
 }
 
