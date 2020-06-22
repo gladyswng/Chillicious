@@ -37,6 +37,11 @@ const RatingBar: React.FC<RatingBarProps> = ({ rating, inputIsValid, readOnly, o
   const classes = useStyles()
   const [ rate, setRate ] = useState(rating)
   const [ isValid, setValid ] = useState(inputIsValid)
+
+  useEffect(() => {
+    setRate(rating)
+  }, [rating])
+
   /// TOOOOO LAZY TO USE A REDUCER RIGHT NOW
   const changeHandler = (event: any, newRate: number) => {
     setValid(true)

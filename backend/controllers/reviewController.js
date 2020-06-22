@@ -17,8 +17,7 @@ exports.addReview = async (req, res, next) => {
 
         await review.save()
         const updatedStore = await Review.calcAverageRatings(req.params.id)
-        res.send(review)
-        // res.send({updatedStore, review})
+        res.send(updatedStore)
   
     } catch(e) {
       return next(

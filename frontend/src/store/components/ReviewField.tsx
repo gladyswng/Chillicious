@@ -59,25 +59,27 @@ interface ReviewFieldProps {
   }[]
   storeId: string
   storeSlug: string
+  onChange: (store: object) => void
 }
 
-const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId, storeSlug }) => {
+const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId, storeSlug, onChange }) => {
 
   const classes = useStyles()
   const auth = useContext(AuthContext)
   const [sortBy, setSortBy] = useState('Latest')
-  const [loadedReviews, setLoadedReviews] = useState(reviews)
 
-  const addReviewHandler = (review: any) => {
+  // const [loadedReviews, setLoadedReviews] = useState(reviews)
+
+  // const addReviewHandler = (review: any) => {
     
-    setLoadedReviews([...loadedReviews, review])
-  }
+  //   setLoadedReviews([...loadedReviews, review])
+  // }
   
   const handleChange = (event: any) => {
     setSortBy(event.target.value);
   };
  
-  const reviewList = loadedReviews.map(review => {
+  const reviewList = reviews.map(review => {
     return (
       <ReviewCard 
       review={review}
@@ -95,7 +97,7 @@ const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId, storeSlug }
           {auth.isLoggedIn && (
             <ReviewModal 
             storeId={storeId} storeSlug={storeSlug}
-            onAdd={addReviewHandler}
+            onChange={onChange}
             />
           )}
 
@@ -118,7 +120,7 @@ const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId, storeSlug }
         </div>
         
 
-        {loadedReviews.length===0? <Typography variant="h6" style={{ padding: 12 }}>No reviews yet :(</Typography> : reviewList}
+        {reviews.length===0? <Typography variant="h6" style={{ padding: 12 }}>No reviews yet :(</Typography> : reviewList}
         {/* {reviewList} */}
         <Pagination count={5} shape="rounded" />
       </Paper>

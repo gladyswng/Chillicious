@@ -25,11 +25,11 @@ interface LoginModalProps {
   storeId: string
   storeSlug: string
   // TODO - TYPE 
-  onAdd: (review: object) => void
+  onChange: (store: object) => void
 
 }
 
-const LoginModal: React.FC<LoginModalProps> = ({ storeId, storeSlug, onAdd }) => {
+const LoginModal: React.FC<LoginModalProps> = ({ storeId, storeSlug, onChange }) => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
   const history = useHistory()
@@ -68,7 +68,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ storeId, storeSlug, onAdd }) =>
   const reviewSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const responsData = await sendRequest(
+      const responseData = await sendRequest(
        `http://localhost:3000/store/${storeId}/addReview`, 
        'POST', JSON.stringify({
          title: inputs.title.value,
@@ -80,9 +80,11 @@ const LoginModal: React.FC<LoginModalProps> = ({ storeId, storeSlug, onAdd }) =>
          'Content-Type': 'application/json'
        } 
        )
+       
        setModalOpen(false)
-       const review = responsData
-       onAdd(review)
+      
+       const store = responseData
+       onChange(store)
        
     } catch (e) {
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 import ReactDependentScript from 'react-dependent-script'
 
@@ -72,7 +72,14 @@ interface StoreInfoProps {
 const StoreInfo: React.FC<StoreInfoProps> = (props) => {
   const classes = useStyles()
   const { name, description, ratingsAverage, priceRange, image, address, tags, location, ratingsQuantity } = props.store
- 
+
+
+  // const [rating, setRating] = useState(ratingsAverage)
+  // console.log(rating)
+
+//  useEffect(()=> {
+//    setRating(ratingsAverage)
+//  }, [ratingsAverage])
 
   const tagChips = tags.map(tag => {
     return <Chip label={tag} color="primary" key={tag}/>
@@ -87,9 +94,10 @@ const StoreInfo: React.FC<StoreInfoProps> = (props) => {
 
           <Box component="fieldset" mb={3} borderColor="transparent" style={{ margin: 0, padding: 0, display:'inline-block' }}>
            <RatingBar rating={ratingsAverage} readOnly={true} />
-            
-    <Typography variant="body1" component="span" className={classes.reviewNumber}>{ ratingsQuantity || "0"} {ratingsQuantity>1? 'Reviews' : 'Review'}</Typography>
-          </Box>
+           {/* <RatingBar rating={ratingsAverage} readOnly={true} /> */}
+
+          <Typography variant="body1" component="span" className={classes.reviewNumber}>{ ratingsQuantity || "0"} {ratingsQuantity>1? 'Reviews' : 'Review'}</Typography>
+                </Box>
 
           <Grid container alignItems="center">
 

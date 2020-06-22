@@ -49,7 +49,11 @@ const Store: React.FC<StoreProps> = ({}) => {
     }
     fetchStore()
   }, [ sendRequest, slug])
-
+  // TODO - CHANGE TYPE
+  const changeReviewHandler = (store: any) => {
+    console.log(store)
+    setLoadedStore(store)
+  }
   
     return (
 
@@ -68,6 +72,7 @@ const Store: React.FC<StoreProps> = ({}) => {
           reviews={loadedStore.reviews} 
           storeId={loadedStore.id}
           storeSlug={loadedStore.slug}
+          onChange={changeReviewHandler}
         
           />
             
