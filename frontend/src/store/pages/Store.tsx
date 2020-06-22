@@ -63,16 +63,16 @@ const Store: React.FC<StoreProps> = ({}) => {
             <StoreInfo store={loadedStore}/>
             
           
-          <div>
-            <ReviewField 
-            reviews={loadedStore.reviews} 
-            storeId={loadedStore.id}
-            storeSlug={loadedStore.slug}
-           
-            />
+       
+          <ReviewField 
+          reviews={loadedStore.reviews} 
+          storeId={loadedStore.id}
+          storeSlug={loadedStore.slug}
+        
+          />
             
             
-          </div> 
+
 
     
         </div>

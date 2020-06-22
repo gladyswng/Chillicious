@@ -26,7 +26,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center'
   },
   comment: {
-    padding: '0 24px'
+    padding: '0 24px',
+    width: '68%'
   },
   cardButtons: {
     display: 'flex', 
@@ -90,22 +91,26 @@ const ReviewCard: React.FC<ReviewCardProps> = (props) => {
              
           </div>
             
-        <div style={{ display: 'flex', justifyContent: 'space-between', width: '80%' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
 
           <div className={classes.comment}>
             <RatingBar rating={rating} readOnly={true}/>
             <Typography variant="h6" style={{ fontWeight: 'normal' }}>{title}</Typography>
-            <Typography>{description}</Typography>
+            <Typography style={{ width: '100%', overflowWrap: 'break-word' }}>{description}</Typography>
             
           </div>
           <div hidden={false} className={classes.cardButtons}>
 
             {author._id === auth.userId &&
-            <Button variant="outlined" color="primary" onClick={editHandler}>Edit</Button>
+            <Button variant="outlined" color="primary"
+            size="small"
+            onClick={editHandler}>Edit</Button>
             } 
 
             {author._id === auth.userId && 
-            <Modal buttonStyle='outlined' buttonText='Delete' buttonColor="default" open={modalOpen} onOpen={handleModalOpen} onClose={handleModalClose}>
+            <Modal buttonStyle='outlined' buttonText='Delete' buttonColor="default" 
+            buttonSize="small"
+            open={modalOpen} onOpen={handleModalOpen} onClose={handleModalClose}>
             <Typography>Are you sure?</Typography>
             <Button onClick={deleteHander}>Yes</Button>
             <Button onClick={handleModalClose}>Cancel</Button>
