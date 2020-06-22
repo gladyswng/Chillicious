@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react'
 import moment from 'moment'
 import Modal from '../../shared/components/UIElements/Modal'
+import ReviewModal from './ReviewModal'
 import { AuthContext } from '../../shared/context/authContext'
 import { useHttpClient } from '../../shared/hooks/http-hook' 
 import Button from '@material-ui/core/Button';
@@ -50,14 +51,15 @@ interface ReviewCardProps {
 
  }
 
-
+ storeId: string
+ onChange: (store: object) => void
 }
 
 
-const ReviewCard: React.FC<ReviewCardProps> = (props) => {
+const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange }) => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
-  const { rating, avatar, author, title, description, created } = props.review
+  const { rating, avatar, author, title, description, created } = review
   const [modalOpen, setModalOpen] = useState(false)
   const handleModalOpen = () => {
     setModalOpen(true);
@@ -102,9 +104,16 @@ const ReviewCard: React.FC<ReviewCardProps> = (props) => {
           <div hidden={false} className={classes.cardButtons}>
 
             {author._id === auth.userId &&
-            <Button variant="outlined" color="primary"
-            size="small"
-            onClick={editHandler}>Edit</Button>
+             <ReviewModal 
+             review={review}
+             storeId={storeId} 
+             onChange={onChange}
+             buttonText="Edit"
+             buttonStyle="outlined"
+             />
+            // <Button variant="outlined" color="primary"
+            // size="small"
+            // onClick={editHandler}>Edit</Button>
             } 
 
             {author._id === auth.userId && 

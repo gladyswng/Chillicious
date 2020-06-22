@@ -58,22 +58,15 @@ interface ReviewFieldProps {
     _id: string
   }[]
   storeId: string
-  storeSlug: string
+
   onChange: (store: object) => void
 }
 
-const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId, storeSlug, onChange }) => {
+const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId,  onChange }) => {
 
   const classes = useStyles()
   const auth = useContext(AuthContext)
   const [sortBy, setSortBy] = useState('Latest')
-
-  // const [loadedReviews, setLoadedReviews] = useState(reviews)
-
-  // const addReviewHandler = (review: any) => {
-    
-  //   setLoadedReviews([...loadedReviews, review])
-  // }
   
   const handleChange = (event: any) => {
     setSortBy(event.target.value);
@@ -83,7 +76,8 @@ const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId, storeSlug, 
     return (
       <ReviewCard 
       review={review}
-      
+      storeId={storeId} 
+      onChange={onChange}
       key={review._id}/>
     )
   })
@@ -96,7 +90,8 @@ const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId, storeSlug, 
 
           {auth.isLoggedIn && (
             <ReviewModal 
-            storeId={storeId} storeSlug={storeSlug}
+            buttonText="Write a review"
+            storeId={storeId} 
             onChange={onChange}
             />
           )}

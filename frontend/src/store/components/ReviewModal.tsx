@@ -1,4 +1,4 @@
-import React, { useState, useContext,  } from 'react'
+import React, { useState, useContext, useEffect,  } from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
 import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH, VALIDATOR_EMAIL } from '../../util/validators'
 import { useForm } from '../../shared/hooks/form-hook'
@@ -23,13 +23,26 @@ const useStyles = makeStyles((theme) => ({
 
 interface LoginModalProps {
   storeId: string
-  storeSlug: string
+  buttonText: string
+  buttonStyle?: "contained" | "outlined"
   // TODO - TYPE 
   onChange: (store: object) => void
+  review? : {
+    author: {
+      name: string
+      _id: string
+  };
+  avatar?: string
+  rating: number
+  created: string
+  description: string
+  title: string
+  }
+
 
 }
 
-const LoginModal: React.FC<LoginModalProps> = ({ storeId, storeSlug, onChange }) => {
+const LoginModal: React.FC<LoginModalProps> = ({ storeId, onChange, buttonText, buttonStyle, review }) => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
   const history = useHistory()
@@ -54,6 +67,26 @@ const LoginModal: React.FC<LoginModalProps> = ({ storeId, storeSlug, onChange })
   // USE EFFEECT FOR UPDATE REVIEW IF ALREADY SET REVIEW
   const { inputs, isValid } = formState
 
+  if (review) {
+    useEffect(()=> {
+      setFormData({
+        rating: {
+          value: review.rating,
+          isValid: true
+        },
+        title: {
+          value: review.title,
+          isValid: true
+        },
+        description: {
+          value: review.description,
+          isValid: true
+        }
+      }, 
+      true,
+      {})
+    }, [review, setFormData])
+  }
  
   const [modalOpen, setModalOpen] = useState(false);
   
@@ -99,7 +132,8 @@ const LoginModal: React.FC<LoginModalProps> = ({ storeId, storeSlug, onChange })
 
   return (
     <Modal 
-    buttonText="Write a review" 
+    buttonText={buttonText} 
+    buttonStyle={buttonStyle}
     buttonColor="primary" 
     open={modalOpen} 
     onOpen={handleModalOpen} 

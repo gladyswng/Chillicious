@@ -10,9 +10,9 @@ const auth = require('../middleware/auth')
 
 router.get('/', storeController.getStores) 
 router.get('/stores', storeController.getStores) 
+router.get('store/api/add', auth, storeController.addStore)
 router.get('/store/:slug', storeController.getStoreBySlug)
 // Render storeForm
-router.get('store/add', auth, storeController.addStore)
 // Submit storeForm - when add''
 router.post('/store/add', auth, 
 storeController.storeValidationRules(),

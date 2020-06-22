@@ -51,7 +51,6 @@ const Store: React.FC<StoreProps> = ({}) => {
   }, [ sendRequest, slug])
   // TODO - CHANGE TYPE
   const changeReviewHandler = (store: any) => {
-    console.log(store)
     setLoadedStore(store)
   }
   
@@ -71,7 +70,6 @@ const Store: React.FC<StoreProps> = ({}) => {
           <ReviewField 
           reviews={loadedStore.reviews} 
           storeId={loadedStore.id}
-          storeSlug={loadedStore.slug}
           onChange={changeReviewHandler}
         
           />
