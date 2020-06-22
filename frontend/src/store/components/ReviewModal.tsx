@@ -98,6 +98,30 @@ const LoginModal: React.FC<LoginModalProps> = ({ storeId, onChange, buttonText, 
 
   };
 
+  const reviewUpdateHandler = async (event: React.FormEvent<HTMLFormElement> ) => {
+    try {
+      const responseData = await sendRequest(
+       `http://localhost:3000/store/${storeId}/updateReview`, 
+       'PATCH', JSON.stringify({
+         title: inputs.title.value,
+         description: inputs.description.value,
+         rating: inputs.rating.value,
+         }),
+       { 
+         Authorization: 'Bearer ' + auth.token,
+         'Content-Type': 'application/json'
+       } 
+       )
+       
+       setModalOpen(false)
+      
+       const store = responseData
+       onChange(store)
+    } catch (e) {
+
+    }
+  }
+
   const reviewSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
@@ -141,7 +165,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ storeId, onChange, buttonText, 
       {error && <Message message={error}/>}
 
       <Typography variant="h5">Tell others how hot it is</Typography>
-      <form className={classes.root} noValidate autoComplete="off" onSubmit={reviewSubmitHandler}>
+      <form className={classes.root} noValidate autoComplete="off" onSubmit={review?reviewUpdateHandler : reviewSubmitHandler}>
         <div style={{ width: '70%' }}>
           <div>
           <RatingBar 

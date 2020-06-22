@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import StoreForm from '../components/StoreForm'
-import { useForm } from '../../shared/hooks/form-hook'
+import { useForm } from '../../shared/hooks/store-form-hook'
 import { useHttpClient } from '../../shared/hooks/http-hook'
 import Typography from '@material-ui/core/Typography';
 import Message from '../../shared/components/UIElements/Message'
@@ -55,8 +55,16 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
 
   const { inputs, isValid,  otherData } = formState
 
-
+  // const priceHandler = (event: React.ChangeEvent<HTMLInputElement>) => inputHandler('priceRange', event.target.value, true)
   
+  // const tagsHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   dispatch({
+  //     type: 'TAGS_CHANGE',
+  //     checkboxId: event.target.name,
+  //     checked: event.target.checked
+
+  //   })
+  // }
 
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     

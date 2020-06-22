@@ -29,9 +29,10 @@ exports.addReview = async (req, res, next) => {
 }
 
 exports.updateReview = async (req, res) => {
-    console.log(req.user._id)
+ 
+  
     const updates = Object.keys(req.body)
-    const allowedUpdates = ['text', 'description', 'rating']
+    const allowedUpdates = ['title', 'description', 'rating']
     const isValidOperation = updates.every(update => {
         return allowedUpdates.includes(update)
     })
@@ -46,7 +47,8 @@ exports.updateReview = async (req, res) => {
             { author: req.user._id, store: req.params.id },
             // ALLOWED UPDATE??
             { 
-                text: req.body.text,
+                title: req.body.title,
+                description: req.body.description,
                 rating: req.body.rating
             }
         )
@@ -58,7 +60,7 @@ exports.updateReview = async (req, res) => {
 
         const updatedStore = await Review.calcAverageRatings(req.params.id)
 
-        res.send({review, updatedStore})
+        res.send(updatedStore)
         
 
     } catch(e) {

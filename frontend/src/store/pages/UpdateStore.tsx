@@ -4,7 +4,7 @@ import { useParams, useHistory } from "react-router-dom";
 import StoreForm from '../components/StoreForm'
 import Message from '../../shared/components/UIElements/Message'
 import Typography from '@material-ui/core/Typography'
-import { useForm } from '../../shared/hooks/form-hook'
+import { useForm } from '../../shared/hooks/store-form-hook'
 import { AuthContext } from '../../shared/context/authContext'
 import CircularProgress from '@material-ui/core/CircularProgress';
 

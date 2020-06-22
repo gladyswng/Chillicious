@@ -26,10 +26,31 @@ const formReducer = (state: any, action: any) => {
 
       }
 
+    case 'TAGS_CHANGE': 
+      if (action.checked && !state.otherData.tags.includes(action.checkboxId)) {
+  
+        state.otherData.tags = [...state.otherData.tags, action.checkboxId]
+      } else {
+  
+        state.otherData.tags = state.otherData.tags.filter((tag: string) => tag !== action.checkboxId)
+      }
+      
+      return {
+        ...state,
+        otherData: {
+          tags: state.otherData.tags,
+          checkbox: {
+            ...state.otherData.checkbox,
+            [action.checkboxId]: action.checked
+          }
+        }
+
+      }
     case 'SET_DATA': 
     return {
       inputs: action.inputs,
-      isValid: action.formIsValid
+      isValid: action.formIsValid,
+      otherData: action.otherData
     }
     
     default:   
@@ -58,14 +79,26 @@ export const useForm = (initialInputs: object, initialFormValidity: boolean, oth
     })
   }, [])
 
+  const priceHandler = (event: React.ChangeEvent<HTMLInputElement>) => inputHandler('priceRange', event.target.value, true)
+  
+  const tagsHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch({
+      type: 'TAGS_CHANGE',
+      checkboxId: event.target.name,
+      checked: event.target.checked
 
-  const setFormData = useCallback((inputData: object, formValidity: boolean) => {
+    })
+  }
+
+
+  const setFormData = useCallback((inputData: object, formValidity: boolean, otherData: object) => {
     dispatch({
       type: "SET_DATA",
       inputs: inputData,
-      formIsValid: formValidity
+      formIsValid: formValidity,
+      otherData: otherData
     })
   }, [])
 
-  return [formState, inputHandler, setFormData ]
+  return [formState, inputHandler, priceHandler, tagsHandler, setFormData ]
 }
