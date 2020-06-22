@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import ReviewCard from './ReviewCard'
 import { AuthContext } from '../../shared/context/authContext'
 
@@ -48,14 +48,14 @@ interface ReviewFieldProps {
   reviews: {
     author: {
       name: string
-      id: string
+      _id: string
     }
-    avatar: string;
+    avatar?: string;
     rating: number;
     created: string;
-    text: string;
+    description: string;
     title: string;
-    id?: string
+    _id: string
   }[]
   storeId: string
   storeSlug: string
@@ -65,17 +65,24 @@ const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId, storeSlug }
 
   const classes = useStyles()
   const auth = useContext(AuthContext)
-  const [sortBy, setSortBy] = React.useState('Latest')
+  const [sortBy, setSortBy] = useState('Latest')
+  const [loadedReviews, setLoadedReviews] = useState(reviews)
+
+  const addReviewHandler = (review: any) => {
+    
+    setLoadedReviews([...loadedReviews, review])
+  }
+  
   const handleChange = (event: any) => {
     setSortBy(event.target.value);
   };
  
-  const reviewList = reviews.map(review => {
+  const reviewList = loadedReviews.map(review => {
     return (
       <ReviewCard 
       review={review}
       
-      key={review.id}/>
+      key={review._id}/>
     )
   })
 
@@ -88,6 +95,7 @@ const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId, storeSlug }
           {auth.isLoggedIn && (
             <ReviewModal 
             storeId={storeId} storeSlug={storeSlug}
+            onAdd={addReviewHandler}
             />
           )}
 
@@ -110,7 +118,7 @@ const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId, storeSlug }
         </div>
         
 
-        {reviews.length===0? <Typography variant="h6" style={{ padding: 12 }}>No reviews yet :(</Typography> : reviewList}
+        {loadedReviews.length===0? <Typography variant="h6" style={{ padding: 12 }}>No reviews yet :(</Typography> : reviewList}
         {/* {reviewList} */}
         <Pagination count={5} shape="rounded" />
       </Paper>

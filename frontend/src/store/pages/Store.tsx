@@ -34,14 +34,12 @@ const Store: React.FC<StoreProps> = ({}) => {
   const [loadedStore, setLoadedStore] = useState<any>()
   const { slug } = useParams()
 
-  // const addReviewHandler = (reviewId: string) => {
-  //   setLoadedStore((prevloadedStore) => prevloadedStore.reviews.filter(review.id===reviewId))
-  // }
+
   useEffect(()=> {
     const fetchStore = async () => {
       try {
         const responseData = await sendRequest(`http://localhost:3000/store/${slug}`)
-        console.log(responseData)
+  
         const store = responseData
 
         setLoadedStore(store)

@@ -73,7 +73,7 @@ const StoreInfo: React.FC<StoreInfoProps> = (props) => {
   const classes = useStyles()
   const { name, description, ratingsAverage, priceRange, image, address, tags, location, ratingsQuantity } = props.store
  
-  console.log(location)
+
   const tagChips = tags.map(tag => {
     return <Chip label={tag} color="primary" key={tag}/>
   })

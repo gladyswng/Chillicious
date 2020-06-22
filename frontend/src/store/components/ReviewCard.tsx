@@ -39,12 +39,12 @@ interface ReviewCardProps {
  review: {
   author: {
     name: string
-    id: string
+    _id: string
   }
   avatar?: string
   rating: number
   created: string
-  text: string
+  description: string
   title: string
 
  }
@@ -56,7 +56,7 @@ interface ReviewCardProps {
 const ReviewCard: React.FC<ReviewCardProps> = (props) => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
-  const { rating, avatar, author, title, text, created } = props.review
+  const { rating, avatar, author, title, description, created } = props.review
   const [modalOpen, setModalOpen] = useState(false)
   const handleModalOpen = () => {
     setModalOpen(true);
@@ -95,16 +95,16 @@ const ReviewCard: React.FC<ReviewCardProps> = (props) => {
           <div className={classes.comment}>
             <RatingBar rating={rating} readOnly={true}/>
             <Typography variant="h6" style={{ fontWeight: 'normal' }}>{title}</Typography>
-            <Typography>{text}</Typography>
+            <Typography>{description}</Typography>
             
           </div>
           <div hidden={false} className={classes.cardButtons}>
 
-            {author.id === auth.userId &&
+            {author._id === auth.userId &&
             <Button variant="outlined" color="primary" onClick={editHandler}>Edit</Button>
             } 
 
-            {author.id === auth.userId && 
+            {author._id === auth.userId && 
             <Modal buttonStyle='outlined' buttonText='Delete' buttonColor="default" open={modalOpen} onOpen={handleModalOpen} onClose={handleModalClose}>
             <Typography>Are you sure?</Typography>
             <Button onClick={deleteHander}>Yes</Button>

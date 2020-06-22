@@ -24,10 +24,12 @@ const useStyles = makeStyles((theme) => ({
 interface LoginModalProps {
   storeId: string
   storeSlug: string
+  // TODO - TYPE 
+  onAdd: (review: object) => void
 
 }
 
-const LoginModal: React.FC<LoginModalProps> = ({ storeId, storeSlug }) => {
+const LoginModal: React.FC<LoginModalProps> = ({ storeId, storeSlug, onAdd }) => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
   const history = useHistory()
@@ -65,26 +67,33 @@ const LoginModal: React.FC<LoginModalProps> = ({ storeId, storeSlug }) => {
 
   const reviewSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const responseData = await sendRequest(
-      `http://localhost:3000/store/${storeId}/addReview`, 
-      'POST', JSON.stringify({
-        title: inputs.title.value,
-        description: inputs.description.value,
-        rating: inputs.rating.value,
-        }),
-      { 
-        Authorization: 'Bearer ' + auth.token,
-        'Content-Type': 'application/json'
-      } 
+    try {
+      const responsData = await sendRequest(
+       `http://localhost:3000/store/${storeId}/addReview`, 
+       'POST', JSON.stringify({
+         title: inputs.title.value,
+         description: inputs.description.value,
+         rating: inputs.rating.value,
+         }),
+       { 
+         Authorization: 'Bearer ' + auth.token,
+         'Content-Type': 'application/json'
+       } 
+       )
+       setModalOpen(false)
+       const review = responsData
+       onAdd(review)
+       
+    } catch (e) {
 
-      )
+    }
+
+    
    
-    setModalOpen(false)
     
 
     // auth.login()
   } 
-console.log(inputs)
 
   return (
     <Modal 
