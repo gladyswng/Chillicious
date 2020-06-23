@@ -88,7 +88,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange }) =>
             <Avatar alt='avatar' src={avatar? avatar : "https://images.unsplash.com/photo-1562153889-3847e21e5d3b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"} style={{height: 80, width: 80 }}/>
   
 
-            <Typography variant="caption">{author.name}</Typography>
+            <Typography variant="caption" style={{ fontWeight: "bold" }}>{author.name}</Typography>
             <Typography variant="caption">{moment(created.split('T')[0]).format('MMM/D YY')}</Typography>
              
           </div>

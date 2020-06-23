@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import Modal from '../../shared/components/UIElements/Modal'
+
 import Link from '@material-ui/core/Link'
 import { AuthContext } from '../../shared/context/authContext'
 import { useHttpClient } from '../../shared/hooks/http-hook' 
@@ -65,15 +66,19 @@ interface StoreItemProps {
 
   }, 
   onDelete: (store: string) => void
+  showError: (error: string) => void
+  showLoading: (loading: boolean) => void
 }
-const StoreItem: React.FC<StoreItemProps> = ({store, onDelete }) => {
+const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, showLoading, showError }) => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
   const history = useHistory()
   const [modalOpen, setModalOpen] = useState(false)
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
-  // console.log(store.author)
-  // console.log(auth.userId)
+
+  showLoading(isLoading)
+  showError(error)
+  
   
   const handleModalOpen = () => {
     setModalOpen(true);
@@ -94,16 +99,19 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete }) => {
 
   const deleteHander = async (e: any) => {
     e.preventDefault()
-    setModalOpen(false)
+    setModalOpen(false) 
     await sendRequest(`http://localhost:3000/store/${store.id}`, 'DELETE', null , { 
           Authorization: 'Bearer ' + auth.token
     })
     onDelete(store.id)
   }
+  // TODO - SHOW SPINNER WHEN DELETING
+  // TODO - CLEAR ERROR
 
-  
 
   return (
+
+
     <Card className={classes.storeCardRoot} variant="outlined" >
        <CardMedia className={classes.cardMedia}  image={store.image? store.image : "https://images.unsplash.com/photo-1506368144590-cf6438f1cdb5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80"}/>
 
