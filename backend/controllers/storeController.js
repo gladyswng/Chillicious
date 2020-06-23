@@ -225,11 +225,7 @@ exports.editStore = async (req, res, next) => {
       }
     })
     
-    // if (!store) {
-    //   return next(
-    //     new HttpError('Could not find store', 404)
-    //   )
-    // }
+
     confirmOwner(store, req.user)
   
 
@@ -244,9 +240,9 @@ exports.editStore = async (req, res, next) => {
 
 exports.updateStore = async (req, res, next) => {
   const updates = Object.keys(req.body)
+  console.log(req.body)
   const allowedUpdates = ['name', 'description', 'tags', 'priceRange', 'address', 'photo']
-  
-
+    //  TODO - GET THE RIGHT ERROR MESSAGE
     try {
       const isValidOperation = updates.every(update => {
           return allowedUpdates.includes(update)
@@ -254,18 +250,26 @@ exports.updateStore = async (req, res, next) => {
   
       if (!isValidOperation) {
         throw new HttpError('Invalid update!', 422)
-          // res.status(400).send({ error: 'Not valid update' })
+
       }
       
 
-      const store = await Store.findOne({ _id: req.params.id,  author: req.user._id})
-      //, author: req.user_id
+      const store = await Store.findOne({ _id: req.params.id,  author: req.user._id}, function (err, store) {
+        if (!store) {
+          return next(
+            new HttpError('Could not find matched store, you have to be the author to edit store page', 401)
+          )
+          
+        }
+        if (err) {
+          return next(
+            new HttpError('bla', 401)
+          )
+        }
+      })
 
-      if (!store) {
-        return next(
-          new HttpError('Could not find matched store, you have to be the author to edit store page', 404)
-        ) //Message not showing, showing mongodb's message instead
-      } 
+      //TODO - Message not showing, showing mongodb's message instead
+
       updates.forEach(update => {
           store[update] = req.body[update]
       })

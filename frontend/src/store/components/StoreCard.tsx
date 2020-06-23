@@ -3,7 +3,7 @@ import Modal from '../../shared/components/UIElements/Modal'
 
 import Link from '@material-ui/core/Link'
 import { AuthContext } from '../../shared/context/authContext'
-import { useHttpClient } from '../../shared/hooks/http-hook' 
+
 import { useHistory } from 'react-router-dom'
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -67,18 +67,13 @@ interface StoreItemProps {
   }, 
   onDelete: (store: string) => void
   sendDeleteRequest: (storeId: string) => void
-  // showError: (error: string) => void
-  // showLoading: (loading: boolean) => void
+
 }
 const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, sendDeleteRequest }) => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
   const history = useHistory()
   const [modalOpen, setModalOpen] = useState(false)
-  // const { isLoading, error, sendRequest, clearError } = useHttpClient()
-  // TODO - SHOW SPINNER WHEN DELETING
-  // TODO - CLEAR ERROR
-
   
   
   const handleModalOpen = () => {

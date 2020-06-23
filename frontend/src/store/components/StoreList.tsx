@@ -79,10 +79,7 @@ const StoreList: React.FC<StoreListProps> = (props) => {
       Authorization: 'Bearer ' + auth.token
 })
   }
-  // const showError = (error: string) => setErrorMessage(error)
 
-  
-  // const showLoading = (loading: boolean) => setLoading(loading)
 
  
 
@@ -110,8 +107,7 @@ const StoreList: React.FC<StoreListProps> = (props) => {
             store={store} 
             onDelete={props.onDelete}
             sendDeleteRequest={sendDeleteRequestHandler}
-            // showError={showError}
-            // showLoading={showLoading}
+ 
             />
           })}
         </div>

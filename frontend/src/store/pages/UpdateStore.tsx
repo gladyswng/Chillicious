@@ -168,10 +168,7 @@ const updateSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
 
   if (!loadedStore && !error) {
     return (
-      <div>
-        <h2>Could not find store!</h2>
-      </div>
-
+      <Message message={"Could not find store!"}/>
     )
   }
 }
