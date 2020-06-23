@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import StoreCard from './StoreCard'
-
+import { useHttpClient } from '../../shared/hooks/http-hook'
+import { AuthContext } from '../../shared/context/authContext'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Pagination from '@material-ui/lab/Pagination';
@@ -55,9 +56,11 @@ const useStyles = makeStyles((theme) => ({
 
 const StoreList: React.FC<StoreListProps> = (props) => {
   const classes = useStyles()
-  const [errorMessage, setErrorMessage] = useState<string>()
+  const auth = useContext(AuthContext)
+  const { isLoading, error, sendRequest, clearError } = useHttpClient()
+  // const [errorMessage, setErrorMessage] = useState<string>()
 
-  const [loading, setLoading] = useState<boolean>()
+  // const [loading, setLoading] = useState<boolean>()
 
   const [backdropOpen, setBackdropOpen] = useState(true)
   const handleBackdropClose = () => {
@@ -70,23 +73,29 @@ const StoreList: React.FC<StoreListProps> = (props) => {
       <Message message="No store found"/>
     )
   }
-  const showError = (error: string) => setErrorMessage(error)
+
+  const sendDeleteRequestHandler = async (storeId: string) => {
+    await sendRequest(`http://localhost:3000/store/${storeId}`, 'DELETE', null , { 
+      Authorization: 'Bearer ' + auth.token
+})
+  }
+  // const showError = (error: string) => setErrorMessage(error)
 
   
-  const showLoading = (loading: boolean) => setLoading(loading)
+  // const showLoading = (loading: boolean) => setLoading(loading)
 
  
 
     return (
       <>
-      {errorMessage && (
+      {error && (
         <Backdrop open={backdropOpen} className={classes.backdrop} onClick={handleBackdropClose}>
-         <Message message={errorMessage}/>
+         <Message message={error}/>
        </Backdrop>
       )}
 
 
-      {loading && (
+      {isLoading && (
         <Backdrop open={backdropOpen}
         className={classes.backdrop}>
          <CircularProgress />
@@ -100,8 +109,9 @@ const StoreList: React.FC<StoreListProps> = (props) => {
             key={store.id} 
             store={store} 
             onDelete={props.onDelete}
-            showError={showError}
-            showLoading={showLoading}
+            sendDeleteRequest={sendDeleteRequestHandler}
+            // showError={showError}
+            // showLoading={showLoading}
             />
           })}
         </div>

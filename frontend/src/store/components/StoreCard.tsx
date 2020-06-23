@@ -66,18 +66,19 @@ interface StoreItemProps {
 
   }, 
   onDelete: (store: string) => void
-  showError: (error: string) => void
-  showLoading: (loading: boolean) => void
+  sendDeleteRequest: (storeId: string) => void
+  // showError: (error: string) => void
+  // showLoading: (loading: boolean) => void
 }
-const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, showLoading, showError }) => {
+const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, sendDeleteRequest }) => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
   const history = useHistory()
   const [modalOpen, setModalOpen] = useState(false)
-  const { isLoading, error, sendRequest, clearError } = useHttpClient()
+  // const { isLoading, error, sendRequest, clearError } = useHttpClient()
+  // TODO - SHOW SPINNER WHEN DELETING
+  // TODO - CLEAR ERROR
 
-  showLoading(isLoading)
-  showError(error)
   
   
   const handleModalOpen = () => {
@@ -98,20 +99,21 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, showLoading, show
   }
 
   const deleteHander = async (e: any) => {
-    e.preventDefault()
-    setModalOpen(false) 
-    await sendRequest(`http://localhost:3000/store/${store.id}`, 'DELETE', null , { 
-          Authorization: 'Bearer ' + auth.token
-    })
-    onDelete(store.id)
-  }
-  // TODO - SHOW SPINNER WHEN DELETING
-  // TODO - CLEAR ERROR
+    try{
+      e.preventDefault()
+      setModalOpen(false) 
+      sendDeleteRequest(store.id)
+      onDelete(store.id)
+      
+    } catch (e) {
+      
+    }
+
+    } 
 
 
   return (
-
-
+    
     <Card className={classes.storeCardRoot} variant="outlined" >
        <CardMedia className={classes.cardMedia}  image={store.image? store.image : "https://images.unsplash.com/photo-1506368144590-cf6438f1cdb5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80"}/>
 
