@@ -1,6 +1,7 @@
-import React, { useState, useCallback, useEffect } from "react"
+import React from "react"
 import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-dom"
-
+import { AuthContext } from './shared/context/authContext'
+import { useAuth } from './shared/hooks/auth-hook'
 import UserPage from './user/pages/UserPage'
 import UserSignUp from './user/pages/UserSignUp'
 
@@ -10,7 +11,6 @@ import AddStore from './store/pages/AddStore'
 import SearchResult from './store/pages/SearchResult'
 import Homepage from './home/page/homePage'
 import Layout from './util/Layout'
-import { AuthContext } from './shared/context/authContext'
 import { makeStyles } from '@material-ui/core/styles';
 
 
@@ -39,68 +39,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-let logoutTimer:any // Timeout??
+
 
 const App: React.FC = () => {
   const classes = useStyles()
-  const [token, setToken] = useState(false)
-  const [userId, setUserId] = useState(false)
-  const [tokenExpirationDate, setTokenExpirationDate] = useState<any>()
-
-
-  // the function in useCallback will never be recreated
-  const login= useCallback((uid, token, expirationDate) => {
-    setToken(token)
-    setUserId(uid)
-    const tokenExpirationDate = 
-    expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60 * 12)
-
-    setTokenExpirationDate(tokenExpirationDate)
-
-    localStorage.setItem(
-      'userData', 
-      JSON.stringify({ 
-        userId: uid, 
-        token: token, 
-        expiration: tokenExpirationDate.toISOString() })
-      // toISOSstring ensure no data gets lost when date is stringified
-      
-    )
-  }, []) // Thanks to useCallback it will only run once
-  
-  const logout = useCallback(() => {
-    setToken(null)
-    setUserId(null)
-    setTokenExpirationDate(null)
-    localStorage.removeItem('userData')
-  }, [])
-
-  useEffect(() => {
-    if (token && tokenExpirationDate) {
-      const remainingTime = tokenExpirationDate.getTime() - new Date().getTime()
-      // setTimeout returns an id of the timer created
-      logoutTimer = setTimeout(logout, remainingTime)
-    } else {
-      clearTimeout(logoutTimer)
-      // when manual log out, no need timer
-
-    }
-  }, [token, logout, tokenExpirationDate])
-
-  useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem('userData'))
-    if (
-      storedData && 
-      storedData.token && 
-      new Date(storedData.expiration) > new Date() // still valid token
-      ) {
-      login(storedData.userId, storedData.token, new Date(storedData.expiration))
-    }
-    
-  }, [login])
-
-
-
+  const { token, login, logout, userId } = useAuth()
+ 
   let routes
 
   if (token) {

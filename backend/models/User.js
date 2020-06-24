@@ -44,9 +44,14 @@ const userSchema = new Schema({
         }
     }],
 
-    photo: {
+    avatar: {
         type: Buffer
-    }
+    },
+    reviews: [{
+      type: Schema.ObjectId,
+      ref: 'Review'
+    }]
+
 }, {
     
     // id: false,
@@ -109,6 +114,7 @@ userSchema.pre('save', async function (next) {
     next()
 
 })
+
 
 const User = mongoose.model('User', userSchema)
 

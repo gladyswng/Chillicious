@@ -38,7 +38,7 @@ router.get('/user/me/hearts', auth, storeController.getHearts)
 
 
 // USER
-router.get('/register', userController.registerForm)
+// router.get('/register', userController.registerForm)
 
 router.post('/user/register', 
     userController.userValidationRules(),
@@ -47,10 +47,15 @@ router.post('/user/register',
 
 )
 
-router.get('/login', userController.loginForm)
+
+// router.get('/login', userController.loginForm)
 router.post('/login', userController.login)
+
+// login logout backend
 router.get('/logout', auth, userController.logout)
 router.get('/logoutAll', auth, userController.logoutAll)
+
+router.get('/user/me', auth, userController.getUser)
 
 router.patch('/user/me', 
   auth, 
@@ -60,7 +65,6 @@ router.patch('/user/me',
 )
 
 router.delete('/user/me', auth, userController.deleteProfile)
-// router.post('/login', authController.login)
 
 
 // REVIEW

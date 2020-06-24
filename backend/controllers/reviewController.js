@@ -1,5 +1,6 @@
 
 const Review = require('../models/Review')
+const User = require('../models/User')
 const HttpError = require('../models/http-error')
 
 exports.addReview = async (req, res, next) => {
@@ -17,7 +18,15 @@ exports.addReview = async (req, res, next) => {
 
         await review.save()
         const updatedStore = await Review.calcAverageRatings(req.params.id)
-        res.send(updatedStore)
+
+
+        // TODO - ADD TRY CATCH TO THIS
+        const user = await User.findById(req.user._id)
+        user.reviews.push(review)
+        await user.save()
+
+
+        res.send({updatedStore, user})
   
     } catch(e) {
       return next(

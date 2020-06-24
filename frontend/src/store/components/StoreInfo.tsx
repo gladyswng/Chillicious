@@ -94,7 +94,7 @@ const StoreInfo: React.FC<StoreInfoProps> = (props) => {
 
           <Box component="fieldset" mb={3} borderColor="transparent" style={{ margin: 0, padding: 0, display:'inline-block' }}>
            <RatingBar rating={ratingsAverage} readOnly={true} />
-           {/* <RatingBar rating={ratingsAverage} readOnly={true} /> */}
+           
 
           <Typography variant="body1" component="span" className={classes.reviewNumber}>{ ratingsQuantity || "0"} {ratingsQuantity>1? 'Reviews' : 'Review'}</Typography>
                 </Box>

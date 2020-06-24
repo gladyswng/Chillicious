@@ -86,15 +86,6 @@ exports.validateRegister = (req, res, next) => {
     }
     
     const extractedErrors = errors.errors[0].msg
-    // errors.array().map(err => { 
-    //   return {
-    //     message: err.msg
-    //   }
-    // })
-  
-  
-    // const extractedErrors = []
-    // errors.array().map(err => extractedErrors.push({ message: err.msg }))
 
     return res.status(422).json({ message: extractedErrors })
  
@@ -116,6 +107,17 @@ exports.userUpdateValidationRules = () => {
 }
 
 
+exports.getUser = async (req, res, next) => {
+  
+  try {
+    const user = await User.findById(req.user._id).populate('reviews').populate('hearts', '-location -author -created')
+    res.send(user)
+  } catch (e) {
+    return next(
+      new HttpError('Something went wrong, could not proceed to get your profile', 500)
+    )
+  }
+}
 
 exports.updateProfile = async (req, res, next) => {
 

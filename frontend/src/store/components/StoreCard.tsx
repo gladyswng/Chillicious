@@ -45,6 +45,7 @@ const useStyles = makeStyles({
   chip: {
 
     marginRight: 4,
+    marginBottom: 4
 
   }
 });

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const Store = require('./Store')
+const User = require('./User')
 
 const reviewSchema = new Schema({
     created: {
@@ -42,6 +43,9 @@ const reviewSchema = new Schema({
 
 
 reviewSchema.index({ store: 1, author: 1 }, { unique: true })
+
+
+
 
 // GET AVERAGE RATINGS
 
