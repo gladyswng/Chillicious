@@ -46,7 +46,7 @@ const App: React.FC = () => {
   const { token, login, logout, userId } = useAuth()
  
   let routes
-
+  console.log(token)
   if (token) {
     routes = (
       <Switch>
@@ -72,15 +72,12 @@ const App: React.FC = () => {
           <UpdateStore />
       </Route>
 
-      <Route path="/user/signUp" exact>
-          <UserSignUp />
-      </Route>
-  
       <Route path="/user/me" exact>
           <UserPage />
       </Route>
 
-      <Redirect to="/" />
+
+      {/* <Redirect to="/" /> */}
       </Switch>
     )
   } else {
@@ -106,8 +103,6 @@ const App: React.FC = () => {
       <Route path="/store/edit/:id" exact>
           <UpdateStore />
       </Route>
-
-
 
       <Route path="/user/signUp" exact>
           <UserSignUp />

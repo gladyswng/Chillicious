@@ -26,8 +26,9 @@ const useStyles = makeStyles((theme) => ({
 
 const UserPage: React.FC<UserPageProps> = ({}) => {
 
-  const classes = useStyles();
-  const [tabValue, setTabValue] = useState(0);
+  const classes = useStyles()
+  // const [loadedUser, setLoadedUser] = useState()
+  const [tabValue, setTabValue] = useState(0)
 
   const user= {
     avatar: 'https://images.unsplash.com/photo-1562153889-3847e21e5d3b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80',

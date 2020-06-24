@@ -26,7 +26,7 @@ exports.addReview = async (req, res, next) => {
         await user.save()
 
 
-        res.send({updatedStore, user})
+        res.send(updatedStore)
   
     } catch(e) {
       return next(

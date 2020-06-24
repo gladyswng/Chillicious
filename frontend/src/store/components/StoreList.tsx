@@ -27,6 +27,8 @@ interface Store {
   address: string
   author: string
   slug: string
+  ratingsQuantity?: number;
+  ratingsAverage?: number;
 
 }
 

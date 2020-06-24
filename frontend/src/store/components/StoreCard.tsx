@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import Modal from '../../shared/components/UIElements/Modal'
-
+import RatingBar from '../../shared/components/UIElements/RatingBar'
 import Link from '@material-ui/core/Link'
 import { AuthContext } from '../../shared/context/authContext'
 
@@ -60,9 +60,10 @@ interface StoreItemProps {
     image?: string,
     tags: string[],
     address: string
-    location?: Object,
     author: string,
     slug: string
+    ratingsQuantity?: number
+    ratingsAverage?: number
 
 
   }, 
@@ -118,6 +119,8 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, sendDeleteRequest
           <Typography variant="h5" component="h2">
             {store.name}
           </Typography>
+          <RatingBar rating={store.ratingsAverage} readOnly={true} />
+           
 
           <Typography variant="body2" component="p">
             {store.description}

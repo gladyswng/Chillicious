@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import ReactDependentScript from 'react-dependent-script'
+
 
 import Map from '../../shared/components/UIElements/Map'
 
