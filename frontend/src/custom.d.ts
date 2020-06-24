@@ -12,8 +12,3 @@ declare module "*.jpg" {
   // export default content;
 
 }
-
-declare module 'react-dependent-script'
-
-
-declare module 'react-async-script-loader'

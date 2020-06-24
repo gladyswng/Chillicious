@@ -1,5 +1,8 @@
-import React, { useState, useRef } from "react"
+import React, { useState, useRef, useEffect, useContext } from "react"
 import UserProfile from '../components/UserProfile'
+import Message from '../../shared/components/UIElements/Message'
+import { AuthContext } from '../../shared/context/authContext'
+import { useHttpClient } from '../../shared/hooks/http-hook'  
 import TabPanel from '../../shared/components/UIElements/TabPanel'
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -27,37 +30,59 @@ const useStyles = makeStyles((theme) => ({
 const UserPage: React.FC<UserPageProps> = ({}) => {
 
   const classes = useStyles()
-  // const [loadedUser, setLoadedUser] = useState()
+  const auth = useContext(AuthContext)
+  // TODO - CHANGE ANY
+  const [loadedUser, setLoadedUser] = useState<any>()
   const [tabValue, setTabValue] = useState(0)
+  console.log(loadedUser)
 
-  const user= {
-    avatar: 'https://images.unsplash.com/photo-1562153889-3847e21e5d3b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80',
-    userName: 'chop',
-    email: 'HOOOT@mail.com',
-    password: 'asdfasdafasd',
-    reviews: [
-      {
-        name: 'qwer',
-        rating: '123',
-        title: 'aasdf',
-        description: 'asdfasd'
-      }
+  const { isLoading, error, sendRequest, clearError } = useHttpClient()
 
-    ],
-    hearted: [
-      {
-        name: 'store123',
-        rating: '123234234',
-        description: 'this sisss sth',
-        image : "https://images.unsplash.com/photo-1577859623802-b5e3ca51f885?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80",
-        location: {},
-        tags: ['asian']
+  useEffect(()=> {
+    const fetchStore = async () => {
+      try {
+        const responseData = await sendRequest(`http://localhost:3000/user/me`, 'GET', null , { 
+          Authorization: 'Bearer ' + auth.token,
+          'Content-Type': 'application/json'
+        })
+        const user = responseData
+
+        setLoadedUser(user)
+      } catch (e) {
 
       }
-    ]
+    }
+    fetchStore()
+  }, [ sendRequest ])
+
+  // const user= {
+  //   avatar: 'https://images.unsplash.com/photo-1562153889-3847e21e5d3b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80',
+  //   userName: 'chop',
+  //   email: 'HOOOT@mail.com',
+  //   password: 'asdfasdafasd',
+  //   reviews: [
+  //     {
+  //       name: 'qwer',
+  //       rating: '123',
+  //       title: 'aasdf',
+  //       description: 'asdfasd'
+  //     }
+
+  //   ],
+  //   hearted: [
+  //     {
+  //       name: 'store123',
+  //       rating: '123234234',
+  //       description: 'this sisss sth',
+  //       image : "https://images.unsplash.com/photo-1577859623802-b5e3ca51f885?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80",
+  //       location: {},
+  //       tags: ['asian']
+
+  //     }
+  //   ]
     
 
-  }
+  // }
   
 
   const handleChange = (event: any, newTabValue: any) => {
@@ -67,6 +92,8 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
   
 
   return (
+    <>
+    {!isLoading && loadedUser && (
     <div className={classes.pageRoot}>
       <Typography variant="h4">User Page</Typography>
       <Paper style={{ marginTop: 40, width: '80%' }}>
@@ -82,7 +109,7 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
       <TabPanel value={tabValue} index={0} id='profileTab'>
     
 
-        <UserProfile userName={user.userName} email={user.email} password={user.password} avatar={user.avatar}/>
+        <UserProfile userName={loadedUser.name} email={loadedUser.email} password={loadedUser.password} avatar={loadedUser.avatar}/>
 
 
       </TabPanel>
@@ -98,6 +125,8 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
            
       </Paper>
     </div>
+    )}
+    </>
   );
 }
 

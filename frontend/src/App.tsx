@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-
+// TODO - AUTH WHEN RELOAD FOR EVERY PAGE LIKE EDIT STORE AND PROFILE PAGE
 const App: React.FC = () => {
   const classes = useStyles()
   const { token, login, logout, userId } = useAuth()
@@ -77,7 +77,7 @@ const App: React.FC = () => {
       </Route>
 
 
-      {/* <Redirect to="/" /> */}
+      <Redirect to="/" />
       </Switch>
     )
   } else {
