@@ -74,15 +74,16 @@ const UpdateStore: React.FC<UpdateStoreProps> = ({}) => {
 
   useEffect(() => {
     const fetchStore = async () => {
+      
       try {
-
+       console.log(auth.token)
         const responseData = await sendRequest(`http://localhost:3000/store/edit/${id}`, 'GET', null , { 
           Authorization: 'Bearer ' + auth.token,
           'Content-Type': 'application/json'
         })
-        
+        clearError()
         const store = responseData
-        
+
         setLoadedStore(store)
 
 
@@ -140,7 +141,7 @@ const UpdateStore: React.FC<UpdateStoreProps> = ({}) => {
       }
     }
     fetchStore()
-  }, [sendRequest, id, setFormData])
+  }, [sendRequest, id, setFormData, auth.token])
 
 
 
@@ -148,6 +149,7 @@ const { inputs, isValid, otherData } = formState
 
 const updateSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    
     try {
       await sendRequest(
         `http://localhost:3000/store/update/${id}`, 'PATCH', JSON.stringify({
@@ -180,7 +182,7 @@ const updateSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
       </Typography>
       {error && <Message message={error}/>}
       {isLoading && <CircularProgress />}
-      {!isLoading&& loadedStore &&
+      {!isLoading&& loadedStore && 
       <StoreForm 
         inputs={inputs}
         formIsValid={isValid}

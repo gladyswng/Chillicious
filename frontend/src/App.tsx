@@ -46,7 +46,6 @@ const App: React.FC = () => {
   const { token, login, logout, userId } = useAuth()
  
   let routes
-  console.log(token)
   if (token) {
     routes = (
       <Switch>
