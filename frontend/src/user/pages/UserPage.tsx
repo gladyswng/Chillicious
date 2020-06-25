@@ -32,9 +32,10 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
   // TODO - CHANGE ANY
+
   const [loadedUser, setLoadedUser] = useState<any>()
   const [tabValue, setTabValue] = useState(0)
-  console.log(loadedUser)
+// TODO - FIX ISSUE WITH NOT UNAUTHORIZED WHEN RELOAD PLUS REDIRECT IF RESTRICT ROUTE
 
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
 
@@ -45,6 +46,7 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
           Authorization: 'Bearer ' + auth.token,
           'Content-Type': 'application/json'
         })
+        clearError()
         const user = responseData
 
         setLoadedUser(user)
@@ -53,7 +55,7 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
       }
     }
     fetchStore()
-  }, [ sendRequest ])
+  }, [ sendRequest, auth.token ])
 
   // const user= {
   //   avatar: 'https://images.unsplash.com/photo-1562153889-3847e21e5d3b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80',
@@ -93,9 +95,11 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
 
   return (
     <>
-    {!isLoading && loadedUser && (
+   
     <div className={classes.pageRoot}>
       <Typography variant="h4">User Page</Typography>
+      {error && <Message message={error}/>}
+      {!isLoading && loadedUser && (
       <Paper style={{ marginTop: 40, width: '80%' }}>
    
       <AppBar position="static">
@@ -124,8 +128,9 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
       </TabPanel>
            
       </Paper>
+      )}
     </div>
-    )}
+    
     </>
   );
 }

@@ -76,7 +76,6 @@ const UpdateStore: React.FC<UpdateStoreProps> = ({}) => {
     const fetchStore = async () => {
       
       try {
-       console.log(auth.token)
         const responseData = await sendRequest(`http://localhost:3000/store/edit/${id}`, 'GET', null , { 
           Authorization: 'Bearer ' + auth.token,
           'Content-Type': 'application/json'

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-dom"
 import { AuthContext } from './shared/context/authContext'
 import { useAuth } from './shared/hooks/auth-hook'
@@ -44,9 +44,15 @@ const useStyles = makeStyles((theme) => ({
 const App: React.FC = () => {
   const classes = useStyles()
   const { token, login, logout, userId } = useAuth()
- 
+  // const [tokenLoaded, setTokenLoaded] = useState<any>()
+  
+  // useEffect(() => {
+  //   setTokenLoaded(token)
+  // }, [token])
   let routes
+  console.log(token)
   if (token) {
+    
     routes = (
       <Switch>
       <Route path="/" exact>
@@ -105,6 +111,9 @@ const App: React.FC = () => {
 
       <Route path="/user/signUp" exact>
           <UserSignUp />
+      </Route>
+      <Route path="/user/me" exact>
+          <UserPage />
       </Route>
 
       <Redirect to="/user/signUp" />
