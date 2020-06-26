@@ -50,8 +50,9 @@ const App: React.FC = () => {
   //   setTokenLoaded(token)
   // }, [token])
   let routes
-  console.log(token)
+ 
   if (token) {
+    // TODO - FIX REDIRECTION ISSUE WHEN TOKEN WAS FALSE YET
     
     routes = (
       <Switch>

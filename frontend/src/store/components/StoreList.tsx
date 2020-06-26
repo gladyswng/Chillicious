@@ -60,9 +60,6 @@ const StoreList: React.FC<StoreListProps> = (props) => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
-  // const [errorMessage, setErrorMessage] = useState<string>()
-
-  // const [loading, setLoading] = useState<boolean>()
 
   const [backdropOpen, setBackdropOpen] = useState(true)
   const handleBackdropClose = () => {

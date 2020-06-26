@@ -1,11 +1,14 @@
 import React, { useState, useRef, useEffect, useContext } from "react"
 import UserProfile from '../components/UserProfile'
+import UserReviews from '../components/UserReviews'
+import Hearted from '../components/Hearted'
 import Message from '../../shared/components/UIElements/Message'
 import { AuthContext } from '../../shared/context/authContext'
 import { useHttpClient } from '../../shared/hooks/http-hook'  
 import TabPanel from '../../shared/components/UIElements/TabPanel'
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
+import CircularProgress from '@material-ui/core/CircularProgress'
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Paper from '@material-ui/core/Paper';
@@ -40,6 +43,8 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
 
   useEffect(()=> {
+    
+
     const fetchStore = async () => {
       try {
         const responseData = await sendRequest(`http://localhost:3000/user/me`, 'GET', null , { 
@@ -50,6 +55,7 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
         const user = responseData
 
         setLoadedUser(user)
+
       } catch (e) {
 
       }
@@ -57,49 +63,38 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
     fetchStore()
   }, [ sendRequest, auth.token ])
 
-  // const user= {
-  //   avatar: 'https://images.unsplash.com/photo-1562153889-3847e21e5d3b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80',
-  //   userName: 'chop',
-  //   email: 'HOOOT@mail.com',
-  //   password: 'asdfasdafasd',
-  //   reviews: [
-  //     {
-  //       name: 'qwer',
-  //       rating: '123',
-  //       title: 'aasdf',
-  //       description: 'asdfasd'
-  //     }
 
-  //   ],
-  //   hearted: [
-  //     {
-  //       name: 'store123',
-  //       rating: '123234234',
-  //       description: 'this sisss sth',
-  //       image : "https://images.unsplash.com/photo-1577859623802-b5e3ca51f885?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80",
-  //       location: {},
-  //       tags: ['asian']
-
-  //     }
-  //   ]
-    
-
-  // }
-  
+  console.log(loadedUser)
 
   const handleChange = (event: any, newTabValue: any) => {
     setTabValue(newTabValue);
   };
 
-  
+  const storeDeleteHandler = (storeId: string) => {
+    // TODO - CHANG TYPE ANY 
+    setLoadedUser((prevUser: any) => prevUser.hearts.filter((store: any)=> store.id !== storeId))
+  }
+
+  const changeReviewHandler = (store: any) => {
+
+    // setLoadedUser((prevUser: any) => {
+    //   prevUser.reviews.find((store: any) => )
+    // })
+  }
 
   return (
     <>
    
     <div className={classes.pageRoot}>
       <Typography variant="h4">User Page</Typography>
+      {isLoading && (
+          <div>
+            <CircularProgress />
+          </div>
+
+      )}
       {error && <Message message={error}/>}
-      {!isLoading && loadedUser && (
+      {!isLoading && loadedUser && auth.token && (
       <Paper style={{ marginTop: 40, width: '80%' }}>
    
       <AppBar position="static">
@@ -118,10 +113,13 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
 
       </TabPanel>
       <TabPanel value={tabValue} index={1} id='heartedTab'>
-        Item Two
+        <Hearted 
+        storeList={loadedUser.hearts}
+        onDelete={storeDeleteHandler}
+        />
       </TabPanel>
       <TabPanel value={tabValue} index={2} id='reviewsTab'>
-        Item Three
+        <UserReviews reviews={loadedUser.reviews} onChange={changeReviewHandler}/>
       </TabPanel>
       <TabPanel value={tabValue} index={3} id='storesTab'>
         Item 
