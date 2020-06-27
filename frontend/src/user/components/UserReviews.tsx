@@ -30,6 +30,7 @@ const UserReviews: React.FC<UserReviewsProps> = ({ reviews, onChange }) => {
   const reviewList = reviews.map(review => {
     return (
       <ReviewCard 
+      storeName={review.store.name}
       review={review}
       onChange={onChange}
       storeId={review.store.id} 

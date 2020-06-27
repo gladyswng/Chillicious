@@ -97,7 +97,7 @@ const StoreInfo: React.FC<StoreInfoProps> = (props) => {
            
 
           <Typography variant="body1" component="span" className={classes.reviewNumber}>{ ratingsQuantity || "0"} {ratingsQuantity>1? 'Reviews' : 'Review'}</Typography>
-                </Box>
+          </Box>
 
           <Grid container alignItems="center">
 

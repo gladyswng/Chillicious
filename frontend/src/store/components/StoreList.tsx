@@ -28,7 +28,7 @@ interface Store {
 
 interface StoreListProps {
   storeList: Store[]
-  hearts?: string[]
+  hearts: string[]
   onDelete: (store: string)=> void
 
 }

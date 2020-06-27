@@ -93,6 +93,7 @@ exports.deleteReview = async (req, res) => {
         }
 
         await Review.calcAverageRatings(req.params.id)
+        // TODO - REMOVE REVIEW ALSO FOR USER
         
         res.send(review)
 

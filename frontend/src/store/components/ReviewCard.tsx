@@ -50,14 +50,14 @@ interface ReviewCardProps {
   title: string
 
  }
-
+ storeName?: string
  storeId: string
  onChange: (store: object) => void
 }
 
 // TODO - ISSUE WITH HAVING TO TOUCH EVERY FIELD TO UPDATE STORE, NOT JUST ONE FIELD 
 
-const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange }) => {
+const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, storeName }) => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
   const { rating, avatar, author, title, description, created } = review
@@ -98,6 +98,8 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange }) =>
         <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
 
           <div className={classes.comment}>
+             {storeName && <Typography variant="h6">{storeName}</Typography>}
+
             <RatingBar rating={rating} readOnly={true}/>
             <Typography variant="h6" style={{ fontWeight: 'normal' }}>{title}</Typography>
             <Typography style={{ width: '100%', wordWrap: 'break-word', wordBreak: 'break-all' }}>{description}</Typography>

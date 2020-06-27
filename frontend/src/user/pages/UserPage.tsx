@@ -60,6 +60,7 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
 
       }
     }
+    
     fetchStore()
   }, [ sendRequest, auth.token ])
 

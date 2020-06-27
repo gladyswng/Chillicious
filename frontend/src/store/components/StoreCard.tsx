@@ -18,6 +18,7 @@ import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip'
+import { Box } from '@material-ui/core';
 
 
 const useStyles = makeStyles({
@@ -54,6 +55,12 @@ const useStyles = makeStyles({
     marginRight: 4,
     marginBottom: 4
 
+  },
+  reviewNumber: {
+    fontWeight: 'bold', 
+    marginLeft: 6, 
+    display: 'inline-block', 
+    verticalAlign: 'text-bottom'
   }
 });
 
@@ -149,10 +156,14 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, sendDelet
           <Typography variant="h5" component="h2">
             {store.name}
           </Typography>
-          <RatingBar rating={store.ratingsAverage} readOnly={true} />
-           
 
-          <Typography variant="body2" component="p">
+          <Box component="fieldset" mb={3} borderColor="transparent" style={{ margin: 0, padding: 0, display:'inline-block' }}>
+
+            <RatingBar rating={store.ratingsAverage} readOnly={true}/> 
+            <Typography variant="body1" component="span" className={classes.reviewNumber}>{ store.ratingsQuantity || "0"} {store.ratingsQuantity>1? 'Reviews' : 'Review'}</Typography>
+          </Box>
+
+          <Typography variant="body2" component="p" style={{ wordBreak: 'break-all' }}>
             {store.description}
           </Typography>
           <Typography variant="subtitle1">{store.priceRange}</Typography>
