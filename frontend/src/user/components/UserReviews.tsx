@@ -33,7 +33,6 @@ const UserReviews: React.FC<UserReviewsProps> = ({ reviews, onChange }) => {
       review={review}
       onChange={onChange}
       storeId={review.store.id} 
-
       key={review._id}/>
     )
   })

@@ -29,10 +29,11 @@ interface HeartedProps {
 
 const Hearted: React.FC<HeartedProps> = ({storeList, onDelete}) => {
 
-
+const heartedList = storeList.map(store => store.id)
+// TODO - REMOVE UNHEARTED STORES AT ONCE??? STATE?
     return (
       <div style={{ padding: 8 , width: '80%'}}>
-        {/* <StoreList storeList={storeList} onDelete={onDelete} hearts={hearts}/> */}
+        <StoreList storeList={storeList} hearts={heartedList} onDelete={onDelete} />
       </div>
     )
 }

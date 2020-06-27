@@ -115,8 +115,6 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, sendDelet
   }
 
 
-
-
   const editHandler = async (e:any) => {
     e.preventDefault()
     history.push(`/store/edit/${store.id}`)

@@ -70,6 +70,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange }) =>
   };
   const editHandler = async (e:any) => {
     e.preventDefault()
+    // TODO - IF STOREPAGE REFRESH STORE, IF PROFILE PAGE DONT REFRESH
     // history.push(`/store/edit/${store.id}`)
   }
 
@@ -82,7 +83,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange }) =>
     // onDelete(store.id)
   }
     return (
-      <div>
+      <div style={{ width: '100%' }}>
         <Divider variant="middle" />
         <div className={classes.review}>
           <div className={classes.user}>
@@ -99,7 +100,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange }) =>
           <div className={classes.comment}>
             <RatingBar rating={rating} readOnly={true}/>
             <Typography variant="h6" style={{ fontWeight: 'normal' }}>{title}</Typography>
-            <Typography style={{ width: '100%', overflowWrap: 'break-word' }}>{description}</Typography>
+            <Typography style={{ width: '100%', wordWrap: 'break-word', wordBreak: 'break-all' }}>{description}</Typography>
             
           </div>
           <div hidden={false} className={classes.cardButtons}>
