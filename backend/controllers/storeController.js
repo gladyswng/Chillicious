@@ -74,10 +74,17 @@ exports.getStoresByTag = async (req, res) => {
     }
 }
 
-exports.heartStore = async (req, res) => {
+exports.heartStore = async (req, res, next) => {
 
     const hearts = req.user.hearts.map(storeIdObj => storeIdObj.toString())
     try {
+      const storeExisted = Store.findById( req.params.id)
+      // TODO - FIX ERROR MESSAGE NOT SHOWING 
+      if (!storeExisted) {
+        return next (
+          new HttpError('Could not find store', 404)
+        )
+      }
       // If already exist, pull - when send same id twice - disapear
       const operator = hearts.includes(req.params.id) ? '$pull' : '$addToSet'
       const user = await User.findByIdAndUpdate(req.user._id, {
@@ -99,13 +106,15 @@ exports.heartStore = async (req, res) => {
     
 }
 exports.getHearts = async (req, res) => {
-    const user = await User.findById(req.user._id).populate('hearts', '-slug -_id -__v')
+    const user = await User.findById(req.user._id)
     if (!user) {
       return next(
         new HttpError('Could not find user', 404)
       )
     }
-    res.send({ user })
+
+    const hearts = user.hearts
+    res.send(hearts)
 }
 
 exports.addStore = (req, res) => {

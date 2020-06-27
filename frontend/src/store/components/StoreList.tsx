@@ -11,12 +11,6 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { StepLabel } from '@material-ui/core';
 
-
-interface StoreListProps {
-  storeList: Store[]
-  onDelete: (store: string)=> void
-}
-
 interface Store {
   id: string
   name: string
@@ -31,6 +25,14 @@ interface Store {
   ratingsAverage?: number;
 
 }
+
+interface StoreListProps {
+  storeList: Store[]
+  hearts: string[]
+  onDelete: (store: string)=> void
+
+}
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -104,6 +106,7 @@ const StoreList: React.FC<StoreListProps> = (props) => {
             return <StoreCard 
             key={store.id} 
             store={store} 
+            hearts={props.hearts}
             onDelete={props.onDelete}
             sendDeleteRequest={sendDeleteRequestHandler}
  

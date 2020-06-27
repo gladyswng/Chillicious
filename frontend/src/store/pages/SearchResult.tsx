@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 
 import StoreList from '../components/StoreList'
 import FilterList from '../components/FilterList'
+import { AuthContext } from '../../shared/context/authContext'
 import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import CircularProgress from '@material-ui/core/CircularProgress'
@@ -26,23 +27,41 @@ interface SearchResultProps {
 
 const SearchResult: React.FC<SearchResultProps> = () => {
   const classes = useStyles()
-
+  const auth = useContext(AuthContext)
   const {isLoading, error, sendRequest, clearError} = useHttpClient() 
 
   const [loadedStores, setLoadedStores] = useState()
+
+  const [hearts, setHearts] = useState()
   
   useEffect(() => {
     const fetchStores = async() => {
       try { 
         const responseData = await sendRequest('http://localhost:3000/stores')
-      
+        
         setLoadedStores(responseData)
       } catch (e) {
 
       }
     }
+
+    const fetchHearts = async() => {
+      try {
+        const heartsData = await sendRequest('http://localhost:3000/user/me/hearts', 'GET', null, { 
+          Authorization: 'Bearer ' + auth.token,
+          'Content-Type': 'application/json'
+        })
+        
+        setHearts(heartsData)
+      } catch (e) {
+
+
+      }
+    }
     fetchStores()
-  }, [sendRequest])
+    fetchHearts() //??? right place to put?
+  }, [sendRequest, auth.token])
+  // TODO - CHANGE AUTH TOKEN?
 
   const storeDeleteHandler = (storeId: string) => {
     // TODO - CHANG TYPE ANY 
@@ -71,7 +90,10 @@ const SearchResult: React.FC<SearchResultProps> = () => {
             </div>
 
             <div style={{ padding: 8 , width: '80%'}}>
-              <StoreList storeList={loadedStores} onDelete={storeDeleteHandler}/>
+              <StoreList 
+              storeList={loadedStores} onDelete={storeDeleteHandler}
+              hearts={hearts}
+              />
             </div>
 
           </div>

@@ -3,14 +3,17 @@ import Modal from '../../shared/components/UIElements/Modal'
 import RatingBar from '../../shared/components/UIElements/RatingBar'
 import Link from '@material-ui/core/Link'
 import { AuthContext } from '../../shared/context/authContext'
-
 import { useHistory } from 'react-router-dom'
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardActions from '@material-ui/core/CardActions';
+import FavoriteIcon from '@material-ui/icons/Favorite'
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
+import ShareIcon from '@material-ui/icons/Share'
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip'
 
@@ -34,7 +37,9 @@ const useStyles = makeStyles({
   cardButtons: {
     display: 'flex', 
     flexDirection: 'column', 
-    height: '70%', justifyContent: 'space-between'
+    height: '50%', 
+    justifyContent: 'space-between',
+
   },
   title: {
     fontSize: 14,
@@ -64,19 +69,18 @@ interface StoreItemProps {
     slug: string
     ratingsQuantity?: number
     ratingsAverage?: number
-
-
   }, 
+  hearts: string[]
   onDelete: (store: string) => void
   sendDeleteRequest: (storeId: string) => void
 
 }
-const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, sendDeleteRequest }) => {
+const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, sendDeleteRequest}) => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
   const history = useHistory()
   const [modalOpen, setModalOpen] = useState(false)
-  
+ 
   
   const handleModalOpen = () => {
     setModalOpen(true);
@@ -152,19 +156,29 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, sendDeleteRequest
 
         </div>
 
-        <div hidden={false} className={classes.cardButtons}>
+        <div >
+          {hearts && 
+            <IconButton aria-label="add to hearts" >
+              
+              <FavoriteIcon color={hearts.includes(store.id)? "primary" : "inherit"}/>
+            </IconButton>
+          }
 
-         {store.author === auth.userId &&
-        <Button variant="outlined" color="primary" onClick={editHandler}>Edit</Button>
-        } 
 
-        {store.author === auth.userId && 
-        <Modal buttonStyle='outlined' buttonText='Delete' buttonColor="default" open={modalOpen} onOpen={handleModalOpen} onClose={handleModalClose}>
-          <Typography>Are you sure?</Typography>
-          <Button onClick={deleteHander}>Yes</Button>
-          <Button onClick={handleModalClose}>Cancel</Button>
-        </Modal>
-        }
+          <div className={classes.cardButtons}>
+
+          {store.author === auth.userId &&
+            <Button variant="outlined" color="primary" onClick={editHandler}>Edit</Button>
+            } 
+
+            {store.author === auth.userId && 
+            <Modal buttonStyle='outlined' buttonText='Delete' buttonColor="default" open={modalOpen} onOpen={handleModalOpen} onClose={handleModalClose}>
+              <Typography>Are you sure?</Typography>
+              <Button onClick={deleteHander}>Yes</Button>
+              <Button onClick={handleModalClose}>Cancel</Button>
+            </Modal>
+            }
+          </div>
         </div>
 
       </CardContent>

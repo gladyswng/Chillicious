@@ -32,7 +32,7 @@ const Hearted: React.FC<HeartedProps> = ({storeList, onDelete}) => {
 
     return (
       <div style={{ padding: 8 , width: '80%'}}>
-        <StoreList storeList={storeList} onDelete={onDelete}/>
+        {/* <StoreList storeList={storeList} onDelete={onDelete} hearts={hearts}/> */}
       </div>
     )
 }

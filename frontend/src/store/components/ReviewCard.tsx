@@ -55,6 +55,7 @@ interface ReviewCardProps {
  onChange: (store: object) => void
 }
 
+// TODO - ISSUE WITH HAVING TO TOUCH EVERY FIELD TO UPDATE STORE, NOT JUST ONE FIELD 
 
 const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange }) => {
   const classes = useStyles()

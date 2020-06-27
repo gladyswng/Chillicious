@@ -99,6 +99,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ storeId, onChange, buttonText, 
   };
 
   const reviewUpdateHandler = async (event: React.FormEvent<HTMLFormElement> ) => {
+    // TODO - add review true false to prop so not rerender when update in profile page, no need to reload since there's no store info that needs to be updated
     try {
       const responseData = await sendRequest(
        `http://localhost:3000/store/${storeId}/updateReview`, 
@@ -165,7 +166,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ storeId, onChange, buttonText, 
       {error && <Message message={error}/>}
 
       <Typography variant="h5">Tell others how hot it is</Typography>
-      <form className={classes.root} noValidate autoComplete="off" onSubmit={review?reviewUpdateHandler : reviewSubmitHandler}>
+      <form className={classes.root} noValidate autoComplete="off" onSubmit={review? reviewUpdateHandler : reviewSubmitHandler}>
         <div style={{ width: '70%' }}>
           <div>
           <RatingBar 
