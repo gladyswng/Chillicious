@@ -1,7 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+
 import Modal from '../../shared/components/UIElements/Modal'
 import RatingBar from '../../shared/components/UIElements/RatingBar'
 import Link from '@material-ui/core/Link'
+import { useHttpClient } from '../../shared/hooks/http-hook'
+
 import { AuthContext } from '../../shared/context/authContext'
 import { useHistory } from 'react-router-dom'
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
@@ -9,7 +12,6 @@ import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardActions from '@material-ui/core/CardActions';
 import FavoriteIcon from '@material-ui/icons/Favorite'
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
 import ShareIcon from '@material-ui/icons/Share'
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button'
@@ -80,14 +82,40 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, sendDelet
   const auth = useContext(AuthContext)
   const history = useHistory()
   const [modalOpen, setModalOpen] = useState(false)
- 
+  const [hearted, setHearted] = useState<boolean>()
+
+  const {isLoading, error, sendRequest, clearError} = useHttpClient() 
   
+  useEffect(()=> {
+    if (hearts && hearts.includes(store.id)) {
+      setHearted(true)
+    }
+
+  }, [hearts])
+
   const handleModalOpen = () => {
     setModalOpen(true);
-  };
+  }
   const handleModalClose = () => {
     setModalOpen(false);
-  };
+  }
+
+
+  const toggleHeart = () => {
+    setHearted(!hearted)
+  }
+
+  const heartHandler = () => {
+    sendRequest(`http://localhost:3000/api/stores/${store.id}/heart`, 'POST', null,  { 
+      Authorization: 'Bearer ' + auth.token,
+      'Content-Type': 'application/json'
+    })
+    toggleHeart()
+    
+  }
+
+
+
 
   const editHandler = async (e:any) => {
     e.preventDefault()
@@ -158,9 +186,11 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, sendDelet
 
         <div >
           {hearts && 
-            <IconButton aria-label="add to hearts" >
+            <IconButton aria-label="add to hearts"
+            onClick={heartHandler}
+            >
               
-              <FavoriteIcon color={hearts.includes(store.id)? "primary" : "inherit"}/>
+              <FavoriteIcon color={hearted? "primary" : "inherit"}/>
             </IconButton>
           }
 
