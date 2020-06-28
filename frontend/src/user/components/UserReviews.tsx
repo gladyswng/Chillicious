@@ -40,7 +40,7 @@ const UserReviews: React.FC<UserReviewsProps> = ({ reviews, onChange }) => {
   
     return (
       <>
-      {reviewList}
+      {reviews && reviewList}
       </>
     );
 }

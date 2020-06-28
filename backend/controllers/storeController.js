@@ -50,14 +50,17 @@ exports.getStoreBySlug = async (req, res, next) => {
 
 // TODO - connect to react, bring over request
 // TODO - SORT RETURNED DOCS ??
-exports.getStoresByTag = async (req, res) => {
-    const tagQuery = req.query.tag || { $exists: true }
+exports.getStoresByCheckedList = async (req, res) => {
+    const tagList = req.body.tagList || { $exists: true }
+    const priceRange = req.body.priceRange || { $exists: true }
+    const rating = req.body.rating || { $exists: true }
     // const sortBy = req.query.sortBy || { $exists: true }
     
     try {
         // Filter with multiple tags
         // /tags?tag=asian&tag=spicy
-        const storeList = await Store.find({ tags: {$all: tagQuery} }).sort({ratingsAverage: -1})
+        // ??? TODO - DELETE CHECKEDLIST
+        const storeList = await Store.find({ tags: {$all: tagList}, priceRange: {$all: priceRange}, ratingsAverage: { $all: rating } }).sort({ratingsAverage: -1})
 
         if (!storeList) {
           return next(

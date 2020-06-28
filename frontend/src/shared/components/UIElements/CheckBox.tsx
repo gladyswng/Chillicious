@@ -23,9 +23,10 @@ const CheckBox: React.FC<CheckBoxProps> = (props) => {
 
   return (
     <FormControlLabel
-    control={<Checkbox checked={props.checked} onChange={props.handleChange} 
+    control={<Checkbox checked={props.checked || false} onChange={props.handleChange} 
     color="primary"
     name={props.item} 
+    id={props.item}
     // value={props.defaultValue}
     style={{ padding: "0 10px" }}
     />}

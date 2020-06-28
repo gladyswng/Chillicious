@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useCallback } from 'react'
 
 import StoreList from '../components/StoreList'
 import FilterList from '../components/FilterList'
@@ -7,6 +7,7 @@ import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { useHttpClient } from '../../shared/hooks/http-hook'
+import UpdateStore from './UpdateStore'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,7 +33,10 @@ const SearchResult: React.FC<SearchResultProps> = () => {
 
   const [loadedStores, setLoadedStores] = useState()
 
+  const [checkedList, setCheckedList] = useState([])
+
   const [hearts, setHearts] = useState()
+  console.log(checkedList)
   
   useEffect(() => {
     const fetchStores = async() => {
@@ -55,11 +59,13 @@ const SearchResult: React.FC<SearchResultProps> = () => {
         setHearts(heartsData)
       } catch (e) {
 
-
       }
     }
     fetchStores()
-    fetchHearts() //??? right place to put?
+    if (auth.token) {
+
+      fetchHearts() //??? right place to put?
+    }
   }, [sendRequest, auth.token])
   // TODO - CHANGE AUTH TOKEN?
 
@@ -67,9 +73,58 @@ const SearchResult: React.FC<SearchResultProps> = () => {
     // TODO - CHANG TYPE ANY 
     setLoadedStores((prevStores: any) => prevStores.filter((store: any)=> store.id !== storeId))
   }
+  const checkboxHandler = (checkboxId: string, checked: boolean) => {
  
+      if (checked) {
+        setCheckedList([...checkedList, checkboxId]) 
+      } else {
+        setCheckedList(checkedList.filter((tag: string) => tag !== checkboxId))
+      }
   
-    return (
+  }
+  
+
+  useEffect(() => {
+    if (checkedList.length> 0) {
+
+      setLoadedStores((prevStores: any) => prevStores.filter((store:any) => checkedList.every(tag => store.tags.includes(tag))))
+      // setLoadedStores((prevStores: any) => prevStores.filter((store:any) => store.tags.includes('mexican')))
+    } 
+  }, [checkedList])
+
+  // const queryList = ['tags', 'priceRange', 'ratingsAverage']
+  // let updatedStores
+
+
+  // for (const index in queryList) {
+  //   const query :any = queryList[index]
+
+  //   for (const index in prevStores) {
+  //     const store : any = prevStores[index]
+  //     console.log(store[query])
+  //     if (store[query] === undefined ) {
+  //     // || checkedList.includes(store[query])
+  //     return 
+  //   }
+
+  //   updatedStores = prevStores.filter((store: any) => checkedList.includes(store[query]))
+  //   console.log(updatedStores)
+  // }
+
+  // const test = (query: any) => {
+  //   console.log(query)
+  //   for (const store in prevStores) {
+  //     if (store[query] === undefined ) {
+  //     // || checkedList.includes(store[query])
+  //     return 
+  //   }
+  //   updatedStore = prevStores.filter((store: any) => checkedList.includes(store[query]))
+  // }
+
+// }
+// return updatedStores
+  
+  return (
   
         <div className={classes.root}>
           {isLoading && (
@@ -85,7 +140,7 @@ const SearchResult: React.FC<SearchResultProps> = () => {
           justifyContent: 'flex-start', alignItems: 'flex-start'}}>
 
             <div style={{ padding: 8, width: '20%' }}>
-              <FilterList />
+              <FilterList onCheckboxChange={checkboxHandler}/>
 
             </div>
 

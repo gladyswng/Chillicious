@@ -29,8 +29,8 @@ storeController.updateStore)
 
 router.delete('/store/:id', auth, storeController.deleteStore)
 // TODO - CHANGE FILTER METHOD HERE
-router.get('/tags', storeController.getStoresByTag)
-router.get('/tags/:tag', storeController.getStoresByTag)
+
+router.get('/api/stores/checkedList', storeController.getStoresByCheckedList)
 
 router.post('/api/stores/:id/heart', auth, storeController.heartStore)
 router.get('/user/me/hearts', auth, storeController.getHearts)
