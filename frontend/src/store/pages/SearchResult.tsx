@@ -88,8 +88,11 @@ const SearchResult: React.FC<SearchResultProps> = () => {
   useEffect(() => {
 
     if (checkedList.length> 0 && fetchedStores) {
-   
-      setLoadedStores( fetchedStores.filter((store:any) => checkedList.every(tag => store.tags.includes(tag)))
+      const tags = checkedList.filter(tag => !tag.startsWith('$') && isNaN(tag))
+      const levels = checkedList.filter(level => !isNaN(level))
+      const prices = checkedList.filter(price => price.startsWith('$'))
+
+      setLoadedStores( fetchedStores.filter((store:any) => tags.every(tag => store.tags.includes(tag)) && (prices.length == 0 || prices.includes(store.priceRange)) && (levels.length == 0 || (store.ratingsAverage && levels.includes(store.ratingsAverage.toString()))))
         // () => {
         // const filterList = ['tags', 'priceRange']
         // let stores
