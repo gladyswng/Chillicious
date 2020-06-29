@@ -62,56 +62,9 @@ interface IState {
 }
 
 
-// const tagsReducer = (state: any, action: any) => {
-//   switch (action.type) {
-//     case 'TAGS_CHANGE': 
-//       return {
-//         ...state, 
-//         checkbox: {
-//           ...state.checkbox,
-//           checkboxId: action.value
-//         },
-//         tagList : [...state.tagList, action.checkboxId] 
-//       }
-//     case 'PRICE_CHANGE': 
-//       return {
-//         ...state,
-  
-//       }
-//   }
-// }
-
 const FilterList: React.FC<FilterListProps> = ({ onCheckboxChange }) => {
   const classes = useStyles()
 
-  // const [tagState, dispatch] = useReducer(tagsReducer, {
-  //   checkbox: {
-  //     extraHot: false,
-  //     hot: false,
-  //     medium: false,
-  //     mild: false,
-  //     cheapEats: false,
-  //     average: false,
-  //     fineDining: false,
-  //     chinese: false,
-  //     indian: false,
-  //     mexican: false,
-  //     korean: false,
-  //     lactoseFree: false,
-  //     vegetarianFriendly: false,
-  //     veganOptions: false,
-  //     glutenFree: false
-  //   },
-  //   tagList: []
-  // })
-
-  // const tagsHandler = useCallback((name, checked) => {
-  //   dispatch({
-  //     type: 'TAG_CHANGE',
-  //     value: checked,
-  //     checkboxId: name
-  //   })
-  // }, [])
 
   const [checkbox, setCheckbox] = useState<IState>({
     extraHot: false,
@@ -147,21 +100,10 @@ const FilterList: React.FC<FilterListProps> = ({ onCheckboxChange }) => {
 
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // if (event.target.checked) {
-    //   setCheckedList([...checkedList, event.target.name]) 
-    //   console.log(checkedList)
-      
-    // } else {
-    //   setCheckedList(checkedList.filter((tag: string) => tag !== event.target.name))
-   
-    // }
+
     setCheckbox({ ...checkbox, [event.target.name]: event.target.checked })
     onCheckboxChange(event.target.name, event.target.checked)
-  };
-
-  // useEffect(() => {
-  //   onCheckboxChange(checkedList)
-  // }, [checkbox, checkedList, handleChange])
+  }
 
   return (
     <Paper variant="outlined">
@@ -169,8 +111,6 @@ const FilterList: React.FC<FilterListProps> = ({ onCheckboxChange }) => {
 
     <FormGroup className={classes.root}>
 
-
-    
 
       <Typography variant="body1" className={classes.titleFont}>Spice Level</Typography>
       {spiceLevel.map((spiciness: keyof IState) => <CheckBox checked={checkbox[spiciness]} item={spiciness} handleChange={handleChange} key={spiciness}/>)}

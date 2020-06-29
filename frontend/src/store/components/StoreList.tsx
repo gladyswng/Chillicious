@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import StoreCard from './StoreCard'
 import { useHttpClient } from '../../shared/hooks/http-hook'
 import { AuthContext } from '../../shared/context/authContext'
@@ -64,16 +64,27 @@ const StoreList: React.FC<StoreListProps> = (props) => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
 
   const [backdropOpen, setBackdropOpen] = useState(true)
+
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1)
+
   const handleBackdropClose = () => {
     setBackdropOpen(false)
   }
-
 
   if (props.storeList.length === 0) {
     return (
       <Message message="No store found"/>
     )
   }
+  const pageCount = Math.ceil(props.storeList.length / 3)
+  const indexOfLastTodo = currentPage * 3
+  const indexOfFirstTodo = indexOfLastTodo - 3
+  const currentTodos = props.storeList.slice(indexOfFirstTodo, indexOfLastTodo)
+
+  const pageChangeHandler = (e: React.MouseEvent<HTMLElement, MouseEvent>, value: number) => {
+    setCurrentPage(value)
+ }
 
   const sendDeleteRequestHandler = async (storeId: string) => {
     await sendRequest(`http://localhost:3000/store/${storeId}`, 'DELETE', null , { 
@@ -102,7 +113,7 @@ const StoreList: React.FC<StoreListProps> = (props) => {
 
       <Grid container className={classes.root}>
         <div style={{padding: 0, margin: 0, width: '100%'}}>
-          {props.storeList.map((store: Store) => {
+          {currentTodos.map((store: Store) => {
             return <StoreCard 
             key={store.id} 
             store={store} 
@@ -116,7 +127,11 @@ const StoreList: React.FC<StoreListProps> = (props) => {
 
 
         <div className={classes.pagination}>
-          <Pagination count={10} shape="rounded" />
+          <Pagination 
+          count={pageCount} 
+          shape="rounded" 
+          page={currentPage}
+          onChange={pageChangeHandler}/>
          
         </div>
 

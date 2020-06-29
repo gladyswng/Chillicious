@@ -67,7 +67,7 @@ if (onInput) {
           readOnly={readOnly}
           name="customized-color"
           onChange={changeHandler}
-          value={rate}
+          value={rate|| 0}
           size="small"
           getLabelText={(value) => `${value} Hot`}
           precision={1}

@@ -67,12 +67,21 @@ const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId,  onChange }
   const classes = useStyles()
   const auth = useContext(AuthContext)
   const [sortBy, setSortBy] = useState('Latest')
+  const [currentPage, setCurrentPage] = useState(1)
+  
+  const pageCount = Math.ceil(reviews.length / 3)
+  const indexOfLastTodo = currentPage * 3
+  const indexOfFirstTodo = indexOfLastTodo - 3
+  const currentTodos = reviews.slice(indexOfFirstTodo, indexOfLastTodo)
   
   const handleChange = (event: any) => {
     setSortBy(event.target.value);
   };
+  const pageChangeHandler = (e: React.MouseEvent<HTMLElement, MouseEvent>, value: number) => {
+    setCurrentPage(value)
+ }
  
-  const reviewList = reviews.map(review => {
+  const reviewList = currentTodos.map(review => {
     return (
       <ReviewCard 
       review={review}
@@ -117,7 +126,11 @@ const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId,  onChange }
 
         {reviews.length===0? <Typography variant="h6" style={{ padding: 12 }}>No reviews yet :(</Typography> : reviewList}
         {/* {reviewList} */}
-        <Pagination count={5} shape="rounded" />
+        <Pagination 
+          count={pageCount} 
+          shape="rounded" 
+          page={currentPage}
+          onChange={pageChangeHandler}/>
       </Paper>
     );
 }

@@ -31,11 +31,13 @@ const SearchResult: React.FC<SearchResultProps> = () => {
 
   const [loadedStores, setLoadedStores] = useState()
   const [fetchedStores, setFetchedStores] = useState<any>()
-
   const [checkedList, setCheckedList] = useState([])
-
   const [hearts, setHearts] = useState()
-  console.log(checkedList)
+
+
+  
+
+  console.log(checkedList) // TWICE??
   
   
 
@@ -92,16 +94,10 @@ const SearchResult: React.FC<SearchResultProps> = () => {
       const levels = checkedList.filter(level => !isNaN(level))
       const prices = checkedList.filter(price => price.startsWith('$'))
 
-      setLoadedStores( fetchedStores.filter((store:any) => tags.every(tag => store.tags.includes(tag)) && (prices.length == 0 || prices.includes(store.priceRange)) && (levels.length == 0 || (store.ratingsAverage && levels.includes(store.ratingsAverage.toString()))))
-        // () => {
-        // const filterList = ['tags', 'priceRange']
-        // let stores
-        // filterList.forEach(filterName => {
-
-        //   stores = fetchedStores.filter((store:any) => checkedList.every(tag => store[filterName].includes(tag)))
-        // })
-        // return stores
-      // }
+      setLoadedStores( fetchedStores.filter((store:any) => tags.every(tag => store.tags.includes(tag)) 
+      && (prices.length == 0 || prices.includes(store.priceRange)) 
+      && (levels.length == 0 || (store.ratingsAverage 
+      && levels.includes(store.ratingsAverage.toString()))))
      )
 
     } else if (checkedList.length === 0) {

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import ReviewCard from '../../store/components/ReviewCard'
-
+import Pagination from '@material-ui/lab/Pagination'
 
 interface UserReviewsProps {
   reviews: {
@@ -26,8 +26,18 @@ interface UserReviewsProps {
  
 
 const UserReviews: React.FC<UserReviewsProps> = ({ reviews, onChange }) => {
-  console.log(reviews)
-  const reviewList = reviews.map(review => {
+
+  const [currentPage, setCurrentPage] = useState(1)
+  
+  const pageCount = Math.ceil(reviews.length / 3)
+  const indexOfLastTodo = currentPage * 3
+  const indexOfFirstTodo = indexOfLastTodo - 3
+  const currentTodos = reviews.slice(indexOfFirstTodo, indexOfLastTodo)
+
+  const pageChangeHandler = (e: React.MouseEvent<HTMLElement, MouseEvent>, value: number) => {
+    setCurrentPage(value)
+ }
+  const reviewList = currentTodos.map(review => {
     return (
       <ReviewCard 
       storeName={review.store.name}
@@ -41,6 +51,11 @@ const UserReviews: React.FC<UserReviewsProps> = ({ reviews, onChange }) => {
     return (
       <>
       {reviews && reviewList}
+      <Pagination 
+          count={pageCount} 
+          shape="rounded" 
+          page={currentPage}
+          onChange={pageChangeHandler}/>
       </>
     );
 }

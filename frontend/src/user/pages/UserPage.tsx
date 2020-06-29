@@ -64,9 +64,6 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
     fetchStore()
   }, [ sendRequest, auth.token ])
 
-
-  console.log(loadedUser)
-
   const handleChange = (event: any, newTabValue: any) => {
     setTabValue(newTabValue);
   };
