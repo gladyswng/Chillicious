@@ -148,6 +148,7 @@ exports.createStore = async (req, res, next) => {
     image,
     priceRange,
     tags
+   
   }
 
   const store = new Store({

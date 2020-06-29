@@ -23,27 +23,28 @@ interface SearchResultProps {
 
 }
 
-
-
-
 const SearchResult: React.FC<SearchResultProps> = () => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
   const {isLoading, error, sendRequest, clearError} = useHttpClient() 
+  // TODO - FIX TYPE ANY
 
   const [loadedStores, setLoadedStores] = useState()
+  const [fetchedStores, setFetchedStores] = useState<any>()
 
   const [checkedList, setCheckedList] = useState([])
 
   const [hearts, setHearts] = useState()
   console.log(checkedList)
   
+  
+
   useEffect(() => {
     const fetchStores = async() => {
       try { 
         const responseData = await sendRequest('http://localhost:3000/stores')
-        
         setLoadedStores(responseData)
+        setFetchedStores(responseData)
       } catch (e) {
 
       }
@@ -85,11 +86,15 @@ const SearchResult: React.FC<SearchResultProps> = () => {
   
 
   useEffect(() => {
-    if (checkedList.length> 0) {
 
-      setLoadedStores((prevStores: any) => prevStores.filter((store:any) => checkedList.every(tag => store.tags.includes(tag))))
+    if (checkedList.length> 0 && fetchedStores) {
+      setLoadedStores(() => fetchedStores.filter((store:any) => checkedList.every(tag => store.tags.includes(tag))))
       // setLoadedStores((prevStores: any) => prevStores.filter((store:any) => store.tags.includes('mexican')))
-    } 
+    } else if (checkedList.length === 0) {
+      setLoadedStores(fetchedStores)
+    } else {
+      return
+    }
   }, [checkedList])
 
   // const queryList = ['tags', 'priceRange', 'ratingsAverage']

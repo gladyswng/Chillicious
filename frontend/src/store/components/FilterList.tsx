@@ -132,7 +132,7 @@ const FilterList: React.FC<FilterListProps> = ({ onCheckboxChange }) => {
 
   });
 
-  const [checkedList, setCheckedList] = useState<string[]>([])
+  // const [checkedList, setCheckedList] = useState<string[]>([])
   
   // const spiceLevel = [{value:'5', label:'ExtraHot'}, {} ]
   const spiceLevel = [ '5', '4', '3', '2', '1' ]
