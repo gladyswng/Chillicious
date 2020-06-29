@@ -88,8 +88,19 @@ const SearchResult: React.FC<SearchResultProps> = () => {
   useEffect(() => {
 
     if (checkedList.length> 0 && fetchedStores) {
-      setLoadedStores(() => fetchedStores.filter((store:any) => checkedList.every(tag => store.tags.includes(tag))))
-      // setLoadedStores((prevStores: any) => prevStores.filter((store:any) => store.tags.includes('mexican')))
+   
+      setLoadedStores( fetchedStores.filter((store:any) => checkedList.every(tag => store.tags.includes(tag)))
+        // () => {
+        // const filterList = ['tags', 'priceRange']
+        // let stores
+        // filterList.forEach(filterName => {
+
+        //   stores = fetchedStores.filter((store:any) => checkedList.every(tag => store[filterName].includes(tag)))
+        // })
+        // return stores
+      // }
+     )
+
     } else if (checkedList.length === 0) {
       setLoadedStores(fetchedStores)
     } else {
@@ -97,37 +108,6 @@ const SearchResult: React.FC<SearchResultProps> = () => {
     }
   }, [checkedList])
 
-  // const queryList = ['tags', 'priceRange', 'ratingsAverage']
-  // let updatedStores
-
-
-  // for (const index in queryList) {
-  //   const query :any = queryList[index]
-
-  //   for (const index in prevStores) {
-  //     const store : any = prevStores[index]
-  //     console.log(store[query])
-  //     if (store[query] === undefined ) {
-  //     // || checkedList.includes(store[query])
-  //     return 
-  //   }
-
-  //   updatedStores = prevStores.filter((store: any) => checkedList.includes(store[query]))
-  //   console.log(updatedStores)
-  // }
-
-  // const test = (query: any) => {
-  //   console.log(query)
-  //   for (const store in prevStores) {
-  //     if (store[query] === undefined ) {
-  //     // || checkedList.includes(store[query])
-  //     return 
-  //   }
-  //   updatedStore = prevStores.filter((store: any) => checkedList.includes(store[query]))
-  // }
-
-// }
-// return updatedStores
   
   return (
   
