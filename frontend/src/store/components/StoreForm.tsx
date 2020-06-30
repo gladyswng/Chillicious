@@ -100,8 +100,7 @@ interface StoreFormProps {
 const StoreForm: React.FC<StoreFormProps> = (props) => {
   const classes = useStyles()
   const { inputs, formIsValid, otherData, blur, inputHandler, priceHandler, tagsHandler, submitHandler } = props
-
-
+  const [loadedInputs, setLoadedInputs] = useState(false)
 
   const priceRange = inputs.priceRange
   const category = ['chinese', 'indian', 'korean', 'mexican']
@@ -119,10 +118,12 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
     // })
 
   }
+  useEffect(()=> {
+    setLoadedInputs(true)
+  }, [inputs])
 
+    if (!loadedInputs && !blur) {
 
-
-    if (!inputs.storeName.value && !blur) {
       return(
         <div>
           <h2>Loading</h2>
@@ -131,7 +132,8 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
     }
    
   return (
-    
+    <>
+    {loadedInputs &&
     <form 
   
     className={classes.root} 
@@ -281,6 +283,8 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
 
 
     </form>
-  );
+      }
+    </>
+  )
 }
 export default StoreForm

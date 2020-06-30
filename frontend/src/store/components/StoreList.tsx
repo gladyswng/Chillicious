@@ -84,7 +84,12 @@ const StoreList: React.FC<StoreListProps> = (props) => {
 
   const pageChangeHandler = (e: React.MouseEvent<HTMLElement, MouseEvent>, value: number) => {
     setCurrentPage(value)
+
  }
+
+ useEffect(() => {
+  setCurrentPage(1)
+ }, [props.storeList])
 
   const sendDeleteRequestHandler = async (storeId: string) => {
     await sendRequest(`http://localhost:3000/store/${storeId}`, 'DELETE', null , { 
