@@ -4,7 +4,7 @@ const HttpError = require('../models/http-error')
 const validator = require('validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-
+const fileUpload = require('../middleware/file-upload')
 
 const userSchema = new Schema({
     email: {

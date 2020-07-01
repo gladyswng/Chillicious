@@ -1,7 +1,7 @@
 const User = require('../models/User')
 const HttpError = require('../models/http-error')
 const { body, validationResult } = require('express-validator')
-
+const fileUpload = require('../middleware/file-upload')
 
 
 

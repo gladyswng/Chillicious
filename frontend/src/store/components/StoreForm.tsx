@@ -1,16 +1,19 @@
 import React, { useState, useCallback, useReducer, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH } from '../../util/validators'
+
 import { useForm } from '../../shared/hooks/form-hook'
+import ImageUpload from './ImageUpload'
 
 import RadioButton from '../../shared/components/UIElements/RadioButton'
 import CheckBox from '../../shared/components/UIElements/CheckBox'
 import { makeStyles } from '@material-ui/core/styles'
 import FormHelperText from '@material-ui/core/FormHelperText'
-import Paper from '@material-ui/core/Paper';
+import Paper from '@material-ui/core/Paper'
 import Divider from '@material-ui/core/Divider';
 
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button'
 import Input from '../../shared/components/UIElements/Input'
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControl from '@material-ui/core/FormControl';
@@ -99,6 +102,7 @@ interface StoreFormProps {
 
 const StoreForm: React.FC<StoreFormProps> = (props) => {
   const classes = useStyles()
+  const history = useHistory()
   const { inputs, formIsValid, otherData, blur, inputHandler, priceHandler, tagsHandler, submitHandler } = props
   const [loadedInputs, setLoadedInputs] = useState(false)
 
@@ -109,15 +113,6 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
 
 
 
-  const imageHandler = ({ target } : any) => {
-    console.log(target.files[0].name)
-    console.log(target.files[0])
-    // dispatch({
-    //   type: 'IMAGE_CHANGE',
-      
-    // })
-
-  }
   useEffect(()=> {
     setLoadedInputs(true)
   }, [inputs])
@@ -130,6 +125,10 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
         </div>
       )
     }
+
+  const cancelHandler = () => {
+    history.goBack()
+  }
    
   return (
     <>
@@ -185,24 +184,7 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
         />
         
 
-        <div>
-          <Typography>Picture</Typography>
-          <input
-            accept="image/*"
-            style={{ display: 'none' }}
-            onChange={imageHandler}
-            id="image"
-            multiple
-            type="file"
-          />
-          <label htmlFor="image">
-            <Button variant="contained" color="primary" component="span">
-              Upload
-            </Button>
-          </label>
-        
-
-        </div>
+        <ImageUpload id="image" onInput={inputHandler}/>
 
         <div style={{ width: '100%' }}>
 
@@ -272,7 +254,7 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
           <Button 
           variant="contained" 
           color="primary" 
-          // onSubmit={storeFormSubmitHandler} 
+          onClick={cancelHandler} 
           style={{ margin: "16px 0",  width: '40%' }}
           >Cancel</Button>
         </div>

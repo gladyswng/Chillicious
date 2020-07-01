@@ -35,7 +35,9 @@ const storeSchema = new mongoose.Schema({
       type: String,
       required: true
     },
-    photo: String, 
+    image: {
+      type: String
+    },
 
     author: {
         type: mongoose.Schema.Types.ObjectId,

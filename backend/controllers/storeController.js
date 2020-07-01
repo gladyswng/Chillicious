@@ -127,6 +127,7 @@ exports.addStore = (req, res) => {
 
 exports.createStore = async (req, res, next) => {
   const { name, description, address, image, priceRange, tags } = req.body
+  console.log(req.file.path)
   
   let coordinates
   
@@ -145,7 +146,9 @@ exports.createStore = async (req, res, next) => {
     description,
     location: coordinates,
     address,
-    image,
+    //image: 'http://localhost:3000/' + req.file. 
+    // We can store the full url here but we want to prepend it on the frontend so we only save the file path here on server
+    image: req.file.path,
     priceRange,
     tags
    
@@ -201,6 +204,7 @@ exports.storeValidationRules = () => {
 exports.validateRegister = (req, res, next) => {
   const errors = validationResult(req)
   if (errors.isEmpty()) {
+
       console.log(req.body)
     return next()
   }
@@ -293,7 +297,8 @@ exports.updateStore = async (req, res, next) => {
           return next(e)
         }
       store.location = coordinates
-
+      store.image = req.file.path,
+      
       await store.save()
       res.send(store)
       // res.redirect(`/stores/${store._id}/edit`)

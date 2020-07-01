@@ -70,26 +70,28 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
     
         event.preventDefault()
         try {
-          // const formData = new FormData()
-          // formData.append('name', inputs.storeName.value);
-          // formData.append('description', inputs.description.value);
-          // formData.append('address', inputs.address.value);
-          // formData.append('priceRange', inputs.priceRange.value);
-          // formData.append('tags', otherData.tags.value)
+          const formData = new FormData()
+          formData.append('name', inputs.storeName.value);
+          formData.append('description', inputs.description.value);
+          formData.append('address', inputs.address.value)
+          formData.append('priceRange', inputs.priceRange.value)
+          formData.append('tags', otherData.tags)
+          formData.append('image', inputs.image.value)
           
-          console.log('clicked')
           await sendRequest(
             'http://localhost:3000/store/add', 
-            'POST', JSON.stringify({
-              name: inputs.storeName.value,
-              description: inputs.description.value,
-              address: inputs.address.value,
-              priceRange: inputs.priceRange.value,
-              tags: otherData.tags
-              }), 
+            'POST', 
+            formData,
+            // JSON.stringify({
+            //   name: inputs.storeName.value,
+            //   description: inputs.description.value,
+            //   address: inputs.address.value,
+            //   priceRange: inputs.priceRange.value,
+            //   tags: otherData.tags
+            //   }), 
             { 
-              Authorization: 'Bearer ' + auth.token,
-              'Content-Type': 'application/json'
+              Authorization: 'Bearer ' + auth.token
+              // 'Content-Type': 'application/json'
             } 
 
             )

@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
+const fileUpload = require('../middleware/file-upload')
 
 const storeController = require('../controllers/storeController')
 const userController = require('../controllers/userController')
@@ -15,6 +16,7 @@ router.get('/store/:slug', storeController.getStoreBySlug)
 // Render storeForm
 // Submit storeForm - when add''
 router.post('/store/add', auth, 
+fileUpload.single('image'),
 storeController.storeValidationRules(),
 storeController.validateRegister,
 storeController.createStore)

@@ -149,7 +149,7 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, sendDelet
   return (
     
     <Card className={classes.storeCardRoot} variant="outlined" >
-       <CardMedia className={classes.cardMedia}  image={store.image? store.image : "https://images.unsplash.com/photo-1506368144590-cf6438f1cdb5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80"}/>
+       <CardMedia className={classes.cardMedia}  image={store.image? `http://localhost:3000/${store.image}` : "https://images.unsplash.com/photo-1506368144590-cf6438f1cdb5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80"}/>
 
       <CardContent  className={classes.cardContent}>
         <div>
@@ -168,6 +168,7 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, sendDelet
           </Typography>
           <Typography variant="subtitle1">{store.priceRange}</Typography>
          
+         {store.tags[0] !== "" &&
           <div>
 
             {store.tags.map(tag => {
@@ -178,6 +179,7 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, sendDelet
               className={classes.chip}/>
             })}
           </div>
+         }
             
             <Typography>
              <Link 
