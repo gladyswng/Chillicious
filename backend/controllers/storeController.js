@@ -258,6 +258,7 @@ exports.editStore = async (req, res, next) => {
 exports.updateStore = async (req, res, next) => {
   const updates = Object.keys(req.body)
   const allowedUpdates = ['name', 'description', 'tags', 'priceRange', 'address', 'image']
+  console.log(req.file.path)
     //  TODO - GET THE RIGHT ERROR MESSAGE
     try {
       const isValidOperation = updates.every(update => {
@@ -271,6 +272,7 @@ exports.updateStore = async (req, res, next) => {
       
 
       const store = await Store.findOne({ _id: req.params.id,  author: req.user._id}, function (err, store) {
+        
         if (!store) {
           return next(
             new HttpError('Could not find matched store, you have to be the author to edit store page', 401)
@@ -285,7 +287,7 @@ exports.updateStore = async (req, res, next) => {
       })
 
       //TODO - Message not showing, showing mongodb's message instead
-
+      
       updates.forEach(update => {
           store[update] = req.body[update]
       })

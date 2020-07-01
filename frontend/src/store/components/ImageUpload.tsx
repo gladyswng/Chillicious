@@ -24,10 +24,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 interface ImageUploadProps {
   id: string
+  image: string
   onInput: (id: any, value: any, isValid: any) => void
 }
 
-const ImageUpload: React.FC<ImageUploadProps> = ({ id, onInput }) => {
+const ImageUpload: React.FC<ImageUploadProps> = ({ id, image,onInput }) => {
   const classes = useStyles()
   const [file, setFile] = useState()
   // TODO -TYPE ANY
@@ -38,11 +39,15 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ id, onInput }) => {
 
   // const pickImageHandler = ({ target } : any) => {
   //   filePickerRef.current.click()
-  //   console.log(target.files[0].name)
-  //   console.log(target.files[0])
+
 
 
   // }
+
+  // if (image) {
+  //   setFile(image)
+  // }
+
   useEffect(()=> {
     if (!file) {
       return 
@@ -54,13 +59,17 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ id, onInput }) => {
         setPreviewUrl(fileReader.result)
       }
     }
+    
     fileReader.readAsDataURL(file)
   }, [file])
+
   const pickedHandler = (e:any) => {
     let pickedFile
     // let fileIsValid = isValid
     if (e.target.files && e.target.files.length === 1) {
       pickedFile = e.target.files[0]
+      // PROBLEM HERE!!! THIS IS NOT SENDING ANYFILES WHEN NOT ANY EVENT!
+      console.log(pickedFile)
       setFile(pickedFile)
       // setIsValid(true)
       // fileIsValid = true
