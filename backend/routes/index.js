@@ -24,6 +24,7 @@ storeController.createStore)
 router.get('/store/edit/:id', auth, storeController.editStore)
 // Submit storeForm - when add'update/:id'
 router.patch('/store/update/:id', auth, 
+fileUpload.single('image'),
 storeController.storeValidationRules(),
 storeController.validateRegister,
 storeController.updateStore) 

@@ -257,8 +257,7 @@ exports.editStore = async (req, res, next) => {
 
 exports.updateStore = async (req, res, next) => {
   const updates = Object.keys(req.body)
-  console.log(req.body)
-  const allowedUpdates = ['name', 'description', 'tags', 'priceRange', 'address', 'photo']
+  const allowedUpdates = ['name', 'description', 'tags', 'priceRange', 'address', 'image']
     //  TODO - GET THE RIGHT ERROR MESSAGE
     try {
       const isValidOperation = updates.every(update => {
@@ -290,6 +289,10 @@ exports.updateStore = async (req, res, next) => {
       updates.forEach(update => {
           store[update] = req.body[update]
       })
+      if (req.file.path) {
+        store.image = req.file.path
+      } 
+
       let coordinates
         try {
           coordinates = await getCoordsForAddress(req.body.address)         
@@ -297,7 +300,6 @@ exports.updateStore = async (req, res, next) => {
           return next(e)
         }
       store.location = coordinates
-      store.image = req.file.path,
       
       await store.save()
       res.send(store)

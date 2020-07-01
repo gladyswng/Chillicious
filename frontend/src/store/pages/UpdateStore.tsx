@@ -51,6 +51,10 @@ const UpdateStore: React.FC<UpdateStoreProps> = ({}) => {
     priceRange:{
       value: '',
       isValid: false
+    },
+    image: {
+      value: '',
+      isValid: true
     }
   }, 
   false, 
@@ -65,8 +69,7 @@ const UpdateStore: React.FC<UpdateStoreProps> = ({}) => {
       vegetarianFriendly: false,
       veganOptions: false,
       glutenFree: false
-    },
-    image: []
+    }
   })
 
   console.log(formState)
@@ -76,11 +79,13 @@ const UpdateStore: React.FC<UpdateStoreProps> = ({}) => {
     const fetchStore = async () => {
       
       try {
+
         const responseData = await sendRequest(`http://localhost:3000/store/edit/${id}`, 'GET', null , { 
           Authorization: 'Bearer ' + auth.token,
           'Content-Type': 'application/json'
         })
         clearError()
+        console.log(responseData)
         const store = responseData
 
         setLoadedStore(store)
@@ -123,14 +128,16 @@ const UpdateStore: React.FC<UpdateStoreProps> = ({}) => {
               priceRange: {
                 value: store.priceRange,
                 isValid: true
+              },
+              image: {
+                value: store.image,
+                isValid: true
               }
             },
             true, 
             {
               tags: store.tags,
               checkbox: checkbox
-              ,
-              image:[]
             } 
           )
 
@@ -150,16 +157,17 @@ const updateSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     
     try {
+      const formData = new FormData()
+      formData.append('name', inputs.storeName.value)
+      formData.append('description', inputs.description.value)
+      formData.append('address', inputs.address.value)
+      formData.append('priceRange', inputs.priceRange.value)
+      formData.append('tags', otherData.tags)
+      formData.append('image', inputs.image.value)
+
       await sendRequest(
-        `http://localhost:3000/store/update/${id}`, 'PATCH', JSON.stringify({
-          name: inputs.storeName.value,
-          description: inputs.description.value,
-          address: inputs.address.value,
-          priceRange: inputs.priceRange.value,
-          tags: otherData.tags
-        }),  { 
+        `http://localhost:3000/store/update/${id}`, 'PATCH', formData,  { 
           Authorization: 'Bearer ' + auth.token,
-          'Content-Type': 'application/json'
         } 
       )
       history.push('/stores') // TODO - CHANGE PAGE HERE TO USER STORE PAGE
