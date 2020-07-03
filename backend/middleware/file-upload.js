@@ -13,7 +13,7 @@ const fileUpload = multer({
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
       let path = 'backend/uploads/images'
-      // fs.mkdirsSync(path)
+
       cb(null, path)
     },
     filename: (req, file, cb) => {
@@ -26,9 +26,10 @@ const fileUpload = multer({
     }
   }),
   fileFilter: (req, file, cb) => {
+    console.log(file)
     // Check if can find mimetype here
     // !! - convert undefined, null to false - either true or false
-    const isValid = !!MIME_TYPE_MAP[file.mimetype]
+    const isValid = !!MIME_TYPE_MAP[file.mimetype] 
     let error = isValid ? null : new Error('Invalid file type')
     cb(error, isValid)
   }

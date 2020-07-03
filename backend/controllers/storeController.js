@@ -127,6 +127,7 @@ exports.addStore = (req, res) => {
 
 exports.createStore = async (req, res, next) => {
   const { name, description, address, image, priceRange, tags } = req.body
+  console.log(image)
   console.log(req.file.path)
   
   let coordinates
@@ -257,8 +258,15 @@ exports.editStore = async (req, res, next) => {
 
 exports.updateStore = async (req, res, next) => {
   const updates = Object.keys(req.body)
+
   const allowedUpdates = ['name', 'description', 'tags', 'priceRange', 'address', 'image']
-  console.log(req.file.path)
+  let imageSource
+  if (req.file === undefined) {
+    imageSource = req.body.image
+  } else {
+    imageSource = req.file.path
+  }
+
     //  TODO - GET THE RIGHT ERROR MESSAGE
     try {
       const isValidOperation = updates.every(update => {
@@ -291,10 +299,7 @@ exports.updateStore = async (req, res, next) => {
       updates.forEach(update => {
           store[update] = req.body[update]
       })
-      if (req.file.path) {
-        store.image = req.file.path
-      } 
-
+      store.image = imageSource
       let coordinates
         try {
           coordinates = await getCoordsForAddress(req.body.address)         

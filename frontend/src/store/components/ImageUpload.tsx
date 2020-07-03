@@ -28,12 +28,13 @@ interface ImageUploadProps {
   onInput: (id: any, value: any, isValid: any) => void
 }
 
-const ImageUpload: React.FC<ImageUploadProps> = ({ id, image,onInput }) => {
+const ImageUpload: React.FC<ImageUploadProps> = ({ id,  onInput, image }) => {
   const classes = useStyles()
   const [file, setFile] = useState()
   // TODO -TYPE ANY
   const [previewUrl, setPreviewUrl] = useState<string>()
-  // const [isValid, setIsValid] = useState(false)
+  // console.log(`http://localhost/${image}`)
+  const [isValid, setIsValid] = useState(false)
 
   // const filePickerRef = useRef()
 
@@ -44,14 +45,19 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ id, image,onInput }) => {
 
   // }
 
-  // if (image) {
-  //   setFile(image)
-  // }
+useEffect(() => {
+  if (image) {
+    setPreviewUrl(`http://localhost:3000/${image}`)
+  }
+}, [])
 
+
+  // Generate a preview whenever theres a new file
   useEffect(()=> {
     if (!file) {
       return 
     }
+
     const fileReader = new FileReader()
     // execute whenever loads a new file or done parsing a file
     fileReader.onload = () => {
@@ -59,27 +65,27 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ id, image,onInput }) => {
         setPreviewUrl(fileReader.result)
       }
     }
-    
     fileReader.readAsDataURL(file)
   }, [file])
 
   const pickedHandler = (e:any) => {
     let pickedFile
-    // let fileIsValid = isValid
+    let fileIsValid = isValid
     if (e.target.files && e.target.files.length === 1) {
       pickedFile = e.target.files[0]
-      // PROBLEM HERE!!! THIS IS NOT SENDING ANYFILES WHEN NOT ANY EVENT!
+
       console.log(pickedFile)
+      // console.log(image)
       setFile(pickedFile)
-      // setIsValid(true)
-      // fileIsValid = true
+      setIsValid(true)
+      fileIsValid = true
     } else {
-      // setIsValid(false)
-      // fileIsValid = false
+      setIsValid(false)
+      fileIsValid = false
       return
     }
 
-    onInput(id, pickedFile, true)
+    onInput(id, pickedFile, fileIsValid)
 
 
   }

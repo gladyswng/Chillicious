@@ -72,6 +72,10 @@ interface StoreFormProps {
       value: string
       isValid: boolean
     }
+    image: {
+      value: string
+      isValid: boolean
+    }
     
   }
   otherData: {
@@ -184,7 +188,7 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
         />
         
 
-        <ImageUpload id="image" onInput={inputHandler}/>
+        <ImageUpload id="image" onInput={inputHandler} image={inputs.image.value}/>
 
         <div style={{ width: '100%' }}>
 

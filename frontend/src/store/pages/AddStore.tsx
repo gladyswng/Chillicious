@@ -34,6 +34,10 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
     priceRange:{
       value: '',
       isValid: false
+    },
+    image: {
+      value: '',
+      isValid: false
     }
   }, 
   false, 
@@ -48,8 +52,7 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
       vegetarianFriendly: false,
       veganOptions: false,
       glutenFree: false
-    },
-    image: []
+    }
   })
 
 
@@ -69,6 +72,7 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     
         event.preventDefault()
+        console.log(inputs.image.value)
         try {
           const formData = new FormData()
           formData.append('name', inputs.storeName.value);
@@ -82,16 +86,10 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
             'http://localhost:3000/store/add', 
             'POST', 
             formData,
-            // JSON.stringify({
-            //   name: inputs.storeName.value,
-            //   description: inputs.description.value,
-            //   address: inputs.address.value,
-            //   priceRange: inputs.priceRange.value,
-            //   tags: otherData.tags
-            //   }), 
+
             { 
               Authorization: 'Bearer ' + auth.token
-              // 'Content-Type': 'application/json'
+  
             } 
 
             )
