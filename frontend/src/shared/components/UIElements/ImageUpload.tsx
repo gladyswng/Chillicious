@@ -54,7 +54,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ id,  onInput, image, imageSty
 
 useEffect(() => {
   if (image) {
-    setPreviewUrl(`http://localhost:3000/${image}`)
+    setPreviewUrl(`/${image}`)
   }
 }, [])
 

@@ -68,7 +68,7 @@ const profileSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     formData.append('name', inputs.userName.value)
     formData.append('image', inputs.avatar.value)
     
-    const response = await sendRequest('http://localhost:3000/user/me/profile', 'PATCH', formData, { 
+    const response = await sendRequest('/user/me/profile', 'PATCH', formData, { 
       Authorization: 'Bearer ' + auth.token
     } 
     )

@@ -104,7 +104,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ storeId, onChange, buttonText
     event.preventDefault()
     try {
        const responseData = await sendRequest(
-       `http://localhost:3000/store/${storeId}/updateReview`, 
+       `/api/store/${storeId}/updateReview`, 
        'PATCH', JSON.stringify({
          title: inputs.title.value,
          description: inputs.description.value,
@@ -131,7 +131,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ storeId, onChange, buttonText
     event.preventDefault();
     try {
       const responseData = await sendRequest(
-       `http://localhost:3000/store/${storeId}/addReview`, 
+       `/store/${storeId}/addReview`, 
        'POST', JSON.stringify({
          title: inputs.title.value,
          description: inputs.description.value,

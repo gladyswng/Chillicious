@@ -80,7 +80,7 @@ const UpdateStore: React.FC<UpdateStoreProps> = ({}) => {
       
       try {
 
-        const responseData = await sendRequest(`http://localhost:3000/store/edit/${id}`, 'GET', null , { 
+        const responseData = await sendRequest(`/store/edit/${id}`, 'GET', null , { 
           Authorization: 'Bearer ' + auth.token,
           'Content-Type': 'application/json'
         })
@@ -168,7 +168,7 @@ const updateSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
       }
 
       await sendRequest(
-        `http://localhost:3000/store/update/${id}`, 'PATCH', formData,  { 
+        `/store/update/${id}`, 'PATCH', formData,  { 
           Authorization: 'Bearer ' + auth.token,
         } 
       )
