@@ -39,7 +39,6 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
   const [loadedUser, setLoadedUser] = useState<any>()
   const [tabValue, setTabValue] = useState(0)
 // TODO - FIX ISSUE WITH NOT UNAUTHORIZED WHEN RELOAD PLUS REDIRECT IF RESTRICT ROUTE
-
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
 
   useEffect(()=> {

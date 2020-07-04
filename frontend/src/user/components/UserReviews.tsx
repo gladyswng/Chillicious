@@ -29,15 +29,18 @@ const UserReviews: React.FC<UserReviewsProps> = ({ reviews, onChange }) => {
 
   const [currentPage, setCurrentPage] = useState(1)
   
-  const pageCount = Math.ceil(reviews.length / 3)
-  const indexOfLastTodo = currentPage * 3
-  const indexOfFirstTodo = indexOfLastTodo - 3
+  const pageCount = Math.ceil(reviews.length / 5)
+  const indexOfLastTodo = currentPage * 5
+  const indexOfFirstTodo = indexOfLastTodo - 5
   const currentTodos = reviews.slice(indexOfFirstTodo, indexOfLastTodo)
-
+  
   const pageChangeHandler = (e: React.MouseEvent<HTMLElement, MouseEvent>, value: number) => {
     setCurrentPage(value)
  }
   const reviewList = currentTodos.map(review => {
+    if (review.store=== null) {
+      return 
+    }
     return (
       <ReviewCard 
       storeName={review.store.name}

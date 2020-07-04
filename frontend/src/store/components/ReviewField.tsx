@@ -69,11 +69,11 @@ const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId,  onChange }
   const [sortBy, setSortBy] = useState('Latest')
   const [currentPage, setCurrentPage] = useState(1)
   
-  const pageCount = Math.ceil(reviews.length / 3)
-  const indexOfLastTodo = currentPage * 3
-  const indexOfFirstTodo = indexOfLastTodo - 3
+  const pageCount = Math.ceil(reviews.length / 5)
+  const indexOfLastTodo = currentPage * 5
+  const indexOfFirstTodo = indexOfLastTodo - 5
   const currentTodos = reviews.slice(indexOfFirstTodo, indexOfLastTodo)
-  
+
   const handleChange = (event: any) => {
     setSortBy(event.target.value);
   };
