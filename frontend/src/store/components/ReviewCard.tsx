@@ -92,7 +92,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, stor
         <Divider variant="middle" />
         <div className={classes.review}>
           <div className={classes.user}>
-            <Avatar alt='avatar' src={author.avatar? `https://backend.chillicious.menu/${author.avatar}` : "https://images.unsplash.com/photo-1562153889-3847e21e5d3b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"} style={{height: 80, width: 80 }}/>
+            <Avatar alt='avatar' src={author.avatar? `/api/${author.avatar}` : "https://images.unsplash.com/photo-1562153889-3847e21e5d3b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"} style={{height: 80, width: 80 }}/>
   
 
             <Typography variant="caption" style={{ fontWeight: "bold" }}>{author.name}</Typography>

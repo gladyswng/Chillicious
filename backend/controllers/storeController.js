@@ -147,7 +147,7 @@ exports.createStore = async (req, res, next) => {
     description,
     location: coordinates,
     address,
-    //image: 'https://backend.chillicious.menu/' + req.file. 
+    //image: '/api/' + req.file. 
     // We can store the full url here but we want to prepend it on the frontend so we only save the file path here on server
     image: req.file.path,
     priceRange,

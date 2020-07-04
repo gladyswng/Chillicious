@@ -113,7 +113,7 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, sendDelet
   }
 
   const heartHandler = () => {
-    sendRequest(`https://backend.chillicious.menu/api/stores/${store.id}/heart`, 'POST', null,  { 
+    sendRequest(`/api/api/stores/${store.id}/heart`, 'POST', null,  { 
       Authorization: 'Bearer ' + auth.token,
       'Content-Type': 'application/json'
     })
@@ -149,7 +149,7 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, sendDelet
   return (
     
     <Card className={classes.storeCardRoot} variant="outlined" >
-       <CardMedia className={classes.cardMedia}  image={store.image? `https://backend.chillicious.menu/${store.image}` : "https://images.unsplash.com/photo-1506368144590-cf6438f1cdb5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80"}/>
+       <CardMedia className={classes.cardMedia}  image={store.image? `/api/${store.image}` : "https://images.unsplash.com/photo-1506368144590-cf6438f1cdb5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80"}/>
 
       <CardContent  className={classes.cardContent}>
         <div>

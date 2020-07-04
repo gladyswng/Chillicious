@@ -27,6 +27,12 @@ module.exports = {
     devServer: {
         historyApiFallback: true,
         public: 'chillicious.menu',
+        proxy: {
+            '/api': {
+              target: 'http://localhost:3000',
+              pathRewrite: {'^/api' : ''}
+            }
+          }      
     },
     plugins : [
         new HtmlWebpackPlugin ({

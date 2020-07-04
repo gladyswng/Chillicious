@@ -86,7 +86,7 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
           }
           
           await sendRequest(
-            'https://backend.chillicious.menu/store/add', 
+            '/api/store/add', 
             'POST', 
             formData,
 

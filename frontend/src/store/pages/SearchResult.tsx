@@ -44,7 +44,7 @@ const SearchResult: React.FC<SearchResultProps> = () => {
   useEffect(() => {
     const fetchStores = async() => {
       try { 
-        const responseData = await sendRequest('https://backend.chillicious.menu/stores')
+        const responseData = await sendRequest('/api/stores')
         setLoadedStores(responseData)
         setFetchedStores(responseData)
       } catch (e) {
@@ -54,7 +54,7 @@ const SearchResult: React.FC<SearchResultProps> = () => {
 
     const fetchHearts = async() => {
       try {
-        const heartsData = await sendRequest('https://backend.chillicious.menu/user/me/hearts', 'GET', null, { 
+        const heartsData = await sendRequest('/api/user/me/hearts', 'GET', null, { 
           Authorization: 'Bearer ' + auth.token,
           'Content-Type': 'application/json'
         })

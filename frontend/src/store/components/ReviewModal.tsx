@@ -131,7 +131,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ storeId, onChange, buttonText
     event.preventDefault();
     try {
       const responseData = await sendRequest(
-       `https://backend.chillicious.menu/store/${storeId}/addReview`, 
+       `/api/store/${storeId}/addReview`, 
        'POST', JSON.stringify({
          title: inputs.title.value,
          description: inputs.description.value,

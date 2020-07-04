@@ -54,7 +54,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ id,  onInput, image, imageSty
 
 useEffect(() => {
   if (image) {
-    setPreviewUrl(`https://backend.chillicious.menu/${image}`)
+    setPreviewUrl(`/api/${image}`)
   }
 }, [])
 

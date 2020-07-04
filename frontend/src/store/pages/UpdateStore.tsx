@@ -80,7 +80,7 @@ const UpdateStore: React.FC<UpdateStoreProps> = ({}) => {
       
       try {
 
-        const responseData = await sendRequest(`https://backend.chillicious.menu/store/edit/${id}`, 'GET', null , { 
+        const responseData = await sendRequest(`/api/store/edit/${id}`, 'GET', null , { 
           Authorization: 'Bearer ' + auth.token,
           'Content-Type': 'application/json'
         })
@@ -168,7 +168,7 @@ const updateSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
       }
 
       await sendRequest(
-        `https://backend.chillicious.menu/store/update/${id}`, 'PATCH', formData,  { 
+        `/api/store/update/${id}`, 'PATCH', formData,  { 
           Authorization: 'Bearer ' + auth.token,
         } 
       )
