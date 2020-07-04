@@ -72,15 +72,18 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     
         event.preventDefault()
-        console.log(inputs.image.value)
+    
+   
         try {
           const formData = new FormData()
           formData.append('name', inputs.storeName.value);
-          formData.append('description', inputs.description.value);
+          formData.append('description', inputs.description.value)
           formData.append('address', inputs.address.value)
           formData.append('priceRange', inputs.priceRange.value)
-          formData.append('tags', otherData.tags)
           formData.append('image', inputs.image.value)
+          for (let i = 0; i < otherData.tags.length; i++) {
+            formData.append('tags', otherData.tags[i])
+          }
           
           await sendRequest(
             'http://localhost:3000/store/add', 

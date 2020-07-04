@@ -162,8 +162,10 @@ const updateSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
       formData.append('description', inputs.description.value)
       formData.append('address', inputs.address.value)
       formData.append('priceRange', inputs.priceRange.value)
-      formData.append('tags', otherData.tags)
       formData.append('image', inputs.image.value)
+      for (let i = 0; i < otherData.tags.length; i++) {
+        formData.append('tags', otherData.tags[i])
+      }
 
       await sendRequest(
         `http://localhost:3000/store/update/${id}`, 'PATCH', formData,  { 

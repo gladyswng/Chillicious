@@ -25,10 +25,11 @@ const useStyles = makeStyles((theme) => ({
 interface ImageUploadProps {
   id: string
   image: string
+  imageStyle: string
   onInput: (id: any, value: any, isValid: any) => void
 }
 
-const ImageUpload: React.FC<ImageUploadProps> = ({ id,  onInput, image }) => {
+const ImageUpload: React.FC<ImageUploadProps> = ({ id,  onInput, image, imageStyle }) => {
   const classes = useStyles()
   const [file, setFile] = useState()
   // TODO -TYPE ANY
@@ -86,8 +87,33 @@ useEffect(() => {
     }
 
     onInput(id, pickedFile, fileIsValid)
+  }
 
 
+  const imageRenderingStyle = () => {
+    if (imageStyle === 'photo') {
+      return (
+        <>
+        <div className={classes.imageContainer}>
+          {previewUrl && <img src={previewUrl} alt="Preview" className={classes.image} /> }
+          {!previewUrl && <Typography variant="subtitle1" color="primary">Select an image</Typography>}
+        </div>
+        <Button variant="contained" color="primary" component="span">
+          Upload
+        </Button>
+        </>
+      )
+    } else if (imageStyle === 'avatar') {
+      <Button 
+      variant="contained" 
+      size="small" 
+      color="primary" 
+      component="span"
+
+      >
+      Change Picture
+      </Button>
+    }
   }
     return (
       <div>
@@ -102,13 +128,7 @@ useEffect(() => {
         type="file"
       />
       <label htmlFor={id}>
-        <div className={classes.imageContainer}>
-          {previewUrl && <img src={previewUrl} alt="Preview" className={classes.image} /> }
-          {!previewUrl && <Typography variant="subtitle1" color="primary">Select an image</Typography>}
-        </div>
-        <Button variant="contained" color="primary" component="span">
-          Upload
-        </Button>
+        {imageRenderingStyle()}
       </label>
     {/* {!isValid && <Typography>{error}</Typography>} */}
     </div>

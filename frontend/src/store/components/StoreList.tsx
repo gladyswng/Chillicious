@@ -77,9 +77,9 @@ const StoreList: React.FC<StoreListProps> = (props) => {
       <Message message="No store found"/>
     )
   }
-  const pageCount = Math.ceil(props.storeList.length / 3)
-  const indexOfLastTodo = currentPage * 3
-  const indexOfFirstTodo = indexOfLastTodo - 3
+  const pageCount = Math.ceil(props.storeList.length / 5)
+  const indexOfLastTodo = currentPage * 5
+  const indexOfFirstTodo = indexOfLastTodo - 5
   const currentTodos = props.storeList.slice(indexOfFirstTodo, indexOfLastTodo)
 
   const pageChangeHandler = (e: React.MouseEvent<HTMLElement, MouseEvent>, value: number) => {

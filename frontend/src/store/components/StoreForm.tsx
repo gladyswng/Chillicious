@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH } from '../../util/validators'
 
 import { useForm } from '../../shared/hooks/form-hook'
-import ImageUpload from './ImageUpload'
+import ImageUpload from '../../shared/components/UIElements/ImageUpload'
 
 import RadioButton from '../../shared/components/UIElements/RadioButton'
 import CheckBox from '../../shared/components/UIElements/CheckBox'
@@ -188,7 +188,11 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
         />
         
 
-        <ImageUpload id="image" onInput={inputHandler} image={inputs.image.value}/>
+        <ImageUpload 
+        id="image" 
+        onInput={inputHandler} 
+        image={inputs.image.value} 
+        imageStyle="photo"/>
 
         <div style={{ width: '100%' }}>
 
@@ -223,20 +227,20 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
 
               <Typography variant="body1" className={classes.titleFont}>Category</Typography>
 
-              {category.map((cat) => <CheckBox 
-              checked={otherData.checkbox[cat]} 
-              item={cat} 
-              key={cat}
+              {category.map((tag) => <CheckBox 
+              checked={otherData.checkbox[tag]} 
+              item={tag} 
+              key={tag}
               handleChange={tagsHandler} 
               />)}
 
               <Divider variant="middle" className={classes.divider}/>  
 
               <Typography variant="body1" className={classes.titleFont}>Dietary Restrictions</Typography>
-              {dietaryRestrictions.map((res) => <CheckBox 
-              checked={otherData.checkbox[res]} 
-              item={res} 
-              key={res} 
+              {dietaryRestrictions.map((tag) => <CheckBox 
+              checked={otherData.checkbox[tag]} 
+              item={tag} 
+              key={tag} 
               handleChange={tagsHandler}/>)}
 
             </FormGroup>

@@ -33,6 +33,9 @@ const userSchema = new Schema({
         }
 
     },
+    avatar: {
+      type: String
+    },
     hearts: [{
         type: Schema.ObjectId,
         ref: 'Store'
@@ -44,9 +47,7 @@ const userSchema = new Schema({
         }
     }],
 
-    avatar: {
-        type: Buffer
-    },
+    
     reviews: [{
       type: Schema.ObjectId,
       ref: 'Review'

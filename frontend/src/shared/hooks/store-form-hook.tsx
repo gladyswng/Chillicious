@@ -34,7 +34,7 @@ const formReducer = (state: any, action: any) => {
   
         state.otherData.tags = state.otherData.tags.filter((tag: string) => tag !== action.checkboxId)
       }
-      
+     
       return {
         ...state,
         otherData: {
