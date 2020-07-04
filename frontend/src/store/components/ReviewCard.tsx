@@ -79,31 +79,20 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, stor
     // history.push(`/store/edit/${store.id}`)
   }
 
-  const deleteHandler = async () => {
-  
-    try {
-      
-      const responseData = await sendRequest(`/api/store/${storeId}/deleteReview`, 'DELETE', null , { 
-        Authorization: 'Bearer ' + auth.token
-      })
-      console.log(responseData)
-      const updatedStore = responseData.updatedStore
-      const updatedUser = responseData.updatedUser
-      console.log(updatedUser)
-
-    userReview? onChange(updatedUser) : onChange(updatedStore)
-
-    } catch (e) {
-
-    }
-
+  const deleteHander = async (e: any) => {
+    e.preventDefault()
+    setModalOpen(false)
+    // await sendRequest(`/api/store/${store.id}`, 'DELETE', null , { 
+    //       Authorization: 'Bearer ' + auth.token
+    // })
+    // onDelete(store.id)
   }
     return (
       <div style={{ width: '100%' }}>
         <Divider variant="middle" />
         <div className={classes.review}>
           <div className={classes.user}>
-            <Avatar alt='avatar' src={author.avatar? `/${author.avatar}` : "https://images.unsplash.com/photo-1562153889-3847e21e5d3b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"} style={{height: 80, width: 80 }}/>
+            <Avatar alt='avatar' src={author.avatar? `http://localhost:3000/${author.avatar}` : "https://images.unsplash.com/photo-1562153889-3847e21e5d3b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"} style={{height: 80, width: 80 }}/>
   
 
             <Typography variant="caption" style={{ fontWeight: "bold" }}>{author.name}</Typography>

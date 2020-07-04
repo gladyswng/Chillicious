@@ -70,7 +70,7 @@ const LoginModal: React.FC<LoginModalProps> = (props) => {
     e.preventDefault()
     try {
 
-      const responseData = await sendRequest('/login', 'POST', JSON.stringify({
+      const responseData = await sendRequest('http://localhost:3000/login', 'POST', JSON.stringify({
         email: inputs.email.value,
         password: inputs.password.value
       }), {

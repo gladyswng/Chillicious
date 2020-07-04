@@ -63,7 +63,7 @@ const Registration: React.FC<RegistrationProps> = ({}) => {
   const submitHandler = async (e: any) => {
     e.preventDefault()
     try {
-      const responseData = await sendRequest('/user/register', 'POST', JSON.stringify({
+      const responseData = await sendRequest('http://localhost:3000/user/register', 'POST', JSON.stringify({
       name: inputs.userName.value,
       email: inputs.email.value,
       password: inputs.password.value
