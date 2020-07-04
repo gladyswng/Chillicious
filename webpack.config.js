@@ -26,7 +26,7 @@ module.exports = {
     mode:'development',
     devServer: {
         historyApiFallback: true,
-        disableHostCheck: true,
+        public: 'chillicious.menu',
     },
     plugins : [
         new HtmlWebpackPlugin ({
