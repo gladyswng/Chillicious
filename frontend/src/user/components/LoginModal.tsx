@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH, VALIDATOR_EMAIL } from '../../util/validators'
 import Message from '../../shared/components/UIElements/Message'
+import Input from '../../shared/components/UIElements/Input'
 import { useForm } from '../../shared/hooks/form-hook'
 import { useHttpClient } from '../../shared/hooks/http-hook' 
 
@@ -12,7 +13,6 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import Input from '../../shared/components/UIElements/Input'
 
 const useStyles = makeStyles((theme) => ({
   root: {

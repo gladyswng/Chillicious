@@ -1,7 +1,11 @@
-import React from 'react'
-import Avatar from '@material-ui/core/Avatar';
-import UserForm from '../components/UserForm'
+import React, { useContext, useState } from 'react'
+import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH, VALIDATOR_EMAIL } from '../../util/validators'
+import Input from '../../shared/components/UIElements/Input'
+import { AuthContext } from '../../shared/context/authContext'
 import { useForm } from '../../shared/hooks/form-hook'
+import { useHttpClient } from '../../shared/hooks/http-hook' 
+import Message from '../../shared/components/UIElements/Message'
+import ImageUpload from '../../shared/components/UIElements/ImageUpload'
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button';
@@ -9,9 +13,14 @@ import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
   
-  avatarSize: {
-    width: theme.spacing(30),
-    height: theme.spacing(30),
+  profileRoot: {
+    '& .MuiTextField-root': {
+      margin: theme.spacing(1),
+      width: '100%',
+    },
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
   },
 }));
 
@@ -25,7 +34,12 @@ interface UserProfileProps {
 
 const UserProfile: React.FC<UserProfileProps> = (props) => {
   const classes = useStyles()
-  const { userName, email, password, avatar } = props
+  const auth = useContext(AuthContext)
+  const { isLoading, error, sendRequest, clearError } = useHttpClient()
+  
+  const { userName, email, avatar } = props
+  const [message, setMessage] = useState()
+  
   const [formState, inputHandler, setFormData] = useForm({
   userName: {
     value: userName,
@@ -33,14 +47,6 @@ const UserProfile: React.FC<UserProfileProps> = (props) => {
   },
   email: {
     value: email,
-    isValid: true
-  },
-  password: {
-    value: password,
-    isValid: true
-  },
-  confirmPassword: {
-    value: password,
     isValid: true
   },
   avatar: {
@@ -54,39 +60,41 @@ true,
 
 const { inputs, isValid } = formState
 
-const submitHandler = async (e: any) => {
+const profileSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault()
-  fetch('')
+  console.log(inputs.avatar.value)
+  try {
+    const formData = new FormData()
+    formData.append('name', inputs.userName.value)
+    formData.append('image', inputs.avatar.value)
+    
+    const response = await sendRequest('http://localhost:3000/user/me/profile', 'PATCH', formData, { 
+      Authorization: 'Bearer ' + auth.token
+    } 
+    )
+    setMessage(response.message)
+    // setIsLoading(false)
+    // setError(null)
+
+  } catch (e) {
+    // setIsLoading(false)
+    // setError(e.message || 'Something went wrong, please try again')
+
+  }
 }
 
   return (
     <>
 
-        <Avatar alt={userName} src={avatar? avatar : "https://images.unsplash.com/photo-1562153889-3847e21e5d3b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80"} className={classes.avatarSize}/>
-          <div style={{ padding: 20 }}>
-            <input
-              accept="image/*"
-              style={{ display: 'none' }}
-              // onChange={imageHandler}
-              id="image"
-              multiple
-              type="file"
-            />
-            <label htmlFor="image">
-              <Button 
-              variant="contained" 
-              size="small" 
-              color="primary" 
-              component="span"
-       
-              >
-              Change Picture
-              </Button>
-            </label>
+      <ImageUpload 
+      id="avatar" 
+      onInput={inputHandler} 
+      image={inputs.avatar.value} 
+      imageStyle="avatar"/>
 
-          </div>
 
-      <UserForm 
+
+      {/* <UserForm 
         inputs={inputs}
         formIsValid={isValid}
         blur={false}
@@ -94,7 +102,44 @@ const submitHandler = async (e: any) => {
         disableEmail={true}
         submitHandler={submitHandler}
 
+        /> */}
+
+      <form  className={classes.profileRoot} noValidate autoComplete="off" onSubmit={profileSubmitHandler}>
+      {error && <Message message={error}/>}
+      {message && <Message message={message}/>}
+        <div>
+        <Input 
+          id="userName" 
+          label="Required" 
+          inputLabel="User Name"
+          value={inputs.userName.value}
+          variant="outlined"
+          errorMessage="Invalid user name" 
+          required
+          validators={[VALIDATOR_REQUIRE()]}
+          onInput={inputHandler}
+      
         />
+        <Input 
+          id="email" 
+          label="Required" 
+          inputLabel="Email Address"
+          disabled={true}
+          value={inputs.email.value}
+          variant="outlined"
+          errorMessage="Invalid email address" 
+          required
+          validators={[VALIDATOR_REQUIRE(), VALIDATOR_EMAIL()]}
+          onInput={inputHandler}
+      
+          />
+
+        </div>
+        
+
+      <Button variant="contained" color="primary" style={{ width: '50%', margin: '20px 0' }} type="submit">Save</Button>
+        
+        </form>
       
     </>
   );

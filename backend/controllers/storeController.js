@@ -127,8 +127,7 @@ exports.addStore = (req, res) => {
 
 exports.createStore = async (req, res, next) => {
   const { name, description, address, image, priceRange, tags } = req.body
-  console.log(image)
-  console.log(req.file.path)
+
   
   let coordinates
   

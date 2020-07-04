@@ -3,6 +3,7 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import { fileURLToPath } from 'url'
 import { makeStyles } from '@material-ui/core/styles'
+import Avatar from '@material-ui/core/Avatar'
 
 const useStyles = makeStyles((theme) => ({
   imageContainer: {
@@ -19,6 +20,10 @@ const useStyles = makeStyles((theme) => ({
     height: '100%', 
     width: '100%', 
     objectFit: 'cover'
+  },
+  avatarSize: {
+    width: theme.spacing(30),
+    height: theme.spacing(30),
   }
 
 }));
@@ -30,11 +35,12 @@ interface ImageUploadProps {
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({ id,  onInput, image, imageStyle }) => {
+
   const classes = useStyles()
   const [file, setFile] = useState()
   // TODO -TYPE ANY
   const [previewUrl, setPreviewUrl] = useState<string>()
-  // console.log(`http://localhost/${image}`)
+
   const [isValid, setIsValid] = useState(false)
 
   // const filePickerRef = useRef()
@@ -104,20 +110,27 @@ useEffect(() => {
         </>
       )
     } else if (imageStyle === 'avatar') {
-      <Button 
-      variant="contained" 
-      size="small" 
-      color="primary" 
-      component="span"
+      return (
 
-      >
-      Change Picture
-      </Button>
+        <>
+        <Avatar alt='Profile Picture' src={previewUrl} className={classes.avatarSize}/>
+
+        <Button 
+        variant="contained" 
+        size="small" 
+        color="primary" 
+        component="span"
+        style={{ margin: '20px 0' }}
+        >
+        Change Picture
+        </Button>
+        </>
+      )
     }
   }
     return (
-      <div>
-      <Typography>Picture</Typography>
+      <>
+    
       <input
         accept=".jpg,.png,.jpeg"
         style={{ display: 'none' }}
@@ -131,7 +144,7 @@ useEffect(() => {
         {imageRenderingStyle()}
       </label>
     {/* {!isValid && <Typography>{error}</Typography>} */}
-    </div>
+    </>
     );
 }
 export default ImageUpload

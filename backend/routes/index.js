@@ -60,8 +60,9 @@ router.get('/logoutAll', auth, userController.logoutAll)
 
 router.get('/user/me', auth, userController.getUser)
 
-router.patch('/user/me', 
+router.patch('/user/me/profile', 
   auth, 
+  fileUpload.single('image'),
   userController.userUpdateValidationRules(),
   userController.validateRegister,
   userController.updateProfile

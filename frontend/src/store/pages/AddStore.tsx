@@ -92,7 +92,6 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
 
             { 
               Authorization: 'Bearer ' + auth.token
-  
             } 
 
             )

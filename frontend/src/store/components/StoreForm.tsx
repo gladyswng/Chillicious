@@ -2,7 +2,6 @@ import React, { useState, useCallback, useReducer, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH } from '../../util/validators'
 
-import { useForm } from '../../shared/hooks/form-hook'
 import ImageUpload from '../../shared/components/UIElements/ImageUpload'
 
 import RadioButton from '../../shared/components/UIElements/RadioButton'
@@ -187,7 +186,7 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
         blur={blur}
         />
         
-
+        <Typography>Picture</Typography>
         <ImageUpload 
         id="image" 
         onInput={inputHandler} 

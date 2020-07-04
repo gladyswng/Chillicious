@@ -122,7 +122,7 @@ const UserForm: React.FC<UserFormProps>  = (props) => {
           style={{ margin: 8 }}
           disabled={!formIsValid}
           type='submit'
-        >{blur? 'Register' : 'Save'}</Button>
+        >Register</Button>
           <Button 
           variant="contained"  
           color="primary" 

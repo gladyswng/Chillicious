@@ -94,11 +94,10 @@ exports.validateRegister = (req, res, next) => {
 exports.userUpdateValidationRules = () => {
   return [
       body('name')
-      .not().isEmpty().withMessage('You must supply a name'),
-      
-      body('password')
-      .not().isEmpty().withMessage('You must create a password')
-      .isLength({ min: 6 }).withMessage('Password must be at least 6 chars long'),
+      .not().isEmpty().withMessage('You must supply a name'),     
+      // body('password')
+      // .not().isEmpty().withMessage('You must create a password')
+      // .isLength({ min: 6 }).withMessage('Password must be at least 6 chars long'),
       // .not().matches('password').withMessage('Must not contain the word "password"'),
       body('name')
       .trim()
@@ -120,9 +119,9 @@ exports.getUser = async (req, res, next) => {
 }
 
 exports.updateProfile = async (req, res, next) => {
-
+    
     const updates = Object.keys(req.body)
-    const allowedUpdates = ['name', 'password']
+    const allowedUpdates = ['name', 'image']
     const isValidOperation = updates.every(update => allowedUpdates.includes(update))
 
     if (!isValidOperation) {
@@ -130,14 +129,22 @@ exports.updateProfile = async (req, res, next) => {
         new HttpError('Invalid updates.', 400)
       )
     }
+    let imageSource
+    if (req.file === undefined) {
+      imageSource = req.body.image
+    } else {
+      imageSource = req.file.path
+    }
 
     try {
         updates.forEach(update => {
             req.user[update] = req.body[update]
         })
+        req.user.name = req.body.name
+        req.user.avatar = imageSource
 
         await req.user.save()
-        res.send(req.user)
+        res.send({ message: 'Profile updated' })
 
     } catch (e) {
       return next(
