@@ -50,6 +50,7 @@ interface ReviewCardProps {
   title: string
 
  }
+ userReview?: boolean
  storeName?: string
  storeId?: string
  onChange: (store: object) => void
@@ -57,7 +58,7 @@ interface ReviewCardProps {
 
 // TODO - ISSUE WITH HAVING TO TOUCH EVERY FIELD TO UPDATE STORE, NOT JUST ONE FIELD 
 
-const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, storeName }) => {
+const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, storeName, userReview }) => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
   const { rating, author, title, description, created } = review
@@ -110,6 +111,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, stor
 
             {author._id === auth.userId &&
              <ReviewModal 
+             userReview={userReview}
              review={review}
              storeId={storeId} 
              onChange={onChange}

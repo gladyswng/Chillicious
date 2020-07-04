@@ -21,28 +21,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface LoginModalProps {
+interface ReviewModalProps {
   storeId: string
   buttonText: string
   buttonStyle?: "contained" | "outlined"
   // TODO - TYPE 
-  onChange: (store: object) => void
+  onChange: (info: object) => void
   review? : {
     author: {
       name: string
       _id: string
   };
-  avatar?: string
+
   rating: number
   created: string
   description: string
   title: string
   }
+  userReview?: boolean
 
 
 }
 
-const LoginModal: React.FC<LoginModalProps> = ({ storeId, onChange, buttonText, buttonStyle, review }) => {
+const ReviewModal: React.FC<ReviewModalProps> = ({ storeId, onChange, buttonText, buttonStyle, review, userReview }) => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
   const history = useHistory()
@@ -100,8 +101,9 @@ const LoginModal: React.FC<LoginModalProps> = ({ storeId, onChange, buttonText, 
 
   const reviewUpdateHandler = async (event: React.FormEvent<HTMLFormElement> ) => {
     // TODO - add review true false to prop so not rerender when update in profile page, no need to reload since there's no store info that needs to be updated
+    event.preventDefault()
     try {
-      const responseData = await sendRequest(
+       const responseData = await sendRequest(
        `http://localhost:3000/store/${storeId}/updateReview`, 
        'PATCH', JSON.stringify({
          title: inputs.title.value,
@@ -115,9 +117,11 @@ const LoginModal: React.FC<LoginModalProps> = ({ storeId, onChange, buttonText, 
        )
        
        setModalOpen(false)
-      
-       const store = responseData
-       onChange(store)
+       
+       
+       const store = responseData.updatedStore
+       const review = responseData.review
+       userReview? onChange(review) : onChange(store)
     } catch (e) {
 
     }
@@ -220,7 +224,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ storeId, onChange, buttonText, 
         variant="contained"  
         color="primary" 
         style={{ margin: 8 }}
-        disabled={!isValid}
+        onClick={handleModalClose}
         >Cancel</Button>
           
         </div>
@@ -231,4 +235,4 @@ const LoginModal: React.FC<LoginModalProps> = ({ storeId, onChange, buttonText, 
     </Modal>
   );
 }
-export default LoginModal
+export default ReviewModal

@@ -71,7 +71,7 @@ const SortByForm: React.FC<SortByFormProps> = ({ sortBy, changeHandler }) => {
           >
         <Typography component="span" style={{ paddingRight: 8, fontWeight: 'bold' }}>Sort By</Typography>
         <NativeSelect
-          id="demo-customized-select-native"
+          id="demo--select-native"
           value={sortBy}
           onChange={changeHandler}
 

@@ -65,7 +65,7 @@ if (onInput) {
         <StyledRating
           id='rating'
           readOnly={readOnly}
-          name="customized-color"
+          name="rating"
           onChange={changeHandler}
           value={rate|| 0}
           size="small"

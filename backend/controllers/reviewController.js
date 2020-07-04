@@ -37,7 +37,7 @@ exports.addReview = async (req, res, next) => {
     
 }
 
-exports.updateReview = async (req, res) => {
+exports.updateReview = async (req, res, next) => {
  
   
     const updates = Object.keys(req.body)
@@ -46,7 +46,8 @@ exports.updateReview = async (req, res) => {
         return allowedUpdates.includes(update)
     })
 
-    if (!isValidOperation) {
+
+    if (!isValidOperation || req.body.rating > 5) {
       throw new HttpError('Invalid update!', 422)
         // res.status(400).send({ error: 'Not valid update' })
     }
@@ -59,8 +60,12 @@ exports.updateReview = async (req, res) => {
                 title: req.body.title,
                 description: req.body.description,
                 rating: req.body.rating
+            }, {
+              new: true
             }
-        )
+        ).populate('author', 'name avatar').populate('store', 'name')
+        
+        console.log(review)
         if (!review) {
           return next(
             new HttpError('Could not find matched review.', 422)
@@ -68,8 +73,8 @@ exports.updateReview = async (req, res) => {
         }
 
         const updatedStore = await Review.calcAverageRatings(req.params.id)
-
-        res.send(updatedStore)
+        console.log(updatedStore)
+        res.send({ updatedStore, review })
         
 
     } catch(e) {

@@ -72,13 +72,16 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
     setLoadedUser((prevUser: any) => prevUser.hearts.filter((store: any)=> store.id !== storeId))
   }
 
-  const changeReviewHandler = (store: any) => {
+  const changeReviewHandler = (updateReview: any) => {
 
-    console.log(store)
-    setTabValue(2)
-    // setLoadedUser((prevUser: any) => {
-    //   prevUser.reviews.find((store: any) => )
-    // })
+    setLoadedUser((prevUser: any) => {
+      const user = {...prevUser}
+     const reviewIndex = user.reviews.findIndex((review: any) => review._id === updateReview._id)
+     user.reviews[reviewIndex] = updateReview
+     
+      return user
+    })
+    
   }
 
   return (
@@ -118,7 +121,7 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
         />
       </TabPanel>
       <TabPanel value={tabValue} index={2} id='reviewsTab'>
-        <UserReviews reviews={loadedUser.reviews} onChange={changeReviewHandler}/>
+        <UserReviews reviews={loadedUser.reviews} onChange={changeReviewHandler} userReview={true}/>
       </TabPanel>
       <TabPanel value={tabValue} index={3} id='storesTab'>
         Item 
