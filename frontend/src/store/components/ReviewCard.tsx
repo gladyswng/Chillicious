@@ -51,7 +51,7 @@ interface ReviewCardProps {
 
  }
  storeName?: string
- storeId: string
+ storeId?: string
  onChange: (store: object) => void
 }
 

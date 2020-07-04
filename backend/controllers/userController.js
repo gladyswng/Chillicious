@@ -1,3 +1,4 @@
+const fs = require('fs')
 const User = require('../models/User')
 const HttpError = require('../models/http-error')
 const { body, validationResult } = require('express-validator')
@@ -119,6 +120,7 @@ exports.getUser = async (req, res, next) => {
 }
 
 exports.updateProfile = async (req, res, next) => {
+  console.log(req.user)
     
     const updates = Object.keys(req.body)
     const allowedUpdates = ['name', 'image']
@@ -130,12 +132,15 @@ exports.updateProfile = async (req, res, next) => {
       )
     }
     let imageSource
-    if (req.file === undefined) {
-      imageSource = req.body.image
-    } else {
-      imageSource = req.file.path
-    }
-
+      if (req.file === undefined) {
+        imageSource = req.body.image
+      } else {
+        imageSource = req.file.path
+        fs.unlink(req.user.avatar, err => {
+          console.log(err)
+      })
+        
+      }
     try {
         updates.forEach(update => {
             req.user[update] = req.body[update]

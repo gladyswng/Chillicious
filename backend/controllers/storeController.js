@@ -1,3 +1,4 @@
+const fs = require('fs')
 
 const Store = require('../models/Store')
 const User = require('../models/User')
@@ -5,6 +6,7 @@ const User = require('../models/User')
 const HttpError = require('../models/http-error')
 const getCoordsForAddress = require('../util/location')
 const { body, validationResult } = require('express-validator')
+const Review = require('../models/Review')
 
 exports.getStores = async (req, res) => {
 
@@ -259,12 +261,6 @@ exports.updateStore = async (req, res, next) => {
   const updates = Object.keys(req.body)
 
   const allowedUpdates = ['name', 'description', 'tags', 'priceRange', 'address', 'image']
-  let imageSource
-  if (req.file === undefined) {
-    imageSource = req.body.image
-  } else {
-    imageSource = req.file.path
-  }
 
     //  TODO - GET THE RIGHT ERROR MESSAGE
     try {
@@ -294,6 +290,16 @@ exports.updateStore = async (req, res, next) => {
       })
 
       //TODO - Message not showing, showing mongodb's message instead
+      let imageSource
+      if (req.file === undefined) {
+        imageSource = req.body.image
+      } else {
+        imageSource = req.file.path
+        fs.unlink(store.image, err => {
+          console.log(err)
+        })
+        
+      }
       
       updates.forEach(update => {
           store[update] = req.body[update]
@@ -323,21 +329,29 @@ exports.updateStore = async (req, res, next) => {
 
 exports.deleteStore = async (req, res, next) => {
 
+    
     try {
-      // const task = await Task.findOneAndDelete({ _id: req.params.id, owner: req.user._id })
-
-      // if (!task) {
-      //     res.status(404).send()
-      // }
+      // TODO - IF DELETED, DELTE USER'S STORE TOO - USE mongoose.startSession()
+        // check if existed?
+        const storeExisted = await Store.findById(req.params.id)
+        const imagePath = storeExisted.image
+        // if (store.reviews) {
+        //   await Review.deleteMany({ store: req.params.id })
+        //   await 
+        // }
         const store = await Store.findByIdAndDelete(req.params.id)
+       
 
         if (!store) {
           return next(
             new HttpError('Could not find matched store.', 404)
           )// error message not showing 
-          // res.status(404).send()
+        
         } 
-
+        fs.unlink(imagePath, err => {
+          console.log(err)
+        })
+        
         res.send({ message: 'Deleted store.' })
     } catch(e) {
       return next(
