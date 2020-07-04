@@ -82,7 +82,7 @@ reviewSchema.statics.calcAverageRatings =  async function(storeId) {
 }
 
 function autopopulate (next) {
-  this.populate('author', 'name').populate('store', 'name')
+  this.populate('author', 'name avatar').populate('store', 'name')
   next()
 }
 

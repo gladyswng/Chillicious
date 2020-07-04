@@ -41,9 +41,9 @@ interface ReviewCardProps {
  review: {
   author: {
     name: string
+    avatar?: string
     _id: string
   }
-  avatar?: string
   rating: number
   created: string
   description: string
@@ -60,7 +60,8 @@ interface ReviewCardProps {
 const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, storeName }) => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
-  const { rating, avatar, author, title, description, created } = review
+  const { rating, author, title, description, created } = review
+
   const [modalOpen, setModalOpen] = useState(false)
   const handleModalOpen = () => {
     setModalOpen(true);
@@ -87,7 +88,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, stor
         <Divider variant="middle" />
         <div className={classes.review}>
           <div className={classes.user}>
-            <Avatar alt='avatar' src={avatar? avatar : "https://images.unsplash.com/photo-1562153889-3847e21e5d3b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"} style={{height: 80, width: 80 }}/>
+            <Avatar alt='avatar' src={author.avatar? `http://localhost:3000/${author.avatar}` : "https://images.unsplash.com/photo-1562153889-3847e21e5d3b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"} style={{height: 80, width: 80 }}/>
   
 
             <Typography variant="caption" style={{ fontWeight: "bold" }}>{author.name}</Typography>

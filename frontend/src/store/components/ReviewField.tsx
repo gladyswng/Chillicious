@@ -48,9 +48,9 @@ interface ReviewFieldProps {
   reviews: {
     author: {
       name: string
+      avatar?: string
       _id: string
     }
-    avatar?: string;
     rating: number;
     created: string;
     description: string;
