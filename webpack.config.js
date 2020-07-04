@@ -26,6 +26,7 @@ module.exports = {
     mode:'development',
     devServer: {
         historyApiFallback: true,
+        disableHostCheck: true,
     },
     plugins : [
         new HtmlWebpackPlugin ({
