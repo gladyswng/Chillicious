@@ -63,7 +63,7 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
     fetchStore()
   }, [ sendRequest, auth.token ])
 
-  const handleChange = (event: any, newTabValue: any) => {
+  const handleTabChange = (event: any, newTabValue: any) => {
     setTabValue(newTabValue);
   };
 
@@ -74,6 +74,8 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
 
   const changeReviewHandler = (store: any) => {
 
+    console.log(store)
+    setTabValue(2)
     // setLoadedUser((prevUser: any) => {
     //   prevUser.reviews.find((store: any) => )
     // })
@@ -95,7 +97,7 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
       <Paper style={{ marginTop: 40, width: '80%' }}>
    
       <AppBar position="static">
-        <Tabs value={tabValue} onChange={handleChange} aria-label="User Info">
+        <Tabs value={tabValue} onChange={handleTabChange} aria-label="User Info">
           <Tab label="User Profile" id="profile" />
           <Tab label="Hearted" id="hearted" />
           <Tab label="Reviews" id="reviews" />

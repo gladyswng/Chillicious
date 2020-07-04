@@ -111,7 +111,7 @@ exports.getUser = async (req, res, next) => {
   
   try {
     const user = await User.findById(req.user._id).populate('reviews').populate('hearts', '-location -author -created')
-    
+
     res.send(user)
   } catch (e) {
     return next(
@@ -135,12 +135,13 @@ exports.updateProfile = async (req, res, next) => {
     let imageSource
       if (req.file === undefined) {
         imageSource = req.body.image
-      } else {
+      } else if (req.file && req.user.avatar) {
         imageSource = req.file.path
         fs.unlink(req.user.avatar, err => {
-          console.log(err)
-      })
-        
+        console.log(err)
+        })  
+      } else {
+        imageSource = req.file.path
       }
     try {
         updates.forEach(update => {
