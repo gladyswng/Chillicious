@@ -91,7 +91,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, onRe
 
     onChange(updatedStore)
     // onReviewDelete(updatedStore)
-    setModalOpen(false)
+    // setModalOpen(false)
     } catch (e) {
 
     }

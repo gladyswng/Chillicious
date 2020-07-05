@@ -59,6 +59,8 @@ const Store: React.FC<StoreProps> = ({}) => {
     setLoadedStore(store)
   }
 
+  
+
   const reviewDeleteHandler = (store: any) => {
     setLoadedStore(store)
   }

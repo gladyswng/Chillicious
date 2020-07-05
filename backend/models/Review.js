@@ -67,13 +67,23 @@ reviewSchema.statics.calcAverageRatings =  async function(storeId) {
         }
 
     ])
+    let updatedStore
+    if (stats[0]) {
+
+      updatedStore = await Store.findByIdAndUpdate(storeId, {
+          ratingsQuantity: stats[0].ratings,
+          ratingsAverage: stats[0].avgRating
+      }, { new: true }).populate('reviews')
+    } else {
+      // TODO - FIX LATER WITH 0 REVIEW WHEN DELETED LAST REVIEW
+      updatedStore = await Store.findByIdAndUpdate(storeId, {
+        ratingsQuantity: 0,
+        ratingsAverage: 0
+      }, { new: true }).populate('reviews')
+    }
 
 
-  
-    const updatedStore = await Store.findByIdAndUpdate(storeId, {
-        ratingsQuantity: stats[0].ratings,
-        ratingsAverage: stats[0].avgRating
-    }, { new: true }).populate('reviews')
+    console.log(updatedStore)
    
     return updatedStore
 

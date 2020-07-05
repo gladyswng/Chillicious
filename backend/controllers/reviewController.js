@@ -112,8 +112,9 @@ exports.deleteReview = async (req, res, next) => {
         res.send({ updatedStore, review })
 
     } catch(e) {
+ 
       return next(
-        new HttpError('Something went wrong, could not proceed to delete review', 500)
+        new HttpError(`Something went wrong, could not proceed to delete review, ${e.message}`, 500)
       )
     }
  
