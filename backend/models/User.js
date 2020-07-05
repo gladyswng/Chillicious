@@ -40,17 +40,19 @@ const userSchema = new Schema({
         type: Schema.ObjectId,
         ref: 'Store'
     }],
+    reviews: [{
+      type: Schema.ObjectId,
+      ref: 'Review'
+    }],
+    stores: [{
+      type: Schema.ObjectId,
+      ref: 'Store'
+    }],
     tokens: [{  // an array of objects
         token: {
             type: String,
             required: true
         }
-    }],
-
-    
-    reviews: [{
-      type: Schema.ObjectId,
-      ref: 'Review'
     }]
 
 }, {

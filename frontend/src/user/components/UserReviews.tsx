@@ -23,10 +23,11 @@ interface UserReviewsProps {
   }[]
   userReview: boolean
   onChange: (store: object) => void
+  onDelete: (review: object) => void
 }
  
 
-const UserReviews: React.FC<UserReviewsProps> = ({ reviews, onChange, userReview }) => {
+const UserReviews: React.FC<UserReviewsProps> = ({ reviews, onChange, onDelete, userReview }) => {
 
   const [currentPage, setCurrentPage] = useState(1)
   
@@ -46,6 +47,7 @@ const UserReviews: React.FC<UserReviewsProps> = ({ reviews, onChange, userReview
       <ReviewCard 
       storeName={review.store.name}
       review={review}
+      onReviewDelete={onDelete}
       onChange={onChange}
       storeId={review.store.id} 
       userReview={userReview}

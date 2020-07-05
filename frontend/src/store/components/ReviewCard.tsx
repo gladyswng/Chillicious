@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useRef } from 'react'
 import moment from 'moment'
 import Modal from '../../shared/components/UIElements/Modal'
 import ReviewModal from './ReviewModal'
@@ -54,14 +54,17 @@ interface ReviewCardProps {
  storeName?: string
  storeId?: string
  onChange: (store: object) => void
+ onReviewDelete?: (review: object) => void
 }
 
 // TODO - ISSUE WITH HAVING TO TOUCH EVERY FIELD TO UPDATE STORE, NOT JUST ONE FIELD 
 
-const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, storeName, userReview }) => {
+const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, onReviewDelete, storeName, userReview }) => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
+  const {isLoading, error, sendRequest, clearError} = useHttpClient() 
   const { rating, author, title, description, created } = review
+  const isMountedRef = useRef(null)
 
   const [modalOpen, setModalOpen] = useState(false)
   const handleModalOpen = () => {
@@ -77,12 +80,22 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, stor
   }
 
   const deleteHander = async (e: any) => {
-    e.preventDefault()
+  
+    try {
+      
+      const responseData = await sendRequest(`http://localhost:3000/store/${storeId}/deleteReview`, 'DELETE', null , { 
+        Authorization: 'Bearer ' + auth.token
+      })
+      console.log(responseData)
+      const updatedStore = responseData.updatedStore
+
+    onChange(updatedStore)
+    // onReviewDelete(updatedStore)
     setModalOpen(false)
-    // await sendRequest(`http://localhost:3000/store/${store.id}`, 'DELETE', null , { 
-    //       Authorization: 'Bearer ' + auth.token
-    // })
-    // onDelete(store.id)
+    } catch (e) {
+
+    }
+
   }
     return (
       <div style={{ width: '100%' }}>

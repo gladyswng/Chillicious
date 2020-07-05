@@ -7,23 +7,27 @@ exports.addReview = async (req, res, next) => {
     req.body.author = req.user._id
     req.body.store = req.params.id
     const review = new Review(req.body)
-    
+  
     try {
       reviewExisted = await Review.findOne({ author: req.user._id, store: req.params.id })
+  
       if (reviewExisted) {
         return next(
           new HttpError('Cannot send more than one review to the same store', 500)
         )
       }
-
+      // TODO - ADD SESSION TO ALL ADD AND DELETE
+        // const sess = await mongoose.startSession()
+        // sess.startTransaction()
         await review.save()
+   
         const updatedStore = await Review.calcAverageRatings(req.params.id)
-
 
         // TODO - ADD TRY CATCH TO THIS
         const user = await User.findById(req.user._id)
         user.reviews.push(review)
         await user.save()
+        // await sess.commitTransaction()
 
 
         res.send(updatedStore)
@@ -64,7 +68,7 @@ exports.updateReview = async (req, res, next) => {
               new: true
             }
         ).populate('author', 'name avatar').populate('store', 'name')
-        
+
         console.log(review)
         if (!review) {
           return next(
@@ -85,8 +89,8 @@ exports.updateReview = async (req, res, next) => {
  
 }
 
-exports.deleteReview = async (req, res) => {
-
+exports.deleteReview = async (req, res, next) => {
+  
     try {
 
         const review = await Review.findOneAndDelete({  author: req.user._id, store: req.params.id })
@@ -97,10 +101,15 @@ exports.deleteReview = async (req, res) => {
             )
         }
 
-        await Review.calcAverageRatings(req.params.id)
+        const updatedStore = await Review.calcAverageRatings(req.params.id)
         // TODO - REMOVE REVIEW ALSO FOR USER
+        const user = await User.findByIdAndUpdate(req.user._id, {
+          '$pull': { reviews: review._id }
+        })
+      
+        console.log({updatedStore, user})
         
-        res.send(review)
+        res.send({ updatedStore, review })
 
     } catch(e) {
       return next(

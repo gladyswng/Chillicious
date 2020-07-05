@@ -60,9 +60,10 @@ interface ReviewFieldProps {
   storeId: string
 
   onChange: (store: object) => void
+  onReviewDelete?: (review: object) => void
 }
 
-const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId,  onChange }) => {
+const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId, onChange, onReviewDelete }) => {
 
   const classes = useStyles()
   const auth = useContext(AuthContext)
@@ -86,6 +87,7 @@ const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId,  onChange }
       <ReviewCard 
       review={review}
       storeId={storeId} 
+      onReviewDelete={onReviewDelete}
       onChange={onChange}
       key={review._id}/>
     )

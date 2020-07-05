@@ -50,8 +50,7 @@ exports.getStoreBySlug = async (req, res, next) => {
     }
 }
 
-// TODO - connect to react, bring over request
-// TODO - SORT RETURNED DOCS ??
+// KEEP FOR LATER?
 exports.getStoresByCheckedList = async (req, res) => {
     const tagList = req.body.tagList || { $exists: true }
     const priceRange = req.body.priceRange || { $exists: true }

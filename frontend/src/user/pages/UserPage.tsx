@@ -84,6 +84,10 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
     
   }
 
+  const deleteReviewHandler =(deletedReview: any) => {
+    setLoadedUser((prevUser: any) => prevUser.reviews.filter((review: any) => review._id === deletedReview._id))
+  }
+
   return (
     <>
    
@@ -121,7 +125,11 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
         />
       </TabPanel>
       <TabPanel value={tabValue} index={2} id='reviewsTab'>
-        <UserReviews reviews={loadedUser.reviews} onChange={changeReviewHandler} userReview={true}/>
+        <UserReviews 
+        reviews={loadedUser.reviews} 
+        onChange={changeReviewHandler} 
+        onDelete={deleteReviewHandler}
+        userReview={true}/>
       </TabPanel>
       <TabPanel value={tabValue} index={3} id='storesTab'>
         Item 
