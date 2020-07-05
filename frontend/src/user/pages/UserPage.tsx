@@ -72,19 +72,23 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
     setLoadedUser((prevUser: any) => prevUser.hearts.filter((store: any)=> store.id !== storeId))
   }
 
-  const changeReviewHandler = (updateReview: any) => {
+  const changeReviewHandler = (updatedUser: any) => {
+    console.log(updatedUser)
+    setLoadedUser(updatedUser)
+    // setTabValue(2)
 
-    setLoadedUser((prevUser: any) => {
-      const user = {...prevUser}
-     const reviewIndex = user.reviews.findIndex((review: any) => review._id === updateReview._id)
-     user.reviews[reviewIndex] = updateReview
+    // setLoadedUser((prevUser: any) => {
+    //   const user = {...prevUser}
+    //  const reviewIndex = user.reviews.findIndex((review: any) => review._id === updateReview._id)
+    //  user.reviews[reviewIndex] = updateReview
      
-      return user
-    })
+    //   return user
+    // })
     
   }
 
   const deleteReviewHandler =(deletedReview: any) => {
+    console.log(deletedReview)
     setLoadedUser((prevUser: any) => prevUser.reviews.filter((review: any) => review._id === deletedReview._id))
   }
 

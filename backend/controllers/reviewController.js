@@ -68,17 +68,20 @@ exports.updateReview = async (req, res, next) => {
               new: true
             }
         ).populate('author', 'name avatar').populate('store', 'name')
-
-        console.log(review)
+        
+        
+       
         if (!review) {
           return next(
             new HttpError('Could not find matched review.', 422)
           )
         }
+        const updatedUser = await User.findById(req.user._id).populate('reviews').populate('hearts', '-location -author -created')
+        console.log(updatedUser)
 
         const updatedStore = await Review.calcAverageRatings(req.params.id)
         console.log(updatedStore)
-        res.send({ updatedStore, review })
+        res.send({ updatedStore, updatedUser })
         
 
     } catch(e) {
@@ -103,13 +106,13 @@ exports.deleteReview = async (req, res, next) => {
 
         const updatedStore = await Review.calcAverageRatings(req.params.id)
         // TODO - REMOVE REVIEW ALSO FOR USER
-        const user = await User.findByIdAndUpdate(req.user._id, {
+        const updatedUser = await User.findByIdAndUpdate(req.user._id, {
           '$pull': { reviews: review._id }
-        })
+        }).populate('reviews').populate('hearts', '-location -author -created')
       
-        console.log({updatedStore, user})
         
-        res.send({ updatedStore, review })
+        
+        res.send({ updatedStore, updatedUser })
 
     } catch(e) {
  

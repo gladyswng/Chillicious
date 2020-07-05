@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import Message from '../../shared/components/UIElements/Message'
 import StoreInfo from '../components/StoreInfo'
@@ -33,13 +33,13 @@ const Store: React.FC<StoreProps> = ({}) => {
   const classes = useStyles()
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
   const [loadedStore, setLoadedStore] = useState<any>()
-  const isMountedRef = useRef(null)
+ 
 
   const { slug } = useParams()
 
 
   useEffect(()=> {
-    isMountedRef.current = true
+ 
     const fetchStore = async () => {
       try {
         const responseData = await sendRequest(`http://localhost:3000/store/${slug}`)
@@ -47,7 +47,7 @@ const Store: React.FC<StoreProps> = ({}) => {
         const store = responseData
 
         setLoadedStore(store)
-        return () => isMountedRef.current = false
+    
       } catch (e) {
 
       }

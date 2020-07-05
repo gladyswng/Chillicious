@@ -59,7 +59,7 @@ interface ReviewCardProps {
 
 // TODO - ISSUE WITH HAVING TO TOUCH EVERY FIELD TO UPDATE STORE, NOT JUST ONE FIELD 
 
-const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, onReviewDelete, storeName, userReview }) => {
+const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, storeName, userReview }) => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
   const {isLoading, error, sendRequest, clearError} = useHttpClient() 
@@ -88,10 +88,11 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, onRe
       })
       console.log(responseData)
       const updatedStore = responseData.updatedStore
+      const updatedUser = responseData.updatedUser
+      console.log(updatedUser)
 
-    onChange(updatedStore)
-    // onReviewDelete(updatedStore)
-    // setModalOpen(false)
+    userReview? onChange(updatedUser) : onChange(updatedStore)
+
     } catch (e) {
 
     }

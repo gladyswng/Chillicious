@@ -120,8 +120,8 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ storeId, onChange, buttonText
        
        
        const store = responseData.updatedStore
-       const review = responseData.review
-       userReview? onChange(review) : onChange(store)
+       const user = responseData.updatedUser
+       userReview? onChange(user) : onChange(store)
     } catch (e) {
 
     }
