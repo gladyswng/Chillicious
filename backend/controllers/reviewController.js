@@ -90,7 +90,7 @@ exports.updateReview = async (req, res, next) => {
 }
 
 exports.deleteReview = async (req, res, next) => {
-  
+
     try {
 
         const review = await Review.findOneAndDelete({  author: req.user._id, store: req.params.id })

@@ -79,7 +79,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, onRe
     // history.push(`/store/edit/${store.id}`)
   }
 
-  const deleteHander = async (e: any) => {
+  const deleteHandler = async () => {
   
     try {
       
@@ -141,7 +141,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, onRe
             buttonSize="small"
             open={modalOpen} onOpen={handleModalOpen} onClose={handleModalClose}>
             <Typography>Are you sure?</Typography>
-            <Button onClick={deleteHander}>Yes</Button>
+            <Button onClick={deleteHandler}>Yes</Button>
             <Button onClick={handleModalClose}>Cancel</Button>
             </Modal>
             }
