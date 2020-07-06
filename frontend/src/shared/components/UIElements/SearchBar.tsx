@@ -66,10 +66,10 @@ const useStyles = makeStyles((theme) => ({
 
 
 interface SearchBarProps {
+  onChange?: (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void
+} 
 
-}
-
-const SearchBar: React.FC<SearchBarProps> = (props) => {
+const SearchBar: React.FC<SearchBarProps> = ({onChange}) => {
   const classes = useStyles()
     return (
       <div className={classes.search}>
@@ -77,14 +77,14 @@ const SearchBar: React.FC<SearchBarProps> = (props) => {
           <SearchIcon />
         </div>
         <InputBase
-
+          onChange={onChange}
           classes={{
             root: classes.inputRoot,
             input: classes.inputInput,
           }}
           inputProps={{ 'aria-label': 'search' }} 
         />
-        {props.children}
+        
       </div>
     );
 }

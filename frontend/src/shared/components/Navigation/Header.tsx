@@ -7,7 +7,7 @@ import NavLinks from './NavLinks'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
-
+import { useHttpClient } from '../../../shared/hooks/http-hook'
 
 import Typography from '@material-ui/core/Typography';
 
@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
 const Header: React.FC = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-
+  const {isLoading, error, sendRequest, clearError} = useHttpClient() 
   const handleClick = (event: { currentTarget: any; }) => {
     setAnchorEl(event.currentTarget);
   };
@@ -75,6 +75,22 @@ const Header: React.FC = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const searchInputChangeHandler = async (event:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    console.log(event.target.value)
+    try {
+      const storeList = await sendRequest('/api/search', 'POST', JSON.stringify({
+        query: event.target.value
+      }), { 
+    
+        'Content-Type': 'application/json'
+      })
+      const storeNameList = storeList.map((store:any) => store.name)
+      console.log(storeNameList)
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
   return (
     <div className={classes.root}>
@@ -85,7 +101,7 @@ const Header: React.FC = () => {
 
               <img src={logo} className={classes.logo}/>
             </NavLink>
-            <SearchBar />
+            <SearchBar onChange={searchInputChangeHandler}/>
             <div>
 
               <Button className={classes.iconButtonLabel} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
