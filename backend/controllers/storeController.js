@@ -364,24 +364,25 @@ exports.deleteStore = async (req, res, next) => {
 
 exports.searchStore = async (req, res, next) => {
   console.log(req.body.query)
-
+  const textQuery = new RegExp(`${req.body.query}`, 'i')
   try {
     const storeResult = await Store
-    .find({
-      $text: {
-          $search: req.body.query
+    .find({ name: textQuery })
+  //   .find({
+  //     $text: {
+  //         $search: req.body.query
 
-      }   
+  //     }   
 
-  }, {
-    score: { $meta: 'textScore' }
-  })
-  // Sort them
-  .sort({
-    score: { $meta: 'textScore' }
-  })
-  // Limit to only 5 results
-  .limit(5)
+  // }, {
+  //   score: { $meta: 'textScore' }
+  // })
+  // // Sort them
+  // .sort({
+  //   score: { $meta: 'textScore' }
+  // })
+  // // Limit to only 5 results
+  // .limit(5)
     // .aggregate([
     //   {
     //     $search: {
