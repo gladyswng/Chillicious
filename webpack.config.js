@@ -27,7 +27,7 @@ module.exports = {
     devServer: {
         host: '0.0.0.0',
         historyApiFallback: true,
-        public: 'chillicious.menu',
+        public: process.env.proxyhost ? process.env.proxyhost : '',
         proxy: {
             '/api': {
               target: 'http://localhost:3000',
