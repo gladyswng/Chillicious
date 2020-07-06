@@ -75,7 +75,6 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
   const changeReviewHandler = (updatedUser: any) => {
     console.log(updatedUser)
     setLoadedUser(updatedUser)
-    // setTabValue(2)
 
     // setLoadedUser((prevUser: any) => {
     //   const user = {...prevUser}

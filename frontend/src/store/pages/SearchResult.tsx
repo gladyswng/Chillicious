@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext, useCallback } from 'react'
 import StoreList from '../components/StoreList'
 import FilterList from '../components/FilterList'
 import { AuthContext } from '../../shared/context/authContext'
+import Message from '../../shared/components/UIElements/Message'
 import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import CircularProgress from '@material-ui/core/CircularProgress'
@@ -29,7 +30,7 @@ const SearchResult: React.FC<SearchResultProps> = () => {
   const {isLoading, error, sendRequest, clearError} = useHttpClient() 
   // TODO - FIX TYPE ANY
 
-  const [loadedStores, setLoadedStores] = useState()
+  const [loadedStores, setLoadedStores] = useState<any>()
   const [fetchedStores, setFetchedStores] = useState<any>()
   const [checkedList, setCheckedList] = useState([])
   const [hearts, setHearts] = useState()
@@ -107,6 +108,14 @@ const SearchResult: React.FC<SearchResultProps> = () => {
     }
   }, [checkedList])
 
+  const noStoreMessage = () => {
+
+    if (loadedStores.length === 0 || !loadedStores) {
+      return (
+        <Message message="No store found"/>
+      )
+    }
+  }
   
   return (
   
@@ -127,13 +136,16 @@ const SearchResult: React.FC<SearchResultProps> = () => {
               <FilterList onCheckboxChange={checkboxHandler}/>
 
             </div>
-
-            <div style={{ padding: 8 , width: '80%'}}>
-              <StoreList 
-              storeList={loadedStores} onDelete={storeDeleteHandler}
-              hearts={hearts}
-              />
-            </div>
+            {error && <Message message={error}/>}
+            {noStoreMessage()}
+              {loadedStores.length>0 &&
+              <div style={{ padding: 8 , width: '80%'}}>
+                <StoreList 
+                storeList={loadedStores} onDelete={storeDeleteHandler}
+                hearts={hearts}
+                />
+              </div>
+              }
 
           </div>
           )}

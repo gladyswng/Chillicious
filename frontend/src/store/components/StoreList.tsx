@@ -62,6 +62,7 @@ const StoreList: React.FC<StoreListProps> = (props) => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
+  console.log(props.storeList)
 
   const [backdropOpen, setBackdropOpen] = useState(true)
 
@@ -72,11 +73,8 @@ const StoreList: React.FC<StoreListProps> = (props) => {
     setBackdropOpen(false)
   }
 
-  if (props.storeList.length === 0) {
-    return (
-      <Message message="No store found"/>
-    )
-  }
+
+
   const pageCount = Math.ceil(props.storeList.length / 5)
   const indexOfLastTodo = currentPage * 5
   const indexOfFirstTodo = indexOfLastTodo - 5
@@ -87,8 +85,12 @@ const StoreList: React.FC<StoreListProps> = (props) => {
 
  }
 
+
  useEffect(() => {
-  setCurrentPage(1)
+ 
+
+    setCurrentPage(1)
+ 
  }, [props.storeList])
 
   const sendDeleteRequestHandler = async (storeId: string) => {
@@ -116,6 +118,7 @@ const StoreList: React.FC<StoreListProps> = (props) => {
        </Backdrop>
       )}
 
+  
       <Grid container className={classes.root}>
         <div style={{padding: 0, margin: 0, width: '100%'}}>
           {currentTodos.map((store: Store) => {
@@ -141,6 +144,7 @@ const StoreList: React.FC<StoreListProps> = (props) => {
         </div>
 
       </Grid>
+ 
       </>
 
     )

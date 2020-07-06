@@ -108,11 +108,17 @@ exports.userUpdateValidationRules = () => {
 
 
 exports.getUser = async (req, res, next) => {
-  
-  try {
-    const user = await User.findById(req.user._id).populate('reviews').populate('hearts', '-location -author -created')
 
-    res.send(user)
+  try {
+    // TODO - FLTER OUT DEAD REFS
+     await User.findById(req.user._id).populate('reviews').populate('hearts', '-location -author -created').exec((err, user) => {
+     
+      user.hearts = user.hearts.filter(store => store != null)
+
+      res.send(user) // Return result as soon as you can
+      user.save() // Save user without dead refs to database
+    })
+
   } catch (e) {
     return next(
       new HttpError('Something went wrong, could not proceed to get your profile', 500)

@@ -2,11 +2,11 @@ const fs = require('fs')
 
 const Store = require('../models/Store')
 const User = require('../models/User')
+const Review = require('../models/Review')
 
 const HttpError = require('../models/http-error')
 const getCoordsForAddress = require('../util/location')
 const { body, validationResult } = require('express-validator')
-const Review = require('../models/Review')
 
 exports.getStores = async (req, res) => {
 
@@ -333,13 +333,14 @@ exports.deleteStore = async (req, res, next) => {
       // TODO - IF DELETED, DELTE USER'S STORE TOO - USE mongoose.startSession()
         // check if existed?
         const storeExisted = await Store.findById(req.params.id)
-        const imagePath = storeExisted.image
-        // if (store.reviews) {
-        //   await Review.deleteMany({ store: req.params.id })
-        //   await 
-        // }
+        
+
+        if (storeExisted.reviews) {
+          await Review.deleteMany({ store: req.params.id })
+        }
         const store = await Store.findByIdAndDelete(req.params.id)
        
+        const imagePath = storeExisted.image
 
         if (!store) {
           return next(
@@ -354,10 +355,38 @@ exports.deleteStore = async (req, res, next) => {
         res.send({ message: 'Deleted store.' })
     } catch(e) {
       return next(
-        new HttpError('Something went wrong, could not proceed to delete store', 500)
+        new HttpError(`Something went wrong, could not proceed to delete store, ${e}`, 500)
       )
     }
 
+}
+
+exports.searchStore = async (req, res, next) => {
+
+  try {
+    const storeResult = await Store.aggregate([
+      {
+        $search: {
+          "autocomplete" : {
+            "path": "name",
+            "query": req.body.query
+
+          }
+        }
+      },
+      {
+        $limit: 6
+      },
+      {
+        $project: {
+          "_id": 0,
+          "name": 1
+        }
+      }
+    ]) 
+   } catch (e) {
+
+  }
 }
 
 
