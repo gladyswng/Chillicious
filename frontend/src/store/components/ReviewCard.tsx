@@ -79,14 +79,26 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, stor
     // history.push(`/store/edit/${store.id}`)
   }
 
-  const deleteHander = async (e: any) => {
-    e.preventDefault()
-    setModalOpen(false)
-    // await sendRequest(`/api/store/${store.id}`, 'DELETE', null , { 
-    //       Authorization: 'Bearer ' + auth.token
-    // })
-    // onDelete(store.id)
+  const deleteHandler = async () => {
+  
+    try {
+      
+      const responseData = await sendRequest(`/api/store/${storeId}/deleteReview`, 'DELETE', null , { 
+        Authorization: 'Bearer ' + auth.token
+      })
+      console.log(responseData)
+      const updatedStore = responseData.updatedStore
+      const updatedUser = responseData.updatedUser
+      console.log(updatedUser)
+
+    userReview? onChange(updatedUser) : onChange(updatedStore)
+
+    } catch (e) {
+
+    }
+
   }
+
     return (
       <div style={{ width: '100%' }}>
         <Divider variant="middle" />
