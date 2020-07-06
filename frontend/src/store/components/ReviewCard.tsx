@@ -83,7 +83,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, stor
   
     try {
       
-      const responseData = await sendRequest(`http://localhost:3000/store/${storeId}/deleteReview`, 'DELETE', null , { 
+      const responseData = await sendRequest(`/api/store/${storeId}/deleteReview`, 'DELETE', null , { 
         Authorization: 'Bearer ' + auth.token
       })
       console.log(responseData)
@@ -98,12 +98,13 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, stor
     }
 
   }
+
     return (
       <div style={{ width: '100%' }}>
         <Divider variant="middle" />
         <div className={classes.review}>
           <div className={classes.user}>
-            <Avatar alt='avatar' src={author.avatar? `http://localhost:3000/${author.avatar}` : "https://images.unsplash.com/photo-1562153889-3847e21e5d3b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"} style={{height: 80, width: 80 }}/>
+            <Avatar alt='avatar' src={author.avatar? `/api/${author.avatar}` : "https://images.unsplash.com/photo-1562153889-3847e21e5d3b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"} style={{height: 80, width: 80 }}/>
   
 
             <Typography variant="caption" style={{ fontWeight: "bold" }}>{author.name}</Typography>

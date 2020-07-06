@@ -86,7 +86,7 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
           }
           
           await sendRequest(
-            'http://localhost:3000/store/add', 
+            '/api/store/add', 
             'POST', 
             formData,
 

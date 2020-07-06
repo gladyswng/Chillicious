@@ -25,7 +25,15 @@ module.exports = {
     },
     mode:'development',
     devServer: {
+        host: '0.0.0.0',
         historyApiFallback: true,
+        public: process.env.proxyhost ? process.env.proxyhost : '',
+        proxy: {
+            '/api': {
+              target: 'http://localhost:3000',
+              pathRewrite: {'^/api' : ''}
+            }
+          }      
     },
     plugins : [
         new HtmlWebpackPlugin ({

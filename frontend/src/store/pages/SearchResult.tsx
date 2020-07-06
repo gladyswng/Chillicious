@@ -45,7 +45,7 @@ const SearchResult: React.FC<SearchResultProps> = () => {
   useEffect(() => {
     const fetchStores = async() => {
       try { 
-        const responseData = await sendRequest('http://localhost:3000/stores')
+        const responseData = await sendRequest('/api/stores')
         setLoadedStores(responseData)
         setFetchedStores(responseData)
       } catch (e) {
@@ -55,7 +55,7 @@ const SearchResult: React.FC<SearchResultProps> = () => {
 
     const fetchHearts = async() => {
       try {
-        const heartsData = await sendRequest('http://localhost:3000/user/me/hearts', 'GET', null, { 
+        const heartsData = await sendRequest('/api/user/me/hearts', 'GET', null, { 
           Authorization: 'Bearer ' + auth.token,
           'Content-Type': 'application/json'
         })
