@@ -46,7 +46,7 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
 
     const fetchStore = async () => {
       try {
-        const responseData = await sendRequest(`http://localhost:3000/user/me`, 'GET', null , { 
+        const responseData = await sendRequest(`/api/user/me`, 'GET', null , { 
           Authorization: 'Bearer ' + auth.token,
           'Content-Type': 'application/json'
         })

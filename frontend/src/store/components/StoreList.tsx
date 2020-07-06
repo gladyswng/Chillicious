@@ -92,7 +92,7 @@ const StoreList: React.FC<StoreListProps> = (props) => {
  }, [props.storeList])
 
   const sendDeleteRequestHandler = async (storeId: string) => {
-    await sendRequest(`http://localhost:3000/store/${storeId}`, 'DELETE', null , { 
+    await sendRequest(`/api/store/${storeId}`, 'DELETE', null , { 
       Authorization: 'Bearer ' + auth.token
 })
   }

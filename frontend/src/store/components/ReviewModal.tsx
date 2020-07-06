@@ -103,8 +103,8 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ storeId, onChange, buttonText
     // TODO - add review true false to prop so not rerender when update in profile page, no need to reload since there's no store info that needs to be updated
     event.preventDefault()
     try {
-       const responseData = await sendRequest(
-       `http://localhost:3000/store/${storeId}/updateReview`, 
+      const responseData = await sendRequest(
+       `/api/store/${storeId}/updateReview`, 
        'PATCH', JSON.stringify({
          title: inputs.title.value,
          description: inputs.description.value,
@@ -131,7 +131,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ storeId, onChange, buttonText
     event.preventDefault();
     try {
       const responseData = await sendRequest(
-       `http://localhost:3000/store/${storeId}/addReview`, 
+       `/api/store/${storeId}/addReview`, 
        'POST', JSON.stringify({
          title: inputs.title.value,
          description: inputs.description.value,

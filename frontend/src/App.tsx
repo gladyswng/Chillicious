@@ -9,7 +9,7 @@ import UpdateStore from './store/pages/UpdateStore'
 import Store from './store/pages/Store'
 import AddStore from './store/pages/AddStore'
 import SearchResult from './store/pages/SearchResult'
-import Homepage from './home/page/homePage'
+import Homepage from './home/page/Homepage'
 import Layout from './util/Layout'
 import { makeStyles } from '@material-ui/core/styles';
 
