@@ -5,7 +5,9 @@ const storeSchema = new mongoose.Schema({
     name: {
         type: String,
         trim: true,
-        required: true
+        required: true,
+        // index: true, 
+        // text: true
     },
     slug: String,
     description: {

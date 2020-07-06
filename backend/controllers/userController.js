@@ -111,10 +111,10 @@ exports.getUser = async (req, res, next) => {
 
   try {
     // TODO - FLTER OUT DEAD REFS
-     await User.findById(req.user._id).populate('reviews').populate('hearts', '-location -author -created').exec((err, user) => {
-     
+     await User.findById(req.user._id).populate('reviews').populate('hearts', '-location -author -created').exec((err, user) => { 
+      console.log(user.hearts)
       user.hearts = user.hearts.filter(store => store != null)
-
+      
       res.send(user) // Return result as soon as you can
       user.save() // Save user without dead refs to database
     })

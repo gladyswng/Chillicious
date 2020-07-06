@@ -7,6 +7,7 @@ const Review = require('../models/Review')
 const HttpError = require('../models/http-error')
 const getCoordsForAddress = require('../util/location')
 const { body, validationResult } = require('express-validator')
+const { send } = require('process')
 
 exports.getStores = async (req, res) => {
 
@@ -362,30 +363,47 @@ exports.deleteStore = async (req, res, next) => {
 }
 
 exports.searchStore = async (req, res, next) => {
+  console.log(req.body.query)
 
   try {
-    const storeResult = await Store.aggregate([
-      {
-        $search: {
-          "autocomplete" : {
-            "path": "name",
-            "query": req.body.query
+    const storeResult = await Store
+    .find({
+      $text: {
+          $search: req.body.query
 
-          }
-        }
-      },
-      {
-        $limit: 6
-      },
-      {
-        $project: {
-          "_id": 0,
-          "name": 1
-        }
-      }
-    ]) 
+      }   
+
+  }, {
+    score: { $meta: 'textScore' }
+  })
+  // Sort them
+  .sort({
+    score: { $meta: 'textScore' }
+  })
+  // Limit to only 5 results
+  .limit(5)
+    // .aggregate([
+    //   {
+    //     $search: {
+    //       "autocomplete" : {
+    //         "path": "name",
+    //         "query": req.body.query
+    //       }
+    //     }
+    //   },
+    //   {
+    //     $limit: 6
+    //   },
+    //   {
+    //     $project: {
+    //       "_id": 0,
+    //       "name": 1
+    //     }
+    //   }
+    // ]) 
+    res.send(storeResult)
    } catch (e) {
-
+    console.log(e)
   }
 }
 

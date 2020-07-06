@@ -37,6 +37,7 @@ router.get('/api/stores/checkedList', storeController.getStoresByCheckedList)
 
 router.post('/api/stores/:id/heart', auth, storeController.heartStore)
 router.get('/user/me/hearts', auth, storeController.getHearts)
+router.post('/api/search', storeController.searchStore)
 
 
 
