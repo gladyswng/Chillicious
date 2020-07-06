@@ -25,6 +25,7 @@ module.exports = {
     },
     mode:'development',
     devServer: {
+        host: '0.0.0.0',
         historyApiFallback: true,
         public: 'chillicious.menu',
         proxy: {
