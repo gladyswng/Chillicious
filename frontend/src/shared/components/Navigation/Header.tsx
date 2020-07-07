@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 import Hidden from '@material-ui/core/Hidden';
 import SearchBar from '../UIElements/SearchBar'
 import NavLinks from './NavLinks'
-
+import StoreSearchBar from './StoreSearchBar'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
@@ -76,21 +76,21 @@ const Header: React.FC = () => {
     setAnchorEl(null);
   };
 
-  const searchInputChangeHandler = async (event:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    console.log(event.target.value)
-    try {
-      const storeList = await sendRequest('/api/search', 'POST', JSON.stringify({
-        query: event.target.value
-      }), { 
+  // const searchInputChangeHandler = async (event:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+  //   console.log(event.target.value)
+  //   try {
+  //     const storeList = await sendRequest('/api/search', 'POST', JSON.stringify({
+  //       query: event.target.value
+  //     }), { 
     
-        'Content-Type': 'application/json'
-      })
-      const storeNameList = storeList.map((store:any) => store.name)
-      console.log(storeNameList)
-    } catch (e) {
-      console.log(e)
-    }
-  }
+  //       'Content-Type': 'application/json'
+  //     })
+  //     const storeNameList = storeList.map((store:any) => store.name)
+  //     console.log(storeNameList)
+  //   } catch (e) {
+  //     console.log(e)
+  //   }
+  // }
 
   return (
     <div className={classes.root}>
@@ -101,7 +101,9 @@ const Header: React.FC = () => {
 
               <img src={logo} className={classes.logo}/>
             </NavLink>
-            <SearchBar onChange={searchInputChangeHandler}/>
+            <StoreSearchBar />
+            {/* <SearchBar onChange={searchInputChangeHandler}/> */}
+
             <div>
 
               <Button className={classes.iconButtonLabel} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
