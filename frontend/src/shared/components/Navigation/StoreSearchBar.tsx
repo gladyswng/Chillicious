@@ -115,8 +115,19 @@ const StoreSearchBar: React.FC<StoreSearchBarProps> = ({}) => {
             optionClickHandler(option.slug)
           }}
           >
-            <Typography>{option.name}</Typography>
-        <Typography variant='body2'>{option.address}</Typography>
+            <div style={{ display: 'flex' }}>
+
+            <img 
+              
+              style={{ width: 40, height: 40, borderRadius: 3, marginRight: 10 }}
+              src={option.image? `/api/${option.image}` : "https://images.unsplash.com/photo-1506368144590-cf6438f1cdb5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80"}/>
+              <div >
+              <Typography>{option.name}</Typography>
+              <Typography variant='caption'>{option.address}</Typography>
+              </div>
+            </div>
+      
+
 
           </Link>
 
@@ -131,119 +142,3 @@ export default StoreSearchBar
 
 
 
-
-
-
-
-
-
-// const StoreSearchBar: React.FC<StoreSearchBarProps> = ({}) => {
-//   const [open, setOpen] = useState(false)
-//   const [options, setOptions] = useState([])
-//   const [value, setValue] = React.useState(null)
-//   const loading = open && options.length === 0
-//   const [inputValue, setInputValue] = useState('')
-//   const {isLoading, error, sendRequest, clearError} = useHttpClient() 
-//   console.log(inputValue)
-//   console.log(options)
-//   useEffect(() => {
-//     let active = true
-
-//     if (!loading) {
-//       return undefined;
-//     }
-//     if (inputValue === '') {
-//       setOptions(value ? [value] : []);
-//       return undefined;
-//     }
-//     console.log('next')
-//  const fetchStoreSuggestion = async () => {
-    
-//       try {
-//         const storeList = await sendRequest('/api/search', 'POST', JSON.stringify({
-//           query: inputValue
-//         }), { 
-      
-//           'Content-Type': 'application/json'
-//         })
-//         const storeNameList = storeList.map((store:any) => store.name)
-//         console.log(storeNameList)
-//         if (active) {
-//           let newOptions: any[] = []
-//           if (value) {
-//             newOptions = [value]
-//           }
-//           if (storeNameList) {
-//             newOptions = [...newOptions, ...storeNameList]
-//           }
-//           setOptions(newOptions)
-//           // setOptions(Object.keys(countries).map((key) => countries[key].item[0]));
-//         }
-        
-//       } catch (e) {
-//         console.log(e)
-//       }
-//     }
-//     fetchStoreSuggestion()
-//     // cleanup function
-//     return () => {
-//       active = false;
-//     };
-//   }, [inputValue]);
-
-//   useEffect(() => {
-//     if (!open) {
-//       setOptions([]);
-//     }
-//   }, [open]);
-
-//   return (
-//     <>
-    
-//     <Autocomplete
-//       id="store-search"
-//       freeSolo
-//       style={{ width: 300 }}
-//       open={open}
-//       onOpen={() => {
-//         setOpen(true);
-//       }}
-//       onClose={() => {
-//         setOpen(false);
-//       }}
-//       // getOptionSelected={(option, value) => option.name === value.name}
-//       getOptionLabel={(option) => option}
-//       onChange={(event, newValue) => {
-//         setOptions(newValue ? [newValue, ...options] : options);
-//         setValue(newValue);
-//       }}
-//       onInputChange={(event, newInputValue) => {
-//         setInputValue(newInputValue);
-//       }}
-//       options={options}
-//       loading={loading}
-//       renderInput={(params) => (
-//         <div style={{ display: 'flex' }}>
-//         <SearchIcon />
-//         <TextField
-//           style={{ backgroundColor: 'white' }}
-//           {...params}
-        
-//           variant="outlined"
-//           InputProps={{
-//             ...params.InputProps,
-//             endAdornment: (
-//               <>
-//                 {loading ? <CircularProgress color="inherit" size={20} /> : null}
-//                 {params.InputProps.endAdornment}
-//               </>
-//             ),
-//           }}
-//         />
-//         </div>
-//       )}
-//     />
-//   </>
-//   )
-// }
-// export default StoreSearchBar
