@@ -367,7 +367,7 @@ exports.searchStore = async (req, res, next) => {
   const textQuery = new RegExp(`${req.body.query}`, 'i')
   try {
     const storeResult = await Store
-    .find({ name: textQuery })
+    .find({ name: textQuery }).limit(4)
   //   .find({
   //     $text: {
   //         $search: req.body.query

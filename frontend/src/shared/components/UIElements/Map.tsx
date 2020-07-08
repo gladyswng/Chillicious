@@ -24,7 +24,7 @@ const Map: React.FC<MapProps> = (props) => {
 
   const [loaded, error] = useScript(`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}`)
 
-  console.log(loaded)
+
 
   const mapRef = useRef()
   let map
