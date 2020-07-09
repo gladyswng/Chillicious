@@ -7,13 +7,54 @@ const Review = require('../models/Review')
 const HttpError = require('../models/http-error')
 const getCoordsForAddress = require('../util/location')
 const { body, validationResult } = require('express-validator')
-const { send } = require('process')
 
-exports.getStores = async (req, res) => {
 
+exports.getStores = async (req, res, next) => {
+  
     //stores?limit=10&skip=20
+    
     try {
-        await Store.find({}, function (err, stores) {
+      const kmToRadian = (km) => {
+        const earthRadiusInKm = 6371
+        return km / earthRadiusInKm
+      }
+      let searchCoordinates
+      
+      if (req.body.location){
+
+        searchCoordinates = getCoordsForAddres(req.body.location)
+        
+        
+      } else {
+        
+      //   const getUserLocation = () => { 
+         
+      //     if (navigator.geolocation) {
+      //       navigator.geolocation.getCurrentPosition(function (position) {
+      //         let geoPoints = [position.coords.longitude, position.coords.latitude, ];
+      //         console.log(geoPoints);
+      //         return geoPoints;
+      //       })
+      //     } else { 
+      //       console.log("Geolocation is not supported by this browser.")
+      //     }
+      //   }
+      
+        // searchCoordinates = getUserLocation()
+        searchCoordinates = [10, 59]
+      }
+
+        await Store.find({
+          location: {
+            $geoWithin: {
+              $centerSphere: [
+                searchCoordinates,
+                kmToRadian(200)
+              ],
+            }
+          }
+          
+        }, function (err, stores) {
        
             res.json(stores)
         })

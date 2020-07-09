@@ -22,7 +22,6 @@ const storeSchema = new mongoose.Schema({
     tags: [String],
     
     location: {
-      // TODO - set location to type when create
       type: {
         type: String,
         default: 'Point'
@@ -68,8 +67,7 @@ const storeSchema = new mongoose.Schema({
 })
 
 
-
-
+storeSchema.index({ location: '2dsphere' })
 // SAVE SLUG IN STORE
 storeSchema.pre('save', async function(next) {
 
