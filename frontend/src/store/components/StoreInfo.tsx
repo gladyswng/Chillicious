@@ -58,8 +58,7 @@ interface StoreInfoProps {
     address?: string;
     tags?: string[]
     location: {
-      lat: number
-      lng: number
+      coordinates: number[]
     }
     ratingsQuantity: number
     ratingsAverage: number
@@ -115,7 +114,7 @@ const StoreInfo: React.FC<StoreInfoProps> = (props) => {
 
      
               
-          <Map center={location} zoom={16}/>
+          <Map center={{ lat: location.coordinates[1], lng: location.coordinates[0]}} zoom={16}/>
 
       
 

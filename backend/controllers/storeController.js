@@ -130,12 +130,11 @@ exports.addStore = (req, res) => {
 exports.createStore = async (req, res, next) => {
   const { name, description, address, image, priceRange, tags } = req.body
 
-  
+ 
   let coordinates
   
   try {
     coordinates = await getCoordsForAddress(address)
-    
     
   } catch (e) {
     return next(e)
@@ -146,7 +145,13 @@ exports.createStore = async (req, res, next) => {
   const addedStore = {
     name,
     description,
-    location: coordinates,
+    location: { 
+      type: 'Point',
+      coordinates: [
+        coordinates.lng, 
+        coordinates.lat 
+      ]
+      },
     address,
     //image: '/api/' + req.file. 
     // We can store the full url here but we want to prepend it on the frontend so we only save the file path here on server
@@ -311,7 +316,10 @@ exports.updateStore = async (req, res, next) => {
         } catch (e) {
           return next(e)
         }
-      store.location = coordinates
+      store.location = {
+        type: 'Point',
+        coordinates: [coordinates.lng, coordinates.lat]
+        }
       
       await store.save()
       res.send(store)

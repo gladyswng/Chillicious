@@ -22,16 +22,16 @@ const storeSchema = new mongoose.Schema({
     tags: [String],
     
     location: {
+      // TODO - set location to type when create
       type: {
-
-        lat: { 
-          type: Number
-    
-        },
-        lng: {
+        type: String,
+        default: 'Point'
+      },
+      coordinates: [
+        {
           type: Number
         }
-      }
+      ]
     },
     address: {
       type: String,

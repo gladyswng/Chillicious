@@ -82,7 +82,7 @@ exports.userValidationRules = () => {
 exports.validateRegister = (req, res, next) => {
     const errors = validationResult(req)
     if (errors.isEmpty()) {
-        console.log(req.body)
+       
       return next()
     }
     
