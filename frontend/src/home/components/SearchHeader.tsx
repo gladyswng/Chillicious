@@ -1,6 +1,6 @@
 import React from 'react'
 import CusineList from '../components/CusineList'
-
+import SearchLocation from './SearchLocation'
 // material ui
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -75,7 +75,9 @@ const SearchHeader: React.FC<SearchHeaderProps> = ({}) => {
                 
               </div>
 
-              <Paper component="form" className={classes.root}>
+              <SearchLocation />
+
+              {/* <Paper component="form" className={classes.root}>
                 <IconButton type="submit" className={classes.iconButton} aria-label="search">
                   <SearchIcon />
                 </IconButton>
@@ -88,7 +90,7 @@ const SearchHeader: React.FC<SearchHeaderProps> = ({}) => {
                 <IconButton className={classes.iconButton} aria-label="myLocation">
                   <MyLocationIcon />
                 </IconButton>
-              </Paper>
+              </Paper> */}
           </div>
           <div style={{height: "60%", marginTop: "40px", width: "100%"}}>
             <Typography variant="overline" style={{color: "#FFFFFF"}}>

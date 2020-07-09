@@ -27,20 +27,7 @@ exports.getStores = async (req, res, next) => {
         
       } else {
         
-      //   const getUserLocation = () => { 
-         
-      //     if (navigator.geolocation) {
-      //       navigator.geolocation.getCurrentPosition(function (position) {
-      //         let geoPoints = [position.coords.longitude, position.coords.latitude, ];
-      //         console.log(geoPoints);
-      //         return geoPoints;
-      //       })
-      //     } else { 
-      //       console.log("Geolocation is not supported by this browser.")
-      //     }
-      //   }
-      
-        // searchCoordinates = getUserLocation()
+ 
         searchCoordinates = [10, 59]
       }
 

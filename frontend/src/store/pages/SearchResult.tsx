@@ -35,17 +35,26 @@ const SearchResult: React.FC<SearchResultProps> = () => {
   const [checkedList, setCheckedList] = useState([])
   const [hearts, setHearts] = useState()
 
-
-  
-
-  console.log(checkedList) // TWICE??
-  
-  
+  console.log(checkedList) // 7 times??
+  // const getUserLocation = async () => { 
+  //   console.log('ran')
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition(function (position) {
+  //       let geoPoints = [position.coords.longitude, position.coords.latitude, ];
+  //       console.log(geoPoints);
+  //       return geoPoints
+        
+  //     })
+  //   } else { 
+  //     console.log("Geolocation is not supported by this browser.")
+  //   }
+  // }
+      
 
   useEffect(() => {
     const fetchStores = async() => {
       try { 
-        const responseData = await sendRequest('/api/stores')
+        const responseData = await sendRequest('/api/stores', 'POST', JSON.stringify({ location: null }))
         setLoadedStores(responseData)
         setFetchedStores(responseData)
       } catch (e) {
