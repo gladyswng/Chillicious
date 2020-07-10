@@ -61,7 +61,7 @@ const App: React.FC = () => {
       </Route>
 
 
-      <Route path="/stores" exact>
+      <Route path="/stores/:location" exact>
           <SearchResult />
       </Route>
 
@@ -93,7 +93,7 @@ const App: React.FC = () => {
           <Homepage />
       </Route>
 
-      <Route path="/stores" exact>
+      <Route path="/stores/:location" exact>
           <SearchResult />
       </Route>
 

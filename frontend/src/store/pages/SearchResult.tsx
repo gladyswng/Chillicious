@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react'
+import { useParams } from 'react-router-dom'
 
 import StoreList from '../components/StoreList'
 import FilterList from '../components/FilterList'
@@ -27,6 +28,8 @@ interface SearchResultProps {
 const SearchResult: React.FC<SearchResultProps> = () => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
+  const { location } = useParams()
+  console.log(location)
   const {isLoading, error, sendRequest, clearError} = useHttpClient() 
   // TODO - FIX TYPE ANY
 
@@ -53,8 +56,11 @@ const SearchResult: React.FC<SearchResultProps> = () => {
 
   useEffect(() => {
     const fetchStores = async() => {
+      console.log(location)
       try { 
-        const responseData = await sendRequest('/api/stores', 'POST', JSON.stringify({ location: null }))
+        const responseData = await sendRequest('/api/stores', 'POST', JSON.stringify({ location }), { 
+          'Content-Type': 'application/json'
+        })
         setLoadedStores(responseData)
         setFetchedStores(responseData)
       } catch (e) {

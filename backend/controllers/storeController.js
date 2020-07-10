@@ -7,10 +7,10 @@ const Review = require('../models/Review')
 const HttpError = require('../models/http-error')
 const getCoordsForAddress = require('../util/location')
 const { body, validationResult } = require('express-validator')
+const { search } = require('../app')
 
 
 exports.getStores = async (req, res, next) => {
-  
     //stores?limit=10&skip=20
     
     try {
@@ -21,8 +21,10 @@ exports.getStores = async (req, res, next) => {
       let searchCoordinates
       
       if (req.body.location){
-
-        searchCoordinates = getCoordsForAddres(req.body.location)
+        console.log(req.body.location)
+        const coordinates = await getCoordsForAddress(req.body.location)
+        searchCoordinates= [coordinates.lng, coordinates.lat ]
+        console.log(searchCoordinates)
         
         
       } else {
