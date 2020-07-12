@@ -82,8 +82,6 @@ reviewSchema.statics.calcAverageRatings =  async function(storeId) {
       }, { new: true }).populate('reviews')
     }
 
-
-    console.log(updatedStore)
    
     return updatedStore
 

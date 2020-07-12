@@ -24,6 +24,7 @@ exports.addReview = async (req, res, next) => {
         const updatedStore = await Review.calcAverageRatings(req.params.id)
 
         // TODO - ADD TRY CATCH TO THIS
+        // question: why can save directly to user like this?
         const user = await User.findById(req.user._id)
         user.reviews.push(review)
         await user.save()

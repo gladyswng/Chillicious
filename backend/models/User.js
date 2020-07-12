@@ -68,6 +68,7 @@ userSchema.virtual('id').get(function(){
 });
 
 
+
 userSchema.statics.findByCredentials = async (email, password) => {
     const user = await User.findOne({ email })
 
@@ -106,6 +107,33 @@ userSchema.methods.generateAuthToken = async function () {
     await user.save()
     return token
 }
+
+// userSchema.statics.getUser = async (userId) => {
+//   try {
+//     // TODO - FLTER OUT DEAD REFS
+//      const user = await User.findById(userId)
+//      .populate('reviews')
+//      .populate('stores', '-location -author -created')
+//      .populate('hearts', '-location -author -created')
+//      .exec(
+//        // TODO - FILTER OUT DEAD REFERENCE?
+//     //    (err, user) => { 
+//     //   // console.log(user.hearts)
+//     //   // user.hearts = user.hearts.filter(store => store != null)
+      
+//     // //   // res.send(user) // Return result as soon as you can
+//     // //   // user.save() // Save user without dead refs to database
+//     // }
+//     )
+//     // console.log(user)
+//     return user
+
+//   } catch (e) {
+//     return next(
+//       new HttpError('Something went wrong, could not proceed to get your profile', 500)
+//     )
+//   }
+// }
 
 userSchema.pre('save', async function (next) {
     const user = this

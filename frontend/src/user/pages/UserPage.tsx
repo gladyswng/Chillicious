@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from "react"
 import UserProfile from '../components/UserProfile'
 import UserReviews from '../components/UserReviews'
-import Hearted from '../components/Hearted'
+import UserStores from '../components/UserStores'
 import Message from '../../shared/components/UIElements/Message'
 import { AuthContext } from '../../shared/context/authContext'
 import { useHttpClient } from '../../shared/hooks/http-hook'  
@@ -122,7 +122,7 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
 
       </TabPanel>
       <TabPanel value={tabValue} index={1} id='heartedTab'>
-        <Hearted 
+        <UserStores
         storeList={loadedUser.hearts}
         onDelete={storeDeleteHandler}
         />
@@ -135,7 +135,10 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
         userReview={true}/>
       </TabPanel>
       <TabPanel value={tabValue} index={3} id='storesTab'>
-        Item 
+      <UserStores
+        storeList={loadedUser.stores}
+        onDelete={storeDeleteHandler}
+        />
       </TabPanel>
            
       </Paper>

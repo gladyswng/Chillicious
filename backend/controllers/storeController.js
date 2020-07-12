@@ -8,6 +8,7 @@ const HttpError = require('../models/http-error')
 const getCoordsForAddress = require('../util/location')
 const { body, validationResult } = require('express-validator')
 const { search } = require('../app')
+const { Console } = require('console')
 
 
 exports.getStores = async (req, res, next) => {
@@ -158,6 +159,12 @@ exports.addStore = (req, res) => {
 
 
 exports.createStore = async (req, res, next) => {
+
+  if (!req.file) {
+    return next(
+      new HttpError('Please upload a photo', 404)
+    )
+  }
   const { name, description, address, image, priceRange, tags } = req.body
 
  
@@ -182,7 +189,7 @@ exports.createStore = async (req, res, next) => {
         coordinates.lat 
       ]
       },
-    address,
+    address: address.toLowerCase(),
     //image: '/api/' + req.file. 
     // We can store the full url here but we want to prepend it on the frontend so we only save the file path here on server
     image: req.file.path,
@@ -190,24 +197,33 @@ exports.createStore = async (req, res, next) => {
     tags
    
   }
-
   const store = new Store({
     // ...req.body,
     ...addedStore,
     author: req.user._id
   })
+  // Add Store to user
+  
+  const user = await User.findById(req.user._id)
+  if (!user) {
+    return next(
+      new HttpError('Could not find user', 404)
+    )
+  }
+  console.log(user)
 
     try {
-
-        await store.save()
-        res.status(201).send(store)
+      // TODO - ADD SESSION HERE!!!
+      await user.stores.push(store)
+      await user.save()
+      await store.save()
+      res.status(201).send(store)
     } catch(e) {
       return next(e)
       // return next(
       //   new HttpError('Something went wrong, could not proceed to create store', 500)
       // )
     }
-    // res.redirect(`/store/${store.slug}`)
 
 }
 exports.storeValidationRules = () => {
@@ -339,6 +355,8 @@ exports.updateStore = async (req, res, next) => {
       updates.forEach(update => {
           store[update] = req.body[update]
       })
+      // TODO - CHANGE WAY TO SAVE HERE
+      store.address = req.body.address.toLowerCase()
       store.image = imageSource
       let coordinates
         try {
@@ -374,7 +392,7 @@ exports.deleteStore = async (req, res, next) => {
         const storeExisted = await Store.findById(req.params.id)
         
 
-        if (storeExisted.reviews) {
+        if (storeExisted.reviews.length > 0) {
           await Review.deleteMany({ store: req.params.id })
         }
         const store = await Store.findByIdAndDelete(req.params.id)
@@ -401,11 +419,16 @@ exports.deleteStore = async (req, res, next) => {
 }
 
 exports.searchStore = async (req, res, next) => {
-  console.log(req.body.query)
+
   const textQuery = new RegExp(`${req.body.query}`, 'i')
   try {
-    const storeResult = await Store
-    .find({ name: textQuery }).limit(4)
+ 
+    let storeResult
+    if (req.body.query.length > 0 ){
+      storeResult = await Store
+      .find({ name: textQuery }).limit(4)
+
+    }
   //   .find({
   //     $text: {
   //         $search: req.body.query

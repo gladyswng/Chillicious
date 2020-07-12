@@ -89,7 +89,7 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, sendDelet
   const auth = useContext(AuthContext)
   const history = useHistory()
   const [modalOpen, setModalOpen] = useState(false)
-  const [hearted, setHearted] = useState<boolean>()
+  const [hearted, setHearted] = useState<boolean>(false)
 
   const {isLoading, error, sendRequest, clearError} = useHttpClient() 
   

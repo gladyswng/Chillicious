@@ -35,18 +35,22 @@ const StoreSearchBar: React.FC<StoreSearchBarProps> = ({}) => {
     
       const fetchStoreSuggestion = async () => {
       try {
-        const storeList = await sendRequest('/api/search', 'POST', JSON.stringify({
-          query: inputValue
-        }), { 
-      
-          'Content-Type': 'application/json'
-        })
+        if (inputValue.length > 0) {
+
+          const storeList = await sendRequest('/api/search', 'POST', JSON.stringify({
+            query: inputValue
+          }), { 
+        
+            'Content-Type': 'application/json'
+          })
+          // TODO - REDUCE RERENDERING 
+          if (active) {
+            setOptions(storeList)
+            // setOptions(Object.keys(countries).map((key) => countries[key].item[0]));
+          }
+        }
         // const storeNameList = storeList.map((store:any) => store.name)
         // console.log(storeNameList)
-        if (active) {
-          setOptions(storeList)
-          // setOptions(Object.keys(countries).map((key) => countries[key].item[0]));
-        }
         
       } catch (e) {
         console.log(e)
@@ -123,7 +127,7 @@ const StoreSearchBar: React.FC<StoreSearchBarProps> = ({}) => {
               src={option.image? `/api/${option.image}` : "https://images.unsplash.com/photo-1506368144590-cf6438f1cdb5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80"}/>
               <div >
               <Typography>{option.name}</Typography>
-              <Typography variant='caption'>{option.address}</Typography>
+              <Typography variant='caption' style={{ color: '#808080' }}>{option.address}</Typography>
               </div>
             </div>
       

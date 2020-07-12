@@ -111,8 +111,10 @@ exports.getUser = async (req, res, next) => {
 
   try {
     // TODO - FLTER OUT DEAD REFS
-     await User.findById(req.user._id).populate('reviews').populate('hearts', '-location -author -created').exec((err, user) => { 
-      console.log(user.hearts)
+     await User.findById(req.user._id).populate('reviews')
+     .populate('stores', '-location -created')
+     .populate('hearts', '-location -author -created').exec((err, user) => { 
+        // filter out?
       user.hearts = user.hearts.filter(store => store != null)
       
       res.send(user) // Return result as soon as you can
