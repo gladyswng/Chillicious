@@ -40,7 +40,7 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
   const [tabValue, setTabValue] = useState(0)
 // TODO - FIX ISSUE WITH NOT UNAUTHORIZED WHEN RELOAD PLUS REDIRECT IF RESTRICT ROUTE
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
-
+  
   useEffect(()=> {
     
 
@@ -67,9 +67,13 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
     setTabValue(newTabValue);
   };
 
-  const storeDeleteHandler = (storeId: string) => {
+  const heartDeleteHandler = (storeId: string) => {
     // TODO - CHANG TYPE ANY 
     setLoadedUser((prevUser: any) => prevUser.hearts.filter((store: any)=> store.id !== storeId))
+  }
+  const storeDeleteHandler = (storeId: string) => {
+    // TODO - CHANG TYPE ANY 
+    setLoadedUser((prevUser: any) => prevUser.stores.filter((store: any)=> store.id !== storeId))
   }
 
   const changeReviewHandler = (updatedUser: any) => {
@@ -122,23 +126,24 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
 
       </TabPanel>
       <TabPanel value={tabValue} index={1} id='heartedTab'>
-        <UserStores
+        {loadedUser.hearts && <UserStores
+        heartStores={true}
         storeList={loadedUser.hearts}
-        onDelete={storeDeleteHandler}
-        />
+        onDelete={heartDeleteHandler}
+        />}
       </TabPanel>
       <TabPanel value={tabValue} index={2} id='reviewsTab'>
-        <UserReviews 
+        {loadedUser.reviews && <UserReviews 
         reviews={loadedUser.reviews} 
         onChange={changeReviewHandler} 
         onDelete={deleteReviewHandler}
-        userReview={true}/>
+        userReview={true}/>}
       </TabPanel>
       <TabPanel value={tabValue} index={3} id='storesTab'>
-      <UserStores
+      {loadedUser.stores && <UserStores
         storeList={loadedUser.stores}
         onDelete={storeDeleteHandler}
-        />
+        />}
       </TabPanel>
            
       </Paper>

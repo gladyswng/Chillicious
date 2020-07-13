@@ -14,7 +14,6 @@ function useScript(src:string) {
       // If cachedScripts array already includes src that means another instance ...
       // ... of this hook already loaded this script, so no need to load again.
       if (cachedScripts.includes(src)) {
-        console.log(src)
         setState({
           loaded: true,
           error: false

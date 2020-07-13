@@ -205,6 +205,7 @@ exports.createStore = async (req, res, next) => {
   // Add Store to user
   
   const user = await User.findById(req.user._id)
+
   if (!user) {
     return next(
       new HttpError('Could not find user', 404)
@@ -408,8 +409,12 @@ exports.deleteStore = async (req, res, next) => {
         fs.unlink(imagePath, err => {
           console.log(err)
         })
+
+        const updatedUser = await User.findByIdAndUpdate(req.user._id, {
+          '$pull': { stores: req.params.id }
+        }).populate('reviews').populate('hearts', '-location -author -created')
         
-        res.send({ message: 'Deleted store.' })
+        res.send(updatedUser)
     } catch(e) {
       return next(
         new HttpError(`Something went wrong, could not proceed to delete store, ${e}`, 500)

@@ -1,6 +1,8 @@
 import React, { useContext, useState } from 'react'
 import ReviewCard from '../../store/components/ReviewCard'
 import Pagination from '@material-ui/lab/Pagination'
+import StoreList from '../../store/components/StoreList'
+import Message from '../../shared/components/UIElements/Message'
 
 interface UserReviewsProps {
   reviews: {
@@ -30,7 +32,7 @@ interface UserReviewsProps {
 const UserReviews: React.FC<UserReviewsProps> = ({ reviews, onChange, onDelete, userReview }) => {
 
   const [currentPage, setCurrentPage] = useState(1)
-  
+   
   const pageCount = Math.ceil(reviews.length / 5)
   const indexOfLastTodo = currentPage * 5
   const indexOfFirstTodo = indexOfLastTodo - 5
@@ -54,15 +56,19 @@ const UserReviews: React.FC<UserReviewsProps> = ({ reviews, onChange, onDelete, 
       key={review._id}/>
     )
   })
-  
+  // TODO - FIX NO REVIEW MESSAGE
     return (
       <>
+      
+      {reviews.length === 0 && 
+      <Message message='No reviews yet'/>
+      }
       {reviews && reviewList}
-      <Pagination 
+      {reviews.length > 0 && <Pagination 
           count={pageCount} 
           shape="rounded" 
           page={currentPage}
-          onChange={pageChangeHandler}/>
+          onChange={pageChangeHandler}/>}
       </>
     );
 }

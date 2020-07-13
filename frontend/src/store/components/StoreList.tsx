@@ -28,7 +28,7 @@ interface Store {
 
 interface StoreListProps {
   storeList: Store[]
-  hearts: string[]
+  hearts?: string[]
   onDelete: (store: string)=> void
 
 }
@@ -62,17 +62,22 @@ const StoreList: React.FC<StoreListProps> = (props) => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
-  console.log(props.storeList)
 
+  
   const [backdropOpen, setBackdropOpen] = useState(true)
-
+  
   // Pagination
   const [currentPage, setCurrentPage] = useState(1)
-
+  
+  if (!props.storeList || props.storeList.length === 0 ) {
+    return (
+      <Message message='No store found'/>
+    )
+  }
+  
   const handleBackdropClose = () => {
     setBackdropOpen(false)
   }
-
 
 
   const pageCount = Math.ceil(props.storeList.length / 5)
@@ -88,15 +93,18 @@ const StoreList: React.FC<StoreListProps> = (props) => {
 
  useEffect(() => {
  
+    if (props.storeList) {
 
-    setCurrentPage(1)
- 
+      setCurrentPage(1)
+   
+    }
  }, [props.storeList])
 
   const sendDeleteRequestHandler = async (storeId: string) => {
     await sendRequest(`/api/store/${storeId}`, 'DELETE', null , { 
       Authorization: 'Bearer ' + auth.token
-})
+    })
+
   }
 
 
