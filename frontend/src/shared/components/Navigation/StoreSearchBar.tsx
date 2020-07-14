@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
 import TextField from '@material-ui/core/TextField'
 import Autocomplete from '@material-ui/lab/Autocomplete'
@@ -26,6 +26,30 @@ const StoreSearchBar: React.FC<StoreSearchBarProps> = ({}) => {
   console.log(inputValue)
   console.log(options)
 
+  const fetchStoreSuggestion = useCallback(async (active) => {
+    try {
+      if (inputValue.length > 0) {
+
+        const storeList = await sendRequest('/api/search', 'POST', JSON.stringify({
+          query: inputValue
+        }), { 
+      
+          'Content-Type': 'application/json'
+        })
+        // TODO - REDUCE RERENDERING
+        if (active) {
+          setOptions(storeList)
+          // setOptions(Object.keys(countries).map((key) => countries[key].item[0]));
+        }
+      }
+      // const storeNameList = storeList.map((store:any) => store.name)
+      // console.log(storeNameList)
+      
+    } catch (e) {
+      console.log(e)
+    }
+  }, [inputValue])
+
   useEffect(() => {
     let active = true;
 
@@ -33,35 +57,12 @@ const StoreSearchBar: React.FC<StoreSearchBarProps> = ({}) => {
     //   return undefined;
     // }
     
-      const fetchStoreSuggestion = async () => {
-      try {
-        if (inputValue.length > 0) {
-
-          const storeList = await sendRequest('/api/search', 'POST', JSON.stringify({
-            query: inputValue
-          }), { 
-        
-            'Content-Type': 'application/json'
-          })
-          // TODO - REDUCE RERENDERING 
-          if (active) {
-            setOptions(storeList)
-            // setOptions(Object.keys(countries).map((key) => countries[key].item[0]));
-          }
-        }
-        // const storeNameList = storeList.map((store:any) => store.name)
-        // console.log(storeNameList)
-        
-      } catch (e) {
-        console.log(e)
-      }
-    }
-    fetchStoreSuggestion()
+    fetchStoreSuggestion(active)
     // cleanup function
     return () => {
       active = false;
     };
-  }, [inputValue]);
+  }, [fetchStoreSuggestion]);
 
   // useEffect(() => {
   //   if (!open) {

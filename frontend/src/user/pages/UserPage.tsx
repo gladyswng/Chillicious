@@ -73,6 +73,7 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
   }
   const storeDeleteHandler = (storeId: string) => {
     // TODO - CHANG TYPE ANY 
+    console.log('tried to filter')
     setLoadedUser((prevUser: any) => prevUser.stores.filter((store: any)=> store.id !== storeId))
   }
 

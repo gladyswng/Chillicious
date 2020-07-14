@@ -81,9 +81,9 @@ const StoreList: React.FC<StoreListProps> = (props) => {
 
 
   const pageCount = Math.ceil(props.storeList.length / 5)
-  const indexOfLastTodo = currentPage * 5
-  const indexOfFirstTodo = indexOfLastTodo - 5
-  const currentTodos = props.storeList.slice(indexOfFirstTodo, indexOfLastTodo)
+  const indexOfLastStore = currentPage * 5
+  const indexOfFirstStore = indexOfLastStore - 5
+  const currentStores = props.storeList.slice(indexOfFirstStore, indexOfLastStore)
 
   const pageChangeHandler = (e: React.MouseEvent<HTMLElement, MouseEvent>, value: number) => {
     setCurrentPage(value)
@@ -91,14 +91,14 @@ const StoreList: React.FC<StoreListProps> = (props) => {
  }
 
 
- useEffect(() => {
- 
-    if (props.storeList) {
+  useEffect(() => {
+  
+      if (props.storeList) {
 
-      setCurrentPage(1)
-   
-    }
- }, [props.storeList])
+        setCurrentPage(1)
+    
+      }
+  }, [props.storeList])
 
   const sendDeleteRequestHandler = async (storeId: string) => {
     await sendRequest(`/api/store/${storeId}`, 'DELETE', null , { 
@@ -128,8 +128,9 @@ const StoreList: React.FC<StoreListProps> = (props) => {
 
   
       <Grid container className={classes.root}>
+        {currentStores && 
         <div style={{padding: 0, margin: 0, width: '100%'}}>
-          {currentTodos.map((store: Store) => {
+          {currentStores.map((store: Store) => {
             return <StoreCard 
             key={store.id} 
             store={store} 
@@ -139,7 +140,7 @@ const StoreList: React.FC<StoreListProps> = (props) => {
  
             />
           })}
-        </div>
+        </div>}
 
 
         <div className={classes.pagination}>

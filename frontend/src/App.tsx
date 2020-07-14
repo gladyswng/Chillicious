@@ -75,11 +75,11 @@ const App: React.FC = () => {
       <Route path="/store/add" exact>
           <AddStore />
       </Route>
-      <ScriptLoadContext.Provider value={{ scriptLoaded: loaded, scriptLoadError: error }}>
       <Route path="/store/:slug" exact>
+      <ScriptLoadContext.Provider value={{ scriptLoaded: loaded, scriptLoadError: error }}>
           <Store />
-      </Route>
       </ScriptLoadContext.Provider>
+      </Route>
 
 
       <Route path="/store/edit/:id" exact>

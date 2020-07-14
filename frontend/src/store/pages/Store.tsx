@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useParams } from 'react-router-dom'
 import Message from '../../shared/components/UIElements/Message'
 import StoreInfo from '../components/StoreInfo'
@@ -37,23 +37,25 @@ const Store: React.FC<StoreProps> = ({}) => {
 
   const { slug } = useParams()
 
+  const fetchStore = useCallback(async () => {
+    try {
+      const responseData = await sendRequest(`/api/store/${slug}`)
+
+      const store = responseData
+
+      setLoadedStore(store)
+  
+    } catch (e) {
+
+    }
+  }, [slug])
+
 
   useEffect(()=> {
  
-    const fetchStore = async () => {
-      try {
-        const responseData = await sendRequest(`/api/store/${slug}`)
-  
-        const store = responseData
-
-        setLoadedStore(store)
-    
-      } catch (e) {
-
-      }
-    }
+   
     fetchStore()
-  }, [ sendRequest, slug])
+  }, [fetchStore])
   // TODO - CHANGE TYPE
   const changeReviewHandler = (store: any) => {
     setLoadedStore(store)

@@ -10,7 +10,6 @@ export const useHttpClient = () => {
   const activeHttpRequest = useRef([])
 
   const sendRequest = useCallback(async (url: string, method = 'GET', body:any = null, headers = {}) => {
-    console.log(body)
     setIsLoading(true)
     // An Api supported in modern browsers and will add the active http request which will cancel the connect
     const httpAbortCtrl = new AbortController()

@@ -52,40 +52,70 @@ const SearchResult: React.FC<SearchResultProps> = () => {
   //     console.log("Geolocation is not supported by this browser.")
   //   }
   // }
+
+
+  const fetchStores = useCallback(async() => {
+    console.log('fetch store')
+    try { 
+      const responseData = await sendRequest('/api/stores', 'POST', JSON.stringify({ location }), { 
+        'Content-Type': 'application/json'
+      })
+      setLoadedStores(responseData)
+      setFetchedStores(responseData)
+    } catch (e) {
+
+    }
+  }, [])
+
       
+  const fetchHearts = useCallback(async() => {
+    console.log('fetch hearts')
+    try {
+      const heartsData = await sendRequest('/api/user/me/hearts', 'GET', null, { 
+        Authorization: 'Bearer ' + auth.token,
+        'Content-Type': 'application/json'
+      })
+      
+      setHearts(heartsData)
+    } catch (e) {
 
+    }
+  }, [auth.token])
+
+  
+  // TODO - FIX FUNCTION IN USEEFFECT!!!!! usecallback?
   useEffect(() => {
-    const fetchStores = async() => {
-      console.log(location)
-      try { 
-        const responseData = await sendRequest('/api/stores', 'POST', JSON.stringify({ location }), { 
-          'Content-Type': 'application/json'
-        })
-        setLoadedStores(responseData)
-        setFetchedStores(responseData)
-      } catch (e) {
+    // const fetchStores = async() => {
+    //   console.log(location)
+    //   try { 
+    //     const responseData = await sendRequest('/api/stores', 'POST', JSON.stringify({ location }), { 
+    //       'Content-Type': 'application/json'
+    //     })
+    //     setLoadedStores(responseData)
+    //     setFetchedStores(responseData)
+    //   } catch (e) {
 
-      }
-    }
+    //   }
+    // }
 
-    const fetchHearts = async() => {
-      try {
-        const heartsData = await sendRequest('/api/user/me/hearts', 'GET', null, { 
-          Authorization: 'Bearer ' + auth.token,
-          'Content-Type': 'application/json'
-        })
+    // const fetchHearts = async() => {
+    //   try {
+    //     const heartsData = await sendRequest('/api/user/me/hearts', 'GET', null, { 
+    //       Authorization: 'Bearer ' + auth.token,
+    //       'Content-Type': 'application/json'
+    //     })
         
-        setHearts(heartsData)
-      } catch (e) {
+    //     setHearts(heartsData)
+    //   } catch (e) {
 
-      }
-    }
+    //   }
+    // }
     fetchStores()
     if (auth.token) {
 
       fetchHearts() //??? right place to put?
     }
-  }, [sendRequest, auth.token])
+  }, [fetchStores, fetchHearts])
   // TODO - CHANGE AUTH TOKEN?
 
   const storeDeleteHandler = (storeId: string) => {
