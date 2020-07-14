@@ -132,10 +132,10 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, sendDelet
     history.push(`/store/${store.slug}`)
   }
 
-  const deleteHander = async (e: any) => {
+  const deleteHandler = async (e: any) => {
     try{
       e.preventDefault()
-      setModalOpen(false) 
+      // setModalOpen(false) 
       sendDeleteRequest(store.id)
       onDelete(store.id)
       
@@ -215,7 +215,7 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, sendDelet
             {store.author === auth.userId && 
             <Modal buttonStyle='outlined' buttonText='Delete' buttonColor="default" open={modalOpen} onOpen={handleModalOpen} onClose={handleModalClose}>
               <Typography>Are you sure?</Typography>
-              <Button onClick={deleteHander}>Yes</Button>
+              <Button onClick={deleteHandler}>Yes</Button>
               <Button onClick={handleModalClose}>Cancel</Button>
             </Modal>
             }

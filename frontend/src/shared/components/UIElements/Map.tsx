@@ -1,7 +1,7 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useContext } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import useScript from '../../hooks/useScript'
-
+import { ScriptLoadContext } from '../../context/scriptLoadContext'
 
 interface MapProps {
   style?: object
@@ -21,10 +21,11 @@ const useStyles = makeStyles((theme) => ({
 
 const Map: React.FC<MapProps> = (props) => {
   const classes = useStyles()
+  const scriptLoad= useContext(ScriptLoadContext)
 
-  const [loaded, error] = useScript(`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}`)
+  // const [loaded, error] = useScript(`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}`)
 
-
+  // console.log(loaded)
 
   const mapRef = useRef()
   let map
@@ -36,7 +37,7 @@ const Map: React.FC<MapProps> = (props) => {
   
   // useEffect will run after the jsx has rendered and the connection with mapRef will have been established by the time it runs
   useEffect(()=> { 
-    if (!loaded) {
+    if (!scriptLoad.scriptLoaded) {
       return
     } 
     
@@ -51,19 +52,19 @@ const Map: React.FC<MapProps> = (props) => {
   
   
     
-  }, [center, zoom, loaded, error])
+  }, [center, zoom])
 
   
     return (
       <div style={{ width: '50%', height: '100%' }}>
 
-        {loaded && !error && (
+        {scriptLoad.scriptLoaded && !scriptLoad.scriptLoadError && (
         <div 
         ref={mapRef} 
         style={props.style} 
         className={classes.map}>
         </div>
-        )}
+          )} 
       </div>
 
      

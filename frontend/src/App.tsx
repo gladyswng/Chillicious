@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react"
+
 import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-dom"
+
+import useScript from './shared/hooks/useScript'
 import { AuthContext } from './shared/context/authContext'
+import { ScriptLoadContext } from './shared/context/scriptLoadContext'
 import { useAuth } from './shared/hooks/auth-hook'
 import UserPage from './user/pages/UserPage'
 import UserSignUp from './user/pages/UserSignUp'
@@ -43,7 +47,10 @@ const useStyles = makeStyles((theme) => ({
 // TODO - AUTH WHEN RELOAD FOR EVERY PAGE LIKE EDIT STORE AND PROFILE PAGE
 const App: React.FC = () => {
   const classes = useStyles()
+  const [loaded, error] = useScript(`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&libraries=places`)
+
   const { token, login, logout, userId } = useAuth()
+
   // const [tokenLoaded, setTokenLoaded] = useState<any>()
   
   // useEffect(() => {
@@ -68,10 +75,11 @@ const App: React.FC = () => {
       <Route path="/store/add" exact>
           <AddStore />
       </Route>
-
+      <ScriptLoadContext.Provider value={{ scriptLoaded: loaded, scriptLoadError: error }}>
       <Route path="/store/:slug" exact>
           <Store />
       </Route>
+      </ScriptLoadContext.Provider>
 
 
       <Route path="/store/edit/:id" exact>

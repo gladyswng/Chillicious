@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
-import useScript from '../../shared/hooks/useScript'
+// import useScript from '../../shared/hooks/useScript'
 import TextField from '@material-ui/core/TextField'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import LocationOnIcon from '@material-ui/icons/LocationOn'
@@ -31,7 +31,7 @@ const SearchLocation: React.FC = () => {
   const [inputValue, setInputValue] = useState<any>('');
   const [options, setOptions] = useState<any>([])
  
-  const [loaded, error] = useScript(`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&libraries=places`)
+  // const [loaded, error] = useScript(`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&libraries=places`)
 
  
 
