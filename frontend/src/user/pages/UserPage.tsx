@@ -91,6 +91,14 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
     setLoadedUser(updatedUser)
     
   }
+  const onAvatarChange = (userProfile: any) => {
+    setLoadedUser((prevUser: any) => {
+      const user = {...prevUser}
+      user.name = userProfile.name,
+      user.avatar = userProfile.avatar
+      return user
+    })
+  }
 
 
   return (
@@ -119,7 +127,13 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
       <TabPanel value={tabValue} index={0} id='profileTab'>
     
 
-        <UserProfile userName={loadedUser.name} email={loadedUser.email} password={loadedUser.password} avatar={loadedUser.avatar}/>
+        <UserProfile 
+        userName={loadedUser.name} 
+        email={loadedUser.email} 
+        password={loadedUser.password} 
+        avatar={loadedUser.avatar}
+        avatarChange={onAvatarChange}
+        />
 
 
       </TabPanel>

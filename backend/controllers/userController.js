@@ -3,6 +3,7 @@ const User = require('../models/User')
 const HttpError = require('../models/http-error')
 const { body, validationResult } = require('express-validator')
 const fileUpload = require('../middleware/file-upload')
+// const { findById } = require('../models/User')
 
 
 
@@ -129,7 +130,7 @@ exports.getUser = async (req, res, next) => {
 }
 
 exports.updateProfile = async (req, res, next) => {
-  console.log(req.user)
+  console.log(req.body)
     
     const updates = Object.keys(req.body)
     const allowedUpdates = ['name', 'image']
@@ -155,11 +156,13 @@ exports.updateProfile = async (req, res, next) => {
         updates.forEach(update => {
             req.user[update] = req.body[update]
         })
-        req.user.name = req.body.name
+        // req.user.name = req.body.name
         req.user.avatar = imageSource
 
         await req.user.save()
-        res.send({ message: 'Profile updated' })
+
+        const user = await User.findById(req.user._id).populate()
+        res.send({ userProfile: req.user, message: 'Profile updated' })
 
     } catch (e) {
       return next(

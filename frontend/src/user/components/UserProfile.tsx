@@ -30,6 +30,7 @@ interface UserProfileProps {
   email: string
   password: string
   avatar: string
+  avatarChange: (userProfile: any) => void
 }
 
 const UserProfile: React.FC<UserProfileProps> = (props) => {
@@ -37,7 +38,7 @@ const UserProfile: React.FC<UserProfileProps> = (props) => {
   const auth = useContext(AuthContext)
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
   
-  const { userName, email, avatar } = props
+  const { userName, email, avatar, avatarChange } = props
   const [message, setMessage] = useState()
   
   const [formState, inputHandler, setFormData] = useForm({
@@ -73,6 +74,7 @@ const profileSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     } 
     )
     setMessage(response.message)
+    avatarChange(response.userProfile)
     // setIsLoading(false)
     // setError(null)
 
