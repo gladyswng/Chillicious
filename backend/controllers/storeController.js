@@ -412,7 +412,7 @@ exports.deleteStore = async (req, res, next) => {
 
         const updatedUser = await User.findByIdAndUpdate(req.user._id, {
           '$pull': { stores: req.params.id }
-        }).populate('reviews').populate('hearts', '-location -author -created')
+        }).populate('reviews').populate('hearts', '-author -created').populate('stores')
         
         res.send(updatedUser)
     } catch(e) {

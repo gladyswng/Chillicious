@@ -40,6 +40,7 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
   const [tabValue, setTabValue] = useState(0)
 // TODO - FIX ISSUE WITH NOT UNAUTHORIZED WHEN RELOAD PLUS REDIRECT IF RESTRICT ROUTE
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
+  console.log(loadedUser)
   
   useEffect(()=> {
     
@@ -69,12 +70,25 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
 
   const heartDeleteHandler = (storeId: string) => {
     // TODO - CHANG TYPE ANY 
-    setLoadedUser((prevUser: any) => prevUser.hearts.filter((store: any)=> store.id !== storeId))
+    setLoadedUser((prevUser: any) => {
+      console.log(storeId)
+      const user = {...prevUser}
+      const updatedHeartList = prevUser.hearts.filter((store: any)=> store.id !== storeId)
+      user.hearts = updatedHeartList
+      return user
+    })
   }
   const storeDeleteHandler = (storeId: string) => {
     // TODO - CHANG TYPE ANY 
-    console.log('tried to filter')
-    setLoadedUser((prevUser: any) => prevUser.stores.filter((store: any)=> store.id !== storeId))
+
+    setLoadedUser((prevUser: any) => {
+      const user = {...prevUser}
+      const updatedStoreList = prevUser.stores.filter((store: any)=> store.id !== storeId)
+      user.stores = updatedStoreList
+      return user
+    })
+    
+    
   }
 
   const changeReviewHandler = (updatedUser: any) => {
@@ -90,6 +104,14 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
     // })
     
   }
+
+  // const reviewDeleteHandler = (storeId: string) => {
+  //   setLoadedUser((prevUser: any) => {
+  //     const user = prevUser
+  //     const updatedReviewList = prevUser.reviews.filter
+  //   })
+
+  // } 
 
   const deleteReviewHandler =(deletedReview: any) => {
     console.log(deletedReview)
@@ -127,24 +149,24 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
 
       </TabPanel>
       <TabPanel value={tabValue} index={1} id='heartedTab'>
-        {loadedUser.hearts && <UserStores
+        <UserStores
         heartStores={true}
         storeList={loadedUser.hearts}
         onDelete={heartDeleteHandler}
-        />}
+        />
       </TabPanel>
       <TabPanel value={tabValue} index={2} id='reviewsTab'>
-        {loadedUser.reviews && <UserReviews 
+        <UserReviews 
         reviews={loadedUser.reviews} 
         onChange={changeReviewHandler} 
         onDelete={deleteReviewHandler}
-        userReview={true}/>}
+        userReview={true}/>
       </TabPanel>
       <TabPanel value={tabValue} index={3} id='storesTab'>
-      {loadedUser.stores && <UserStores
+      <UserStores
         storeList={loadedUser.stores}
         onDelete={storeDeleteHandler}
-        />}
+        />
       </TabPanel>
            
       </Paper>

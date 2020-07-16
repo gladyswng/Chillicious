@@ -81,10 +81,11 @@ interface StoreItemProps {
   }, 
   hearts: string[]
   onDelete: (store: string) => void
-  sendDeleteRequest: (storeId: string) => void
+  // sendDeleteRequest: (storeId: string) => void
 
 }
-const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, sendDeleteRequest}) => {
+const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts}) => {
+  console.log(store)
   const classes = useStyles()
   const auth = useContext(AuthContext)
   const history = useHistory()
@@ -136,7 +137,12 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, sendDelet
     try{
       e.preventDefault()
       // setModalOpen(false) 
-      sendDeleteRequest(store.id)
+  
+      await sendRequest(`/api/store/${store.id}`, 'DELETE', null , { 
+        Authorization: 'Bearer ' + auth.token
+      })
+      
+      // sendDeleteRequest(store.id)
       onDelete(store.id)
       
     } catch (e) {

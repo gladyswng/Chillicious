@@ -37,13 +37,19 @@ const Store: React.FC<StoreProps> = ({}) => {
 
   const { slug } = useParams()
 
-  const fetchStore = useCallback(async () => {
+  const fetchStore = useCallback(async (mounted) => {
     try {
-      const responseData = await sendRequest(`/api/store/${slug}`)
+      if (slug) {
 
-      const store = responseData
+        const store = await sendRequest(`/api/store/${slug}`)
 
-      setLoadedStore(store)
+        
+        if (mounted) {
+          setLoadedStore(store)
+        }
+  
+      }
+
   
     } catch (e) {
 
@@ -52,9 +58,12 @@ const Store: React.FC<StoreProps> = ({}) => {
 
 
   useEffect(()=> {
- 
+    let mounted = true
    
-    fetchStore()
+    fetchStore(mounted)
+    return () => {
+      mounted = false
+    }
   }, [fetchStore])
   // TODO - CHANGE TYPE
   const changeReviewHandler = (store: any) => {
@@ -63,9 +72,9 @@ const Store: React.FC<StoreProps> = ({}) => {
 
   
 
-  const reviewDeleteHandler = (store: any) => {
-    setLoadedStore(store)
-  }
+  // const reviewDeleteHandler = (store: any) => {
+  //   setLoadedStore(store)
+  // }
 
   
     return (
@@ -85,7 +94,7 @@ const Store: React.FC<StoreProps> = ({}) => {
           reviews={loadedStore.reviews} 
           storeId={loadedStore.id}
           onChange={changeReviewHandler}
-          onReviewDelete={reviewDeleteHandler}
+          onReviewDelete={changeReviewHandler}
           />
             
             

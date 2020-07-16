@@ -32,7 +32,12 @@ interface UserReviewsProps {
 const UserReviews: React.FC<UserReviewsProps> = ({ reviews, onChange, onDelete, userReview }) => {
 
   const [currentPage, setCurrentPage] = useState(1)
-   
+
+  if (!reviews || reviews.length === 0 ) {
+    return (
+      <Message message='No store found'/>
+    )
+  }
   const pageCount = Math.ceil(reviews.length / 5)
   const indexOfLastTodo = currentPage * 5
   const indexOfFirstTodo = indexOfLastTodo - 5
@@ -40,7 +45,10 @@ const UserReviews: React.FC<UserReviewsProps> = ({ reviews, onChange, onDelete, 
   
   const pageChangeHandler = (e: React.MouseEvent<HTMLElement, MouseEvent>, value: number) => {
     setCurrentPage(value)
+
  }
+
+
   const reviewList = currentTodos.map(review => {
     if (review.store=== null) {
       return 
@@ -60,9 +68,9 @@ const UserReviews: React.FC<UserReviewsProps> = ({ reviews, onChange, onDelete, 
     return (
       <>
       
-      {reviews.length === 0 && 
+      {/* {reviews.length === 0 && 
       <Message message='No reviews yet'/>
-      }
+      } */}
       {reviews && reviewList}
       {reviews.length > 0 && <Pagination 
           count={pageCount} 
