@@ -25,17 +25,17 @@ interface UserReviewsProps {
   }[]
   userReview: boolean
   onChange: (store: object) => void
-  onDelete: (review: object) => void
+  // onDelete: (review: object) => void
 }
  
 
-const UserReviews: React.FC<UserReviewsProps> = ({ reviews, onChange, onDelete, userReview }) => {
+const UserReviews: React.FC<UserReviewsProps> = ({ reviews, onChange, userReview }) => {
 
   const [currentPage, setCurrentPage] = useState(1)
 
   if (!reviews || reviews.length === 0 ) {
     return (
-      <Message message='No store found'/>
+      <Message message='No review found'/>
     )
   }
   const pageCount = Math.ceil(reviews.length / 5)
@@ -57,7 +57,7 @@ const UserReviews: React.FC<UserReviewsProps> = ({ reviews, onChange, onDelete, 
       <ReviewCard 
       storeName={review.store.name}
       review={review}
-      onReviewDelete={onDelete}
+      // onReviewDelete={onDelete}
       onChange={onChange}
       storeId={review.store.id} 
       userReview={userReview}

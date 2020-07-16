@@ -391,27 +391,29 @@ exports.deleteStore = async (req, res, next) => {
       // TODO - IF DELETED, DELTE USER'S STORE TOO - USE mongoose.startSession()
         // check if existed?
         const storeExisted = await Store.findById(req.params.id)
-        
+        if (!storeExisted) {
+          return next(
+            new HttpError('Could not find matched store.', 404)
+          )
+        } // error message not showing 
+
+        await Store.findByIdAndDelete(req.params.id)
+
+        const imagePath = storeExisted.image
+
+        fs.unlink(imagePath, err => {
+          console.log(err)
+        })
+        // const userReview = await Review.findOne({ author: req.user._id, store: req.params.id })
 
         if (storeExisted.reviews.length > 0) {
           await Review.deleteMany({ store: req.params.id })
         }
-        const store = await Store.findByIdAndDelete(req.params.id)
-       
-        const imagePath = storeExisted.image
-
-        if (!store) {
-          return next(
-            new HttpError('Could not find matched store.', 404)
-          )// error message not showing 
         
-        } 
-        fs.unlink(imagePath, err => {
-          console.log(err)
-        })
 
         const updatedUser = await User.findByIdAndUpdate(req.user._id, {
           '$pull': { stores: req.params.id }
+          // '$pull': { reviews: userReview._id }
         }).populate('reviews').populate('hearts', '-author -created').populate('stores')
         
         res.send(updatedUser)

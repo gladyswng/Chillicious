@@ -77,10 +77,10 @@ exports.updateReview = async (req, res, next) => {
             new HttpError('Could not find matched review.', 422)
           )
         }
-        const updatedUser = await (await User.findById(req.user._id).populate('reviews').populate('hearts', '-author -created')).populate('stores')
+        const updatedStore = await Review.calcAverageRatings(req.params.id)
+        const updatedUser = await User.findById(req.user._id).populate('reviews').populate('hearts', '-author -created').populate('stores')
         console.log(updatedUser)
 
-        const updatedStore = await Review.calcAverageRatings(req.params.id)
         console.log(updatedStore)
         res.send({ updatedStore, updatedUser })
         

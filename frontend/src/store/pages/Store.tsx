@@ -94,7 +94,7 @@ const Store: React.FC<StoreProps> = ({}) => {
           reviews={loadedStore.reviews} 
           storeId={loadedStore.id}
           onChange={changeReviewHandler}
-          onReviewDelete={changeReviewHandler}
+          // onReviewDelete={changeReviewHandler}
           />
             
             

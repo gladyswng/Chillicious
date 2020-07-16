@@ -73,50 +73,25 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
     setLoadedUser((prevUser: any) => {
       console.log(storeId)
       const user = {...prevUser}
-      const updatedHeartList = prevUser.hearts.filter((store: any)=> store.id !== storeId)
-      user.hearts = updatedHeartList
+      user.hearts = prevUser.hearts.filter((store: any)=> store.id !== storeId)
       return user
     })
   }
   const storeDeleteHandler = (storeId: string) => {
     // TODO - CHANG TYPE ANY 
-
     setLoadedUser((prevUser: any) => {
       const user = {...prevUser}
-      const updatedStoreList = prevUser.stores.filter((store: any)=> store.id !== storeId)
-      user.stores = updatedStoreList
+      user.stores = prevUser.stores.filter((store: any)=> store.id !== storeId)
       return user
     })
-    
-    
   }
 
   const changeReviewHandler = (updatedUser: any) => {
     console.log(updatedUser)
     setLoadedUser(updatedUser)
-
-    // setLoadedUser((prevUser: any) => {
-    //   const user = {...prevUser}
-    //  const reviewIndex = user.reviews.findIndex((review: any) => review._id === updateReview._id)
-    //  user.reviews[reviewIndex] = updateReview
-     
-    //   return user
-    // })
     
   }
 
-  // const reviewDeleteHandler = (storeId: string) => {
-  //   setLoadedUser((prevUser: any) => {
-  //     const user = prevUser
-  //     const updatedReviewList = prevUser.reviews.filter
-  //   })
-
-  // } 
-
-  const deleteReviewHandler =(deletedReview: any) => {
-    console.log(deletedReview)
-    setLoadedUser((prevUser: any) => prevUser.reviews.filter((review: any) => review._id === deletedReview._id))
-  }
 
   return (
     <>
@@ -159,7 +134,6 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
         <UserReviews 
         reviews={loadedUser.reviews} 
         onChange={changeReviewHandler} 
-        onDelete={deleteReviewHandler}
         userReview={true}/>
       </TabPanel>
       <TabPanel value={tabValue} index={3} id='storesTab'>

@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 
 import Modal from '../../shared/components/UIElements/Modal'
+import Message from '../../shared/components/UIElements/Message'
 import RatingBar from '../../shared/components/UIElements/RatingBar'
 import Link from '@material-ui/core/Link'
 import { useHttpClient } from '../../shared/hooks/http-hook'
@@ -220,6 +221,7 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts}) => {
 
             {store.author === auth.userId && 
             <Modal buttonStyle='outlined' buttonText='Delete' buttonColor="default" open={modalOpen} onOpen={handleModalOpen} onClose={handleModalClose}>
+              {error && <Message message={error}/>}
               <Typography>Are you sure?</Typography>
               <Button onClick={deleteHandler}>Yes</Button>
               <Button onClick={handleModalClose}>Cancel</Button>

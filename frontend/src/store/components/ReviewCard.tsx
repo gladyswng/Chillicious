@@ -1,6 +1,7 @@
 import React, { useState, useContext, useRef } from 'react'
 import moment from 'moment'
 import Modal from '../../shared/components/UIElements/Modal'
+import Message from '../../shared/components/UIElements/Message'
 import ReviewModal from './ReviewModal'
 import { AuthContext } from '../../shared/context/authContext'
 import { useHttpClient } from '../../shared/hooks/http-hook' 
@@ -54,7 +55,7 @@ interface ReviewCardProps {
  storeName?: string
  storeId?: string
  onChange: (store: object) => void
- onReviewDelete?: (review: object) => void
+//  onReviewDelete?: (review: object) => void
 }
 
 // TODO - ISSUE WITH HAVING TO TOUCH EVERY FIELD TO UPDATE STORE, NOT JUST ONE FIELD 
@@ -142,6 +143,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, stor
             <Modal buttonStyle='outlined' buttonText='Delete' buttonColor="default" 
             buttonSize="small"
             open={modalOpen} onOpen={handleModalOpen} onClose={handleModalClose}>
+              {error && <Message message={error}/>}
             <Typography>Are you sure?</Typography>
             <Button onClick={deleteHandler}>Yes</Button>
             <Button onClick={handleModalClose}>Cancel</Button>
