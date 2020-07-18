@@ -82,7 +82,7 @@ const Store: React.FC<StoreProps> = ({}) => {
       <>
         {error && <Message message={error}/>}   
         {!isLoading && loadedStore && (
-          <div style={{ marginTop: 80, width: '80%' }}>
+          <div style={{ marginTop: 20, width: '80%' }}>
           <div style={{width: '100%'}}>
             <img src={loadedStore.image? `/api/${loadedStore.image}`: 'https://images.unsplash.com/photo-1506368144590-cf6438f1cdb5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80'} className={classes.image}/>
           </div>    

@@ -13,7 +13,6 @@ router.get('/', storeController.getStores)
 router.post('/stores', storeController.getStores) 
 router.get('store/add', auth, storeController.addStore)
 router.get('/store/:slug', storeController.getStoreBySlug)
-// Render storeForm
 // Submit storeForm - when add''
 router.post('/store/add', auth, 
 fileUpload.single('image'),
@@ -38,6 +37,7 @@ router.get('/api/stores/checkedList', storeController.getStoresByCheckedList)
 router.post('/api/stores/:id/heart', auth, storeController.heartStore)
 router.get('/user/me/hearts', auth, storeController.getHearts)
 router.post('/search', storeController.searchStore)
+router.get('/top', storeController.getTopStores)
 
 
 

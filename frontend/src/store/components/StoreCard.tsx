@@ -174,6 +174,7 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts}) => {
             {store.description}
           </Typography>
           <Typography variant="subtitle1">{store.priceRange}</Typography>
+          <Typography>{store.address}</Typography>
          
          {store.tags[0] !== "" &&
           <div>

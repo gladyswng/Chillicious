@@ -6,8 +6,6 @@ const routes = require('./routes/index')
 const bodyParser = require('body-parser')
 const HttpError = require('./models/http-error')
 
-
-
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 

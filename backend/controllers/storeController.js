@@ -434,7 +434,6 @@ exports.searchStore = async (req, res, next) => {
     if (req.body.query.length > 0 ){
       storeResult = await Store
       .find({ name: textQuery }).limit(4)
-
     }
   //   .find({
   //     $text: {
@@ -472,8 +471,27 @@ exports.searchStore = async (req, res, next) => {
     // ]) 
     res.send(storeResult)
    } catch (e) {
+    return next(
+      new HttpError(`Could not find location`, 500)
+    )
+  }
+}
+
+
+exports.getTopStores = async (req, res, next) => {
+  try {
+    const topStores = await Store
+    .find()
+    .sort({'ratingsAverage': -1})
+    .limit(4)
+
+    res.send(topStores)
+    
+  } catch (e) {
     console.log(e)
   }
+
+
 }
 
 

@@ -161,7 +161,7 @@ exports.updateProfile = async (req, res, next) => {
 
         await req.user.save()
 
-        const user = await User.findById(req.user._id).populate()
+        // const user = await User.findById(req.user._id)
         res.send({ userProfile: req.user, message: 'Profile updated' })
 
     } catch (e) {
