@@ -22,8 +22,35 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
+interface Review {
+  author: {
+    name: string
+    avatar?: string
+    _id: string
+  };
+  rating: number
+  created: string
+  description: string
+  title: string
+  _id: string
+}
 
-
+interface Store {
+  id: string
+  name: string
+  description: string
+  rating: number
+  priceRange: string
+  image?: string[]
+  address?: string
+  tags?: string[]
+  location: {
+      coordinates: number[]
+  };
+  ratingsQuantity: number
+  ratingsAverage: number
+  reviews: Review[]
+}
 interface StoreProps {
 
 }
@@ -32,7 +59,7 @@ interface StoreProps {
 const Store: React.FC<StoreProps> = ({}) => {
   const classes = useStyles()
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
-  const [loadedStore, setLoadedStore] = useState<any>()
+  const [loadedStore, setLoadedStore] = useState<Store>()
  
 
   const { slug } = useParams()
@@ -66,7 +93,7 @@ const Store: React.FC<StoreProps> = ({}) => {
     }
   }, [fetchStore])
   // TODO - CHANGE TYPE
-  const changeReviewHandler = (store: any) => {
+  const changeReviewHandler = (store: Store) => {
     setLoadedStore(store)
   }
 

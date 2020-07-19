@@ -14,19 +14,13 @@ import Tab from '@material-ui/core/Tab';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import { stringify } from "querystring"
 
 interface UserPageProps {
 
 }
 
-interface User {
-  name: string
-  email: string
-  avatar: string
-  hearts: object[]
-  reviews: object[]
-  stores: object[]
-}
+
 interface Store {
   id: string,
   name: string,
@@ -39,6 +33,33 @@ interface Store {
   slug: string
   ratingsQuantity?: number
   ratingsAverage?: number
+}
+
+interface Review {
+  _id: string
+  rating: number
+  title: string
+  description: string
+  store: {
+    id: string
+    name: string
+  }
+  author: {
+    name: string
+    _id: string
+  };
+  avatar?: string
+  created: string
+  
+}
+
+interface User {
+  name: string
+  email: string
+  avatar: string
+  hearts: Store[]
+  reviews: Review[]
+  stores: Store[]
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -56,9 +77,9 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
 
   const classes = useStyles()
   const auth = useContext(AuthContext)
-  // TODO - CHANGE ANY
+  
 
-  const [loadedUser, setLoadedUser] = useState<any>()
+  const [loadedUser, setLoadedUser] = useState<User>()
   const [tabValue, setTabValue] = useState<number>(0)
   const [hearts, setHearts] = useState<string[]>()
 // TODO - FIX ISSUE WITH NOT UNAUTHORIZED WHEN RELOAD PLUS REDIRECT IF RESTRICT ROUTE
@@ -73,7 +94,7 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
       })
       clearError()
       const user = responseData
-      const heartList = user.hearts.map((store:any) => store.id)
+      const heartList = user.hearts.map((store: Store) => store.id)
       setLoadedUser(user)
       if (heartList) {
 
@@ -94,16 +115,6 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
     setTabValue(newTabValue);
   };
 
-  // const heartDeleteHandler = (storeId: string) => {
-  //   // TODO - CHANG TYPE ANY 
-  //   setLoadedUser((prevUser: any) => {
-  //     console.log(storeId)
-  //     const user = {...prevUser}
-  //     user.hearts = prevUser.hearts.filter((store: Store)=> store.id !== storeId)
-  //     return user
-  //   })
-  // }
-
   const heartChangeHandler = (storeId: string) => {
 
     if (hearts.includes(storeId)) {
@@ -114,21 +125,20 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
   }
 
   const storeDeleteHandler = (storeId: string) => {
-    // TODO - CHANG TYPE ANY 
-    setLoadedUser((prevUser: any) => {
+    setLoadedUser((prevUser) => {
       const user = {...prevUser}
       user.stores = prevUser.stores.filter((store: Store)=> store.id !== storeId)
       return user
     })
   }
 
-  const changeReviewHandler = (updatedUser: any) => {
+  const changeReviewHandler = (updatedUser: User) => {
     console.log(updatedUser)
     setLoadedUser(updatedUser)
     
   }
-  const onAvatarChange = (userProfile: any) => {
-    setLoadedUser((prevUser: any) => {
+  const onAvatarChange = (userProfile:{name: string, avatar: string, email: string}) => {
+    setLoadedUser((prevUser: User) => {
       const user = {...prevUser}
       user.name = userProfile.name,
       user.avatar = userProfile.avatar
@@ -166,7 +176,6 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
         <UserProfile 
         userName={loadedUser.name} 
         email={loadedUser.email} 
-        password={loadedUser.password} 
         avatar={loadedUser.avatar}
         avatarChange={onAvatarChange}
         />
@@ -175,11 +184,9 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
       </TabPanel>
       <TabPanel value={tabValue} index={1} id='heartedTab'>
         <UserStores
-        heartStores={true}
         storeList={loadedUser.hearts}
         hearts={hearts}
         onHeartChange={heartChangeHandler}
-        // onDelete={heartDeleteHandler}
         />
       </TabPanel>
       <TabPanel value={tabValue} index={2} id='reviewsTab'>

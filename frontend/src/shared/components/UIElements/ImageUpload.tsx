@@ -31,13 +31,19 @@ interface ImageUploadProps {
   id: string
   image: string
   imageStyle: string
-  onInput: (id: any, value: any, isValid: any) => void
+  onInput: (id: string, value: any, isValid: boolean) => void
 }
+
+interface HTMLInputEvent extends Event {
+  target: HTMLInputElement & EventTarget 
+  
+}
+
 
 const ImageUpload: React.FC<ImageUploadProps> = ({ id,  onInput, image, imageStyle }) => {
 
   const classes = useStyles()
-  const [file, setFile] = useState()
+  const [file, setFile] = useState<any>()
   // TODO -TYPE ANY
   const [previewUrl, setPreviewUrl] = useState<string>()
 
@@ -75,7 +81,7 @@ useEffect(() => {
     fileReader.readAsDataURL(file)
   }, [file])
 
-  const pickedHandler = (e:any) => {
+  const pickedHandler = (e?: HTMLInputEvent | React.ChangeEvent<HTMLInputElement>) => {
     let pickedFile
     let fileIsValid = isValid
     if (e.target.files && e.target.files.length === 1) {

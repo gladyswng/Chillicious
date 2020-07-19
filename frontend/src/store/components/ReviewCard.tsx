@@ -74,11 +74,11 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, stor
   const handleModalClose = () => {
     setModalOpen(false);
   };
-  const editHandler = async (e:any) => {
-    e.preventDefault()
-    // TODO - IF STOREPAGE REFRESH STORE, IF PROFILE PAGE DONT REFRESH
-    // history.push(`/store/edit/${store.id}`)
-  }
+  // const editHandler = async (e:any) => {
+  //   e.preventDefault()
+  //   // TODO - IF STOREPAGE REFRESH STORE, IF PROFILE PAGE DONT REFRESH
+  //   // history.push(`/store/edit/${store.id}`)
+  // }
 
   const deleteHandler = async () => {
   

@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
 interface UserProfileProps {
   userName: string
   email: string
-  password: string
   avatar: string
   avatarChange: (userProfile: any) => void
 }
