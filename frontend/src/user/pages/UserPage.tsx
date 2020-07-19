@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useContext } from "react"
+import React, { useState, useRef, useEffect, useContext, useCallback } from "react"
 import UserProfile from '../components/UserProfile'
 import UserReviews from '../components/UserReviews'
 import UserStores from '../components/UserStores'
@@ -27,6 +27,19 @@ interface User {
   reviews: object[]
   stores: object[]
 }
+interface Store {
+  id: string,
+  name: string,
+  priceRange: string
+  description: string,
+  image?: string,
+  tags: string[],
+  address: string
+  author: string,
+  slug: string
+  ratingsQuantity?: number
+  ratingsAverage?: number
+}
 
 const useStyles = makeStyles((theme) => ({
   pageRoot: {
@@ -46,51 +59,65 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
   // TODO - CHANGE ANY
 
   const [loadedUser, setLoadedUser] = useState<any>()
-  const [tabValue, setTabValue] = useState(0)
+  const [tabValue, setTabValue] = useState<number>(0)
+  const [hearts, setHearts] = useState<string[]>()
 // TODO - FIX ISSUE WITH NOT UNAUTHORIZED WHEN RELOAD PLUS REDIRECT IF RESTRICT ROUTE
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
   console.log(loadedUser)
+
+  const fetchUser = useCallback(async () => {
+    try {
+      const responseData = await sendRequest(`/api/user/me`, 'GET', null , { 
+        Authorization: 'Bearer ' + auth.token,
+        'Content-Type': 'application/json'
+      })
+      clearError()
+      const user = responseData
+      const heartList = user.hearts.map((store:any) => store.id)
+      setLoadedUser(user)
+      if (heartList) {
+
+        setHearts(heartList)
+      }
+
+    } catch (e) {
+
+    }
+  }, [auth.token])
   
   useEffect(()=> {
     
+    fetchUser()
+  }, [fetchUser])
 
-    const fetchStore = async () => {
-      try {
-        const responseData = await sendRequest(`/api/user/me`, 'GET', null , { 
-          Authorization: 'Bearer ' + auth.token,
-          'Content-Type': 'application/json'
-        })
-        clearError()
-        const user = responseData
-
-        setLoadedUser(user)
-
-      } catch (e) {
-
-      }
-    }
-    
-    fetchStore()
-  }, [ sendRequest, auth.token ])
-
-  const handleTabChange = (event: React.ChangeEvent<{}>, newTabValue: any) => {
+  const handleTabChange = (event: React.ChangeEvent<{}>, newTabValue: number) => {
     setTabValue(newTabValue);
   };
 
-  const heartDeleteHandler = (storeId: string) => {
-    // TODO - CHANG TYPE ANY 
-    setLoadedUser((prevUser: any) => {
-      console.log(storeId)
-      const user = {...prevUser}
-      user.hearts = prevUser.hearts.filter((store: any)=> store.id !== storeId)
-      return user
-    })
+  // const heartDeleteHandler = (storeId: string) => {
+  //   // TODO - CHANG TYPE ANY 
+  //   setLoadedUser((prevUser: any) => {
+  //     console.log(storeId)
+  //     const user = {...prevUser}
+  //     user.hearts = prevUser.hearts.filter((store: Store)=> store.id !== storeId)
+  //     return user
+  //   })
+  // }
+
+  const heartChangeHandler = (storeId: string) => {
+
+    if (hearts.includes(storeId)) {
+      setHearts((prevHearts)=> prevHearts.filter(store => store!== storeId))
+    } else {
+      setHearts([...hearts, storeId])
+    }
   }
+
   const storeDeleteHandler = (storeId: string) => {
     // TODO - CHANG TYPE ANY 
     setLoadedUser((prevUser: any) => {
       const user = {...prevUser}
-      user.stores = prevUser.stores.filter((store: any)=> store.id !== storeId)
+      user.stores = prevUser.stores.filter((store: Store)=> store.id !== storeId)
       return user
     })
   }
@@ -150,7 +177,9 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
         <UserStores
         heartStores={true}
         storeList={loadedUser.hearts}
-        onDelete={heartDeleteHandler}
+        hearts={hearts}
+        onHeartChange={heartChangeHandler}
+        // onDelete={heartDeleteHandler}
         />
       </TabPanel>
       <TabPanel value={tabValue} index={2} id='reviewsTab'>

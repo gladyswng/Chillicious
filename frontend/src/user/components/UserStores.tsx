@@ -24,18 +24,20 @@ interface Store {
 
 interface UserStoresProps {
   storeList: Store[]
-  onDelete: (store: string)=> void
+  onDelete?: (store: string)=> void
   heartStores?: boolean
+  hearts?: string[]
+  onHeartChange?: (storeId: string) => void
 }
 
 
-const UserStores: React.FC<UserStoresProps> = ({storeList, onDelete, heartStores }) => {
+const UserStores: React.FC<UserStoresProps> = ({storeList, onDelete, heartStores, hearts, onHeartChange }) => {
 // TODO - REMOVE UNHEARTED STORES AT ONCE??? STATE?
 console.log(storeList)
-  let heartedList 
-  if (heartStores) {
-    heartedList = storeList.map(store => store.id)
-  }
+  // let heartedList 
+  // if (heartStores) {
+  //   heartedList = storeList.map(store => store.id)
+  // }
 
   if (!storeList || storeList.length === 0) {
     return (
@@ -47,7 +49,7 @@ console.log(storeList)
       <div style={{ padding: 8 , width: '80%'}}>
 
         {storeList &&
-          <StoreList storeList={storeList} onDelete={onDelete} hearts={heartedList}/>}
+          <StoreList storeList={storeList} onDelete={onDelete} hearts={hearts} onHeartChange={onHeartChange}/>}
       </div>
 
   )
