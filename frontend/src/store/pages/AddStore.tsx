@@ -78,7 +78,8 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
           const formData = new FormData()
           formData.append('name', inputs.storeName.value);
           formData.append('description', inputs.description.value)
-          formData.append('address', inputs.address.value)
+          formData.append('address', 
+          inputs.address.value.replace(/(^\w{1})|(\s{1}\w{1})/g, (match :string) => match.toUpperCase()))
           formData.append('priceRange', inputs.priceRange.value)
           formData.append('image', inputs.image.value)
           for (let i = 0; i < otherData.tags.length; i++) {

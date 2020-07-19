@@ -189,7 +189,7 @@ exports.createStore = async (req, res, next) => {
         coordinates.lat 
       ]
       },
-    address: address.toLowerCase(),
+    address: address,
     //image: '/api/' + req.file. 
     // We can store the full url here but we want to prepend it on the frontend so we only save the file path here on server
     image: req.file.path,

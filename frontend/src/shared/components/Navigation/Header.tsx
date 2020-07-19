@@ -104,7 +104,7 @@ const Header: React.FC = () => {
             <StoreSearchBar />
             {/* <SearchBar onChange={searchInputChangeHandler}/> */}
 
-            <div>
+            {/* <div>
 
               <Button className={classes.iconButtonLabel} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
                 <Hidden smDown>
@@ -124,13 +124,9 @@ const Header: React.FC = () => {
 
                 <MenuItem>Chinese</MenuItem>
                 <MenuItem>Japanese</MenuItem>
-                <MenuItem>Thai</MenuItem>
-                <MenuItem>Indian</MenuItem>
-                <MenuItem>Italian</MenuItem>
-                <MenuItem>Mexican</MenuItem>
 
               </Menu>
-            </div>
+            </div> */}
           </div>
 
 

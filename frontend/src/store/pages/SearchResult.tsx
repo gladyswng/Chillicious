@@ -52,19 +52,18 @@ const SearchResult: React.FC<SearchResultProps> = () => {
   //     console.log("Geolocation is not supported by this browser.")
   //   }
   // }
-
+  
 
   const fetchStores = useCallback(async() => {
-    console.log('fetch store')
-    try { 
-      const responseData = await sendRequest('/api/stores', 'POST', JSON.stringify({ location }), { 
-        'Content-Type': 'application/json'
-      })
-      setLoadedStores(responseData)
-      setFetchedStores(responseData)
-    } catch (e) {
-
-    }
+     try { 
+       const responseData = await sendRequest('/api/stores', 'POST', JSON.stringify({ location }), { 
+         'Content-Type': 'application/json'
+       })
+       setLoadedStores(responseData)
+       setFetchedStores(responseData)
+     } catch (e) {
+ 
+     }
   }, [])
 
       
@@ -110,7 +109,9 @@ const SearchResult: React.FC<SearchResultProps> = () => {
 
     //   }
     // }
+    if (location && location !=='undefined') {
     fetchStores()
+    }
     if (auth.token) {
 
       fetchHearts() //??? right place to put?
@@ -165,15 +166,16 @@ const SearchResult: React.FC<SearchResultProps> = () => {
   return (
   
         <div className={classes.root}>
+
           {isLoading && (
           <div>
             <CircularProgress />
           </div>
-        )}
-
+          )}
             <Typography variant='h4' style={{ textAlign: 'center' }}>Search Results</Typography>
-
-            {!isLoading && loadedStores && (
+            {location==='undefined' && 
+          <Message message="Invalid Address"/>}
+            {location && !isLoading && loadedStores && (
           <div style={{display: 'flex', 
           justifyContent: 'flex-start', alignItems: 'flex-start'}}>
 
@@ -182,15 +184,16 @@ const SearchResult: React.FC<SearchResultProps> = () => {
 
             </div>
             {error && <Message message={error}/>}
+
             {noStoreMessage()}
-              {loadedStores.length>0 &&
+            {loadedStores.length>0 &&
               <div style={{ padding: 8 , width: '80%'}}>
                 <StoreList 
                 storeList={loadedStores} onDelete={storeDeleteHandler}
                 hearts={hearts}
                 />
               </div>
-              }
+            }
 
           </div>
           )}

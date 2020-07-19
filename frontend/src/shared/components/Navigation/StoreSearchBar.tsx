@@ -25,6 +25,7 @@ const StoreSearchBar: React.FC<StoreSearchBarProps> = ({}) => {
   const {isLoading, error, sendRequest, clearError} = useHttpClient() 
   console.log(inputValue)
   console.log(options)
+  
 
   const fetchStoreSuggestion = useCallback(async (active) => {
     try {
@@ -79,7 +80,7 @@ const StoreSearchBar: React.FC<StoreSearchBarProps> = ({}) => {
     <Autocomplete
       id="store-search"
     
-      style={{ width: 250 }}
+      style={{ width: 300 }}
       size="small"
       freeSolo
       // onOpen={() => {
@@ -89,7 +90,7 @@ const StoreSearchBar: React.FC<StoreSearchBarProps> = ({}) => {
       //   setOpen(false);
       // }}
       // getOptionSelected={(option, value) => option.name === value.name}
-      getOptionLabel={(option) => option.name}
+      getOptionLabel={(option) => option? option.name : null}
       
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
