@@ -21,6 +21,20 @@ const useStyles = makeStyles((theme) => ({
 
 }))
 
+interface Store {
+  id: string
+  name: string
+  description: string
+  image?: string
+  tags: string[]
+  priceRange: string
+  address: string
+  author: string
+  slug: string
+  ratingsQuantity?: number
+  ratingsAverage?: number
+}
+
 interface SearchResultProps {
 
 }
@@ -36,7 +50,7 @@ const SearchResult: React.FC<SearchResultProps> = () => {
   const [loadedStores, setLoadedStores] = useState<any>()
   const [fetchedStores, setFetchedStores] = useState<any>()
   const [checkedList, setCheckedList] = useState([])
-  const [hearts, setHearts] = useState()
+  const [hearts, setHearts] = useState<string[]>()
 
   console.log(checkedList) // 7 times??
   // const getUserLocation = async () => { 
@@ -121,8 +135,19 @@ const SearchResult: React.FC<SearchResultProps> = () => {
 
   const storeDeleteHandler = (storeId: string) => {
     // TODO - CHANG TYPE ANY 
-    setLoadedStores((prevStores: any) => prevStores.filter((store: any)=> store.id !== storeId))
+    setLoadedStores((prevStores: any) => prevStores.filter((store: Store)=> store.id !== storeId))
   }
+
+
+  const heartChangeHandler = (storeId: string) => {
+
+    if (hearts.includes(storeId)) {
+      setHearts((prevHearts)=> prevHearts.filter(store => store!== storeId))
+    } else {
+      setHearts([...hearts, storeId])
+    }
+  }
+ 
   const checkboxHandler = (checkboxId: string, checked: boolean) => {
  
       if (checked) {
@@ -189,7 +214,9 @@ const SearchResult: React.FC<SearchResultProps> = () => {
             {loadedStores.length>0 &&
               <div style={{ padding: 8 , width: '80%'}}>
                 <StoreList 
-                storeList={loadedStores} onDelete={storeDeleteHandler}
+                storeList={loadedStores} 
+                onDelete={storeDeleteHandler}
+                onHeartChange={heartChangeHandler}
                 hearts={hearts}
                 />
               </div>

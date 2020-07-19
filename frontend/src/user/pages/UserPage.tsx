@@ -19,6 +19,15 @@ interface UserPageProps {
 
 }
 
+interface User {
+  name: string
+  email: string
+  avatar: string
+  hearts: object[]
+  reviews: object[]
+  stores: object[]
+}
+
 const useStyles = makeStyles((theme) => ({
   pageRoot: {
     
@@ -64,7 +73,7 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
     fetchStore()
   }, [ sendRequest, auth.token ])
 
-  const handleTabChange = (event: any, newTabValue: any) => {
+  const handleTabChange = (event: React.ChangeEvent<{}>, newTabValue: any) => {
     setTabValue(newTabValue);
   };
 

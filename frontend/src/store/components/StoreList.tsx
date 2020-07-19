@@ -21,8 +21,8 @@ interface Store {
   address: string
   author: string
   slug: string
-  ratingsQuantity?: number;
-  ratingsAverage?: number;
+  ratingsQuantity?: number
+  ratingsAverage?: number
 
 }
 
@@ -30,6 +30,7 @@ interface StoreListProps {
   storeList: Store[]
   hearts?: string[]
   onDelete: (store: string)=> void
+  onHeartChange?: (storeId: string)=> void
 
 }
 
@@ -135,6 +136,7 @@ const StoreList: React.FC<StoreListProps> = (props) => {
             key={store.id} 
             store={store} 
             hearts={props.hearts}
+            onHeartChange={props.onHeartChange}
             onDelete={props.onDelete}
  
             />

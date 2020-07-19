@@ -108,14 +108,16 @@ const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId, onChange })
           )}
 
           {!auth.isLoggedIn && 
-          
-            <LoginModal buttonText='Login to review' size='small'/>
+            <div style={{ paddingBottom: 10 }}>
+
+              <LoginModal buttonText='Login to review' size='small'/>
+            </div>
           }
 
           
         </div>
 
-        <div className={classes.searchFieldContainer}>
+        {/* <div className={classes.searchFieldContainer}>
 
           <Paper variant="outlined" style={{ width: '50%', height: 28 }}>
             <SearchBar />
@@ -123,7 +125,7 @@ const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId, onChange })
 
         
         <SortByForm sortBy={sortBy} changeHandler={handleChange}/>
-        </div>
+        </div> */}
         
 
         {reviews.length===0? <Typography variant="h6" style={{ padding: 12 }}>No reviews yet :(</Typography> : reviewList}

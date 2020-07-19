@@ -65,27 +65,29 @@ const useStyles = makeStyles({
   }
 });
 
+interface Store {
+  id: string,
+  name: string,
+  priceRange: string
+  description: string,
+  image?: string,
+  tags: string[],
+  address: string
+  author: string,
+  slug: string
+  ratingsQuantity?: number
+  ratingsAverage?: number
+}
 
 interface StoreItemProps {
-  store: {
-    id: string,
-    name: string,
-    priceRange: string
-    description: string,
-    image?: string,
-    tags: string[],
-    address: string
-    author: string,
-    slug: string
-    ratingsQuantity?: number
-    ratingsAverage?: number
-  }, 
+  store: Store, 
   hearts: string[]
   onDelete: (store: string) => void
+  onHeartChange?: (storeId: string) => void
   // sendDeleteRequest: (storeId: string) => void
 
 }
-const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts}) => {
+const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, onHeartChange}) => {
   console.log(store)
   const classes = useStyles()
   const auth = useContext(AuthContext)
@@ -120,6 +122,8 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts}) => {
       'Content-Type': 'application/json'
     })
     toggleHeart()
+    onHeartChange(store.id)
+
     
   }
 
