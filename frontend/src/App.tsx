@@ -19,6 +19,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
+import { Typography } from "@material-ui/core"
 
 const theme = createMuiTheme({
     spacing: 4,
@@ -29,8 +30,25 @@ const theme = createMuiTheme({
         secondary: {
             main: '#000000'
         }
-    }
+    },
+    // overrides: {
+    //   MuiTypography:{
+    //     h3: {
+    //       [breakpoints.down('xs')]: {
+    //         fontSize: '2rem',
+    //       }
+    //     }
+    //   }
+    // }
 })
+
+// theme.typography.h4 = {
+//   fontSize: '4rem',
+//   [theme.breakpoints.down('xs')]: {
+//     fontSize: '2rem',
+//   }
+  
+// }
 
 const useStyles = makeStyles((theme) => ({
   appRoot: {

@@ -8,6 +8,16 @@ import { useHttpClient } from '../../../shared/hooks/http-hook'
 import SearchIcon from '@material-ui/icons/Search'
 import { Typography } from '@material-ui/core'
 import Link from '@material-ui/core/Link'
+import { makeStyles } from '@material-ui/core/styles';
+const useStyles = makeStyles((theme) => ({
+  autoCompleteBar: {
+    width: 300,
+    [theme.breakpoints.down('xs')]: {
+      width: 200
+    }
+  }
+
+}))
 
 interface StoreSearchBarProps {
 
@@ -17,6 +27,7 @@ interface StoreSearchBarProps {
 
 
 const StoreSearchBar: React.FC<StoreSearchBarProps> = ({}) => {
+  const classes = useStyles();
   const history = useHistory()
   // const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
@@ -80,7 +91,7 @@ const StoreSearchBar: React.FC<StoreSearchBarProps> = ({}) => {
     <Autocomplete
       id="store-search"
     
-      style={{ width: 300 }}
+      className={classes.autoCompleteBar}
       size="small"
       freeSolo
       // onOpen={() => {

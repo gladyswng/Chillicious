@@ -43,9 +43,13 @@ const useStyles = makeStyles((theme) => ({
   },
 
   logo: {
-    width: '120px',
-    height: '60px',
-    paddingRight: theme.spacing(3)
+    width: 120,
+    height: 60,
+    paddingRight: theme.spacing(3),
+    [theme.breakpoints.down('xs')]: {
+      width: 90,
+      height: 45
+    }
   },
   
   menu: {

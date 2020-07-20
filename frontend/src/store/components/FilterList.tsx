@@ -3,6 +3,7 @@ import CheckBox from '../../shared/components/UIElements/CheckBox'
 
 
 import { makeStyles } from '@material-ui/core/styles';
+import Hidden from '@material-ui/core/Hidden';
 import Divider from '@material-ui/core/Divider';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -17,7 +18,10 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column', 
     justifyContent: 'flex-start',
-    padding: 16
+    padding: 16,
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'row'
+    }
 
   },
 
@@ -122,8 +126,8 @@ const FilterList: React.FC<FilterListProps> = ({ onCheckboxChange }) => {
 
       {priceRange.map((price: keyof IState) => <CheckBox checked={checkbox[price]} item={price} handleChange={handleChange} key={price}/>)}
 
-        
-      <Divider variant="middle" className={classes.divider}/>
+    
+      <Divider variant="middle" className={classes.divider }/>
 
       <Typography variant="body1" className={classes.titleFont}>Category</Typography>
 

@@ -75,9 +75,9 @@ const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId, onChange })
   const indexOfFirstTodo = indexOfLastTodo - 5
   const currentTodos = reviews.slice(indexOfFirstTodo, indexOfLastTodo)
 
-  const handleChange = (event: any) => {
-    setSortBy(event.target.value);
-  };
+  // const handleChange = (event: any) => {
+  //   setSortBy(event.target.value);
+  // };
   const pageChangeHandler = (e: React.MouseEvent<HTMLElement, MouseEvent>, value: number) => {
     setCurrentPage(value)
  }

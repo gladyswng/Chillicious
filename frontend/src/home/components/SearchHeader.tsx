@@ -54,7 +54,15 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'flex-start'
+  },
+  banner: {
+    color: "white", 
+    marginRight: "5px",
+    [theme.breakpoints.down('xs')]: {
+      fontSize: 30
+    }
   }
+  
 }));
 
 interface SearchHeaderProps {
@@ -68,7 +76,7 @@ const SearchHeader: React.FC<SearchHeaderProps> = ({}) => {
         <div className={classes.container}>
             <div className={classes.searchWrapper}>
               <div style={{display: "flex", alignItems: "baseline"}}>
-                <Typography variant="h4" gutterBottom style={{color: "white", marginRight: "5px"}}>
+                <Typography variant="h4" gutterBottom className={classes.banner}>
                   Find out what's hot 
                 <WhatshotIcon style={{color: "white", marginLeft: 4 }}/>
                 </Typography>

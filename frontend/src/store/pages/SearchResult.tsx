@@ -16,6 +16,31 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: '80px',
     width: '90%'
   },
+  storePageContent : {
+    display: 'flex', 
+    justifyContent: 'flex-start', 
+    alignItems: 'flex-start',
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'column',
+
+    }
+  },
+  filterList: {
+    padding: 8, 
+    width: '20%',
+    [theme.breakpoints.down('xs')]: {
+      width: '100%'
+
+    }
+  },
+  storeList: {
+    padding: 8 , 
+    width: '80%',
+    [theme.breakpoints.down('xs')]: {
+      width: '100%'
+
+    }
+  }
 
 
 
@@ -45,10 +70,9 @@ const SearchResult: React.FC<SearchResultProps> = () => {
   const { location } = useParams()
   console.log(location)
   const {isLoading, error, sendRequest, clearError} = useHttpClient() 
-  // TODO - FIX TYPE ANY
-
-  const [loadedStores, setLoadedStores] = useState<any>()
-  const [fetchedStores, setFetchedStores] = useState<any>()
+ 
+  const [loadedStores, setLoadedStores] = useState<Store[]>()
+  const [fetchedStores, setFetchedStores] = useState<Store[]>()
   const [checkedList, setCheckedList] = useState([])
   const [hearts, setHearts] = useState<string[]>()
 
@@ -134,8 +158,7 @@ const SearchResult: React.FC<SearchResultProps> = () => {
   // TODO - CHANGE AUTH TOKEN?
 
   const storeDeleteHandler = (storeId: string) => {
-    // TODO - CHANG TYPE ANY 
-    setLoadedStores((prevStores: any) => prevStores.filter((store: Store)=> store.id !== storeId))
+    setLoadedStores((prevStores) => prevStores.filter((store: Store)=> store.id !== storeId))
   }
 
 
@@ -166,7 +189,7 @@ const SearchResult: React.FC<SearchResultProps> = () => {
       const levels = checkedList.filter(level => !isNaN(level))
       const prices = checkedList.filter(price => price.startsWith('$'))
 
-      setLoadedStores( fetchedStores.filter((store:any) => tags.every(tag => store.tags.includes(tag)) 
+      setLoadedStores( fetchedStores.filter((store) => tags.every(tag => store.tags.includes(tag)) 
       && (prices.length == 0 || prices.includes(store.priceRange)) 
       && (levels.length == 0 || (store.ratingsAverage 
       && levels.includes(store.ratingsAverage.toString()))))
@@ -201,10 +224,9 @@ const SearchResult: React.FC<SearchResultProps> = () => {
             {location==='undefined' && 
           <Message message="Invalid Address"/>}
             {location && !isLoading && loadedStores && (
-          <div style={{display: 'flex', 
-          justifyContent: 'flex-start', alignItems: 'flex-start'}}>
+          <div className={classes.storePageContent}>
 
-            <div style={{ padding: 8, width: '20%' }}>
+            <div className={classes.filterList}>
               <FilterList onCheckboxChange={checkboxHandler}/>
 
             </div>
@@ -212,7 +234,7 @@ const SearchResult: React.FC<SearchResultProps> = () => {
 
             {noStoreMessage()}
             {loadedStores.length>0 &&
-              <div style={{ padding: 8 , width: '80%'}}>
+              <div className={classes.storeList}>
                 <StoreList 
                 storeList={loadedStores} 
                 onDelete={storeDeleteHandler}

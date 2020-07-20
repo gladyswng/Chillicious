@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+import Chip from '@material-ui/core/Chip'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -21,14 +21,11 @@ interface CusineListProps {
 
 const CusineList: React.FC<CusineListProps> = ({}) => {
   const classes = useStyles()
-  const cusineList = ['chinese', 'indian', 'mexican', 'thai', 'sri lankan']
+  const cusineList = ['chinese', 'indian', 'mexican', 'korean']
 
-const cusineItems = cusineList.map((cusine, index) => {
+const cusineItems = cusineList.map((cusine) => {
     return(
-      <Button variant="contained" size="medium" color="primary" className={classes.margin} key={index}>
-        {cusine}
-        
-      </Button>
+      <Chip color="primary" className={classes.margin} label={cusine} key={cusine} />
 
     )
   })

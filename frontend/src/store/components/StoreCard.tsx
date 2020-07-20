@@ -22,12 +22,16 @@ import Chip from '@material-ui/core/Chip'
 import { Box } from '@material-ui/core';
 
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   storeCardRoot: {
     minWidth: '65%',
     display: 'flex',
     marginBottom: 8,
-    width: '100%'
+    width: '100%',
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'column',
+
+    }
   },
   cardMedia: {
     height: 200, 
@@ -36,14 +40,27 @@ const useStyles = makeStyles({
   cardContent: {
     display: 'flex', 
     justifyContent: 'space-between', 
-    width: '100%'
+    width: '100%',
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'column'
+    }
   },
   cardButtons: {
     display: 'flex', 
     flexDirection: 'column', 
     height: '50%', 
     justifyContent: 'space-between',
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'row',
+      width: '80%'
+    }
 
+
+  },
+  heart: {
+    [theme.breakpoints.down('xs')]: {
+      marginLeft: 250
+    }
   },
   title: {
     fontSize: 14,
@@ -57,13 +74,19 @@ const useStyles = makeStyles({
     marginBottom: 4
 
   },
+  chipList: {
+    width: 300
+    // [theme.breakpoints.down('xs')]: {
+    //   flexDirection: 'column',
+    // }
+  },
   reviewNumber: {
     fontWeight: 'bold', 
     marginLeft: 6, 
     display: 'inline-block', 
     verticalAlign: 'text-bottom'
   }
-});
+}))
 
 interface Store {
   id: string,
@@ -181,7 +204,7 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, onHeartCh
           <Typography>{store.address}</Typography>
          
          {store.tags[0] !== "" &&
-          <div>
+          <div className={classes.chipList}>
 
             {store.tags.map(tag => {
               return <Chip 
@@ -207,12 +230,11 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, onHeartCh
 
         </div>
 
-        <div >
+        <div>
           {hearts && 
             <IconButton aria-label="add to hearts"
             onClick={heartHandler}
             >
-              
               <FavoriteIcon color={hearted? "primary" : "inherit"}/>
             </IconButton>
           }
@@ -221,7 +243,7 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, onHeartCh
           <div className={classes.cardButtons}>
 
           {store.author === auth.userId &&
-            <Button variant="outlined" color="primary" onClick={editHandler}>Edit</Button>
+            <Button variant="outlined" color="primary" onClick={editHandler} style={{ width: 83 }}>Edit</Button>
             } 
 
             {store.author === auth.userId && 

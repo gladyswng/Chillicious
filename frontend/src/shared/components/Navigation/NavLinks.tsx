@@ -15,6 +15,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
 import IconButton from '@material-ui/core/IconButton';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import MenuIcon from '@material-ui/icons/Menu'
 
 
@@ -84,7 +85,9 @@ const NavLinks: React.FC<NavLinksProps> = ({}) => {
         )}
 
         {auth.isLoggedIn && 
+          <Hidden smDown>
           <Button onClick={auth.logout}>Logout</Button>
+          </Hidden>
         }
 
         {auth.isLoggedIn && (
