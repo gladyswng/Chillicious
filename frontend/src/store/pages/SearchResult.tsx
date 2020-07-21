@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'flex-start',
     [theme.breakpoints.down('xs')]: {
       flexDirection: 'column',
+      alignItems:'center'
 
     }
   },
@@ -230,19 +231,20 @@ const SearchResult: React.FC<SearchResultProps> = () => {
               <FilterList onCheckboxChange={checkboxHandler}/>
 
             </div>
-            {error && <Message message={error}/>}
-
-            {noStoreMessage()}
-            {loadedStores.length>0 &&
+            
               <div className={classes.storeList}>
+              {error && <Message message={error}/>}
+
+              {noStoreMessage()}  
+                {loadedStores.length>0 &&
                 <StoreList 
                 storeList={loadedStores} 
                 onDelete={storeDeleteHandler}
                 onHeartChange={heartChangeHandler}
                 hearts={hearts}
                 />
+                }
               </div>
-            }
 
           </div>
           )}

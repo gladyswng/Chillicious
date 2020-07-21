@@ -25,11 +25,19 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
     width: 400,
+    
     backgroundColor: theme.palette.background.paper,
     border: 0,
     outline: 0,
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
+    [theme.breakpoints.down('xs')]: {
+      width: 300,
+      top: '50%',
+      left: '58%',
+      transform: 'translate(-50%, -58%)'
+
+    }
 
   },
 

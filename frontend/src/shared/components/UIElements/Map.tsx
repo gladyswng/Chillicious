@@ -15,6 +15,13 @@ const useStyles = makeStyles((theme) => ({
   map: {
     height: '100%',
     width: '100%'
+  },
+  mapWrapper: {
+    width: '40%', 
+    height: '100%',
+    [theme.breakpoints.down('xs')]: {
+      width: '100%'
+    }
   }
 
 }));
@@ -56,7 +63,7 @@ const Map: React.FC<MapProps> = (props) => {
 
   
     return (
-      <div style={{ width: '50%', height: '100%' }}>
+      <div className={classes.mapWrapper}>
 
         {scriptLoad.scriptLoaded && !scriptLoad.scriptLoadError && (
         <div 

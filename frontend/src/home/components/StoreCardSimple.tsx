@@ -11,17 +11,21 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   cardRoot: {
     maxWidth: 345,
     height: '100%',
-    padding: 5
+    padding: 5,
+    [theme.breakpoints.down('xs')]: {
+      maxWidth: '100%'
+
+    }
   },
   chip: {
     marginRight: 4,
     marginBottom: 4
   }
-});
+}))
 
 
 
@@ -68,7 +72,7 @@ const StoreCard: React.FC<StoreCardProps> = ({store}) => {
         
       </CardActionArea>
       {store.tags[0] !== "" &&
-        <div>
+        <div style={{ padding: '10px 10px 0 10px' }}>
 
           {store.tags.map(tag => {
             return <Chip 

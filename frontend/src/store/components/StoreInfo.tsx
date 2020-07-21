@@ -42,6 +42,27 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 6, 
     display: 'inline-block', 
     verticalAlign: 'text-bottom'
+  },
+  storeInfoContent: {
+    padding: 12, 
+    height: 250, 
+    display: 'flex', 
+    justifyContent: 'space-between',
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'column',
+      height: 400 
+    }
+    
+  },
+  wordBreak: {
+    wordBreak: 'break-all'
+  },
+  textSection: {
+    width: '60%',
+    paddingRight: 10,
+    [theme.breakpoints.down('xs')]: {
+      width: '100%'
+    },
   }
 }));
 
@@ -84,11 +105,10 @@ const StoreInfo: React.FC<StoreInfoProps> = (props) => {
     return <Chip label={tag} color="primary" key={tag}/>
   })
     return (
-      <Paper variant="outlined" style={{ padding: 12, height: 160, display: 'flex', justifyContent: 'space-between' }}>
-        <div>
-        <Typography variant="h5">{name}</Typography>
-        <Typography >{description}</Typography>
-
+      <Paper variant="outlined" className={classes.storeInfoContent}>
+        <div className={classes.textSection}>
+        <Typography variant="h5" className={classes.wordBreak}>{name}</Typography>
+        <Typography className={classes.wordBreak} style={{ maxHeight: 70, overflow: 'scroll'}}>{description}</Typography>
 
 
           <Box component="fieldset" mb={3} borderColor="transparent" style={{ margin: 0, padding: 0, display:'inline-block' }}>

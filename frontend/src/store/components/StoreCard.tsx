@@ -85,6 +85,10 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 6, 
     display: 'inline-block', 
     verticalAlign: 'text-bottom'
+  },
+  wordBreak: {
+    wordWrap: 'break-word', 
+    wordBreak: 'break-all' 
   }
 }))
 
@@ -187,7 +191,7 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, onHeartCh
 
       <CardContent  className={classes.cardContent}>
         <div>
-          <Typography variant="h5" component="h3">
+          <Typography variant="h5" component="h3" className={classes.wordBreak}>
             {store.name}
           </Typography>
 
@@ -197,7 +201,7 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, onHeartCh
             <Typography variant="body1" component="span" className={classes.reviewNumber}>{ store.ratingsQuantity || "0"} {store.ratingsQuantity>1? 'Reviews' : 'Review'}</Typography>
           </Box>
 
-          <Typography variant="body2" component="p" style={{ wordBreak: 'break-all' }}>
+          <Typography variant="body2" component="p" className={classes.wordBreak}>
             {store.description}
           </Typography>
           <Typography variant="subtitle1">{store.priceRange}</Typography>

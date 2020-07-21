@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
   reviewTitle: {
     display: 'flex',
     justifyContent: 'space-between',
+    paddingBottom: 10
   
   },
   searchFieldContainer: { 

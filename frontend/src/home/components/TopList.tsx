@@ -30,7 +30,7 @@ const TopList: React.FC<TopListProps> = ({ topList }) => {
 
   const storeList = topList.map((store, index) => {
     return (
-      <Grid item sm={6} md={3} key={index}>
+      <Grid item sm={6} md={3} key={index} style={{ width: '100%' }}>
         <StoreCardSimple store={store}/>
 
       </Grid>
@@ -42,12 +42,12 @@ const TopList: React.FC<TopListProps> = ({ topList }) => {
     return (
       <>
       {topList && 
-      <div style={{paddingTop: '30px', width: '80%', height: 450 }}> 
+      <div style={{paddingTop: 30, paddingBottom: 30, width: '80%', height: 'auto' }}> 
           <Typography variant="h5" >
             Hot List <WhatshotIcon />
           </Typography>
         <div className={classes.root}>
-          <Grid container spacing={4}>
+          <Grid container spacing={4} >
           {storeList}
           </Grid>
 

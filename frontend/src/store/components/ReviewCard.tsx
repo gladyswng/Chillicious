@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   review : {
-    padding: 12, 
+    padding: '12px 0', 
     display: 'flex'
   },
   user: {
@@ -28,14 +28,31 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center'
   },
   comment: {
-    padding: '0 24px',
-    width: '68%'
+    paddingLeft: 24,
+    width: '80%',
+    [theme.breakpoints.down('xs')]: {
+      width: '90%'
+    }
+
   },
   cardButtons: {
     display: 'flex', 
     flexDirection: 'column', 
-    height: '70%', justifyContent: 'space-between'
+    alignItems: 'flex-end',
+    height: '70%', 
+    justifyContent: 'space-between',
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'row',
+    }
   },
+  commentCard: {
+    display: 'flex', 
+    justifyContent: 'space-between', 
+    width: '100%',
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'column'
+    }
+  }
 }));
 
 interface ReviewCardProps {
@@ -113,7 +130,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, stor
              
           </div>
             
-        <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+        <div className={classes.commentCard}>
 
           <div className={classes.comment}>
              {storeName && <Typography variant="h6">{storeName}</Typography>}
@@ -141,7 +158,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, stor
 
             {author._id === auth.userId && 
             <Modal buttonStyle='outlined' buttonText='Delete' buttonColor="default" 
-            buttonSize="small"
+            buttonSize="medium"
             open={modalOpen} onOpen={handleModalOpen} onClose={handleModalClose}>
               {error && <Message message={error}/>}
             <Typography>Are you sure?</Typography>
