@@ -5,16 +5,16 @@ import { AuthContext } from '../../context/authContext'
 
 import Drawer from './NavDrawer'
 
-import { makeStyles } from '@material-ui/core/styles';
-import Hidden from '@material-ui/core/Hidden';
+import { makeStyles } from '@material-ui/core/styles'
+import Hidden from '@material-ui/core/Hidden'
 import Button from '@material-ui/core/Button'
-import AddCommentIcon from '@material-ui/icons/AddComment';
-import AddIcon from '@material-ui/icons/Add';
+import AddCommentIcon from '@material-ui/icons/AddComment'
+import AddIcon from '@material-ui/icons/Add'
 
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@material-ui/core/IconButton'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import MenuIcon from '@material-ui/icons/Menu'
 

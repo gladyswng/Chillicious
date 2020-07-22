@@ -34,13 +34,14 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   cardMedia: {
-    height: 200, 
-    minWidth: 200
+    height: 220, 
+    minWidth: 220
   },
   cardContent: {
     display: 'flex', 
     justifyContent: 'space-between', 
     width: '100%',
+    paddingBottom: 0,
     [theme.breakpoints.down('xs')]: {
       flexDirection: 'column'
     }

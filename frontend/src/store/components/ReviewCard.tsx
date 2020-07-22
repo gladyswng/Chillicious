@@ -20,7 +20,8 @@ const useStyles = makeStyles((theme) => ({
 
   review : {
     padding: '12px 0', 
-    display: 'flex'
+    display: 'flex',
+    justifyContent: 'center'
   },
   user: {
     display: 'flex', 
@@ -30,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
   comment: {
     paddingLeft: 24,
     width: '80%',
+    wordBreak: 'break-all',
     [theme.breakpoints.down('xs')]: {
       width: '90%'
     }
@@ -48,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   commentCard: {
     display: 'flex', 
     justifyContent: 'space-between', 
-    width: '100%',
+    width: '80%',
     [theme.breakpoints.down('xs')]: {
       flexDirection: 'column'
     }

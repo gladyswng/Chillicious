@@ -41,7 +41,7 @@ console.log(storeList)
   }
   return (
 
-      <div style={{ padding: 8 , width: '80%'}}>
+      <div style={{ width: '100%'}}>
 
         {storeList &&
           <StoreList storeList={storeList} onDelete={onDelete} hearts={hearts} onHeartChange={onHeartChange}/>}

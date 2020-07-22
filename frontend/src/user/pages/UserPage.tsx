@@ -6,7 +6,13 @@ import Message from '../../shared/components/UIElements/Message'
 import { AuthContext } from '../../shared/context/authContext'
 import { useHttpClient } from '../../shared/hooks/http-hook'  
 import TabPanel from '../../shared/components/UIElements/TabPanel'
+
 import { makeStyles } from '@material-ui/core/styles';
+import Hidden from '@material-ui/core/Hidden'
+import ListAltIcon from '@material-ui/icons/ListAlt'
+import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
+import CommentIcon from '@material-ui/icons/Comment';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import AppBar from '@material-ui/core/AppBar';
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Tabs from '@material-ui/core/Tabs';
@@ -16,6 +22,30 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { stringify } from "querystring"
 
+const useStyles = makeStyles((theme) => ({
+  pageRoot: {
+    
+    display: 'flex', 
+    flexDirection: 'column', 
+    alignItems: 'center',
+    width: '100%',
+    justifyContent: 'center'
+    
+  },
+  container: {
+    marginTop: 40, 
+    width: '80%' ,
+    [theme.breakpoints.down('xs')]: {
+      marginTop: 20, 
+      width: '90%'
+    }
+  },
+  tabContent : {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center'
+  }
+}))
 interface UserPageProps {
 
 }
@@ -62,16 +92,6 @@ interface User {
   stores: Store[]
 }
 
-const useStyles = makeStyles((theme) => ({
-  pageRoot: {
-    
-    display: 'flex', 
-    flexDirection: 'column', 
-    alignItems: 'center',
-    width: '100%'
-    
-  }
-}))
 
 const UserPage: React.FC<UserPageProps> = ({}) => {
 
@@ -160,19 +180,28 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
       )}
       {error && <Message message={error}/>}
       {!isLoading && loadedUser && auth.token && (
-      <Paper style={{ marginTop: 40, width: '80%' }}>
+      <Paper className={classes.container}>
    
-      <AppBar position="static">
-        <Tabs value={tabValue} onChange={handleTabChange} aria-label="User Info">
-          <Tab label="User Profile" id="profile" />
-          <Tab label="Hearted" id="hearted" />
-          <Tab label="Reviews" id="reviews" />
-          <Tab label="Stores" id="stores" />
-        </Tabs>
-      </AppBar>
-      <TabPanel value={tabValue} index={0} id='profileTab'>
-    
+      <AppBar position="static" style={{ display: 'flex', alignItems: 'center' }} >
+        <Hidden xsDown>
+          <Tabs value={tabValue} onChange={handleTabChange} aria-label="User Info" style={{ maxWidth: '100%' }}>
+            <Tab label="Profile" id="profile" />
+            <Tab label="Hearted" id="hearted" />
+            <Tab label="Reviews" id="reviews" />
+            <Tab label="Stores" id="stores" />
+          </Tabs>
+        </Hidden>
+        <Hidden smUp>
+          <Tabs value={tabValue} onChange={handleTabChange} aria-label="User Info">
+            <Tab icon={<AssignmentIndIcon />} label="Profile" id="profile" style={{ fontSize: 12 }}/>
+            <Tab icon={<FavoriteIcon  />} label="Hearted" id="hearted" style={{ fontSize: 12 }}/>
+            <Tab icon={<CommentIcon />} label="Reviews" id="reviews" style={{ fontSize: 12 }}/>
+            <Tab icon={<ListAltIcon />}label="Stores" id="stores" style={{ fontSize: 12 }}/>
+          </Tabs>
 
+        </Hidden>
+      </AppBar>
+      <TabPanel value={tabValue} index={0} id='profileTab' >
         <UserProfile 
         userName={loadedUser.name} 
         email={loadedUser.email} 
@@ -182,7 +211,7 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
 
 
       </TabPanel>
-      <TabPanel value={tabValue} index={1} id='heartedTab'>
+      <TabPanel value={tabValue} index={1} id='heartedTab' >
         <UserStores
         storeList={loadedUser.hearts}
         hearts={hearts}
