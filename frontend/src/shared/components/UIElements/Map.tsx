@@ -13,16 +13,13 @@ interface MapProps {
 }
 const useStyles = makeStyles((theme) => ({
   map: {
-    height: '100%',
+    height: 200,
     width: '100%'
   },
   mapWrapper: {
     width: '40%', 
-    height: '100%',
-    maxHeight: 250,
     [theme.breakpoints.down('xs')]: {
-      width: '100%',
-      maxHeight: '47%'
+      width: '100%'
     }
   }
 
