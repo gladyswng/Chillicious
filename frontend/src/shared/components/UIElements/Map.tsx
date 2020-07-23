@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: 250,
     [theme.breakpoints.down('xs')]: {
       width: '100%',
-      maxHeight: 220
+      maxHeight: '47%'
     }
   }
 
