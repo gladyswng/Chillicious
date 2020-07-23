@@ -148,7 +148,7 @@ const SearchResult: React.FC<SearchResultProps> = () => {
 
     //   }
     // }
-    if (location && location !=='undefined') {
+    if (location) {
     fetchStores()
     }
     if (auth.token) {
@@ -222,8 +222,7 @@ const SearchResult: React.FC<SearchResultProps> = () => {
           </div>
           )}
             <Typography variant='h4' style={{ textAlign: 'center' }}>Search Results</Typography>
-            {location==='undefined' && 
-          <Message message="Invalid Address"/>}
+            {error && !loadedStores && <Message message={error}/>}
             {location && !isLoading && loadedStores && (
           <div className={classes.storePageContent}>
 

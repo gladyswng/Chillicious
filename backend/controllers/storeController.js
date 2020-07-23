@@ -14,12 +14,12 @@ const { Console } = require('console')
 exports.getStores = async (req, res, next) => {
     //stores?limit=10&skip=20
     
+    const kmToRadian = (km) => {
+      const earthRadiusInKm = 6371
+      return km / earthRadiusInKm
+    }
+    let searchCoordinates
     try {
-      const kmToRadian = (km) => {
-        const earthRadiusInKm = 6371
-        return km / earthRadiusInKm
-      }
-      let searchCoordinates
       
       if (req.body.location){
         console.log(req.body.location)
@@ -30,25 +30,29 @@ exports.getStores = async (req, res, next) => {
         
       } else {
         
- 
         searchCoordinates = [10, 59]
       }
+    } catch(e) {
+      return next(
+        new HttpError('Invalid Address', 404)
+      )
+    }
 
-        await Store.find({
-          location: {
-            $geoWithin: {
-              $centerSphere: [
-                searchCoordinates,
-                kmToRadian(200)
-              ],
-            }
+    try {
+      await Store.find({
+        location: {
+          $geoWithin: {
+            $centerSphere: [
+              searchCoordinates,
+              kmToRadian(200)
+            ],
           }
-          
-        }, function (err, stores) {
-       
-            res.json(stores)
-        })
-
+        }
+        
+      }, function (err, stores) {
+     
+          res.json(stores)
+      })
     } catch(e) {
         return next(
           new HttpError('Something went wrong, could not fetch the results.', 500)

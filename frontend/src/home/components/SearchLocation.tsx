@@ -80,15 +80,22 @@ const SearchLocation: React.FC = () => {
   }, [value, inputValue, fetch]);
 
   const searchHandler = () => {
-    if (value) {
-      console.log(value.description)
+    if(typeof value === 'string') {
+      console.log(value)
+      history.push(`/stores/${value}`)
+    } else {
       history.push(`/stores/${value.description}`)
+    }
+  }
+  const searchClickHandler = () => {
+    if (value) {
+      searchHandler()
     }
   }
 
   const searchKeyDownHanlder = (e: any) => {
     if (e.key === 'Enter' && value) {
-      history.push(`/stores/${value.description}`)
+      searchHandler()
     }
   }
 
@@ -114,7 +121,7 @@ const SearchLocation: React.FC = () => {
       }}
       renderInput={(params) => (
         <div style={{ display: 'flex' }}>
-          <Button onClick={searchHandler}>
+          <Button onClick={searchClickHandler}>
 
            <SearchOutlinedIcon style={{ color: 'white'}} fontSize='large'/>
           </Button>
