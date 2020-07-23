@@ -19,8 +19,10 @@ const useStyles = makeStyles((theme) => ({
   mapWrapper: {
     width: '40%', 
     height: '100%',
+    maxHeight: 250,
     [theme.breakpoints.down('xs')]: {
       width: '100%'
+      
     }
   }
 

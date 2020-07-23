@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
     height: 220, 
     minWidth: 220
   },
+   
   cardContent: {
     display: 'flex', 
     justifyContent: 'space-between', 

@@ -75,7 +75,9 @@ const SharedModal: React.FC<SharedModalProps> = (props) => {
     <div>
     <Button disableElevation={props.disableElevation} 
     size={props.buttonSize}
-    variant={props.buttonStyle || "contained"} onClick={props.onOpen} color={props.buttonColor}>
+    variant={props.buttonStyle || "contained"} 
+    onClick={props.onOpen} 
+    color={props.buttonColor}>
     {props.buttonText}</Button>
     <Modal
       open={props.open}
