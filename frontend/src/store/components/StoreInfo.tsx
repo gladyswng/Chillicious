@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     [theme.breakpoints.down('xs')]: {
       flexDirection: 'column',
-      height: 400 
+      minHeight: 400 
     }
     
   },
