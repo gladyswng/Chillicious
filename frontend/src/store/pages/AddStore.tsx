@@ -97,7 +97,7 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
 
             )
             
-            history.push('/')
+            history.goBack()
            
           //Redirect to different page
         } catch (e) {

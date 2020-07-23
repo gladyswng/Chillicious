@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { Suspense } from "react"
 
 import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-dom"
 
@@ -6,20 +6,35 @@ import useScript from './shared/hooks/useScript'
 import { AuthContext } from './shared/context/authContext'
 import { ScriptLoadContext } from './shared/context/scriptLoadContext'
 import { useAuth } from './shared/hooks/auth-hook'
-import UserPage from './user/pages/UserPage'
-import UserSignUp from './user/pages/UserSignUp'
 
-import UpdateStore from './store/pages/UpdateStore'
-import Store from './store/pages/Store'
-import AddStore from './store/pages/AddStore'
-import SearchResult from './store/pages/SearchResult'
-import Homepage from './home/page/Homepage'
+
+
 import Layout from './util/Layout'
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import { Typography } from "@material-ui/core"
+
+// import UserPage from './user/pages/UserPage'
+// import UserSignUp from './user/pages/UserSignUp'
+// import UpdateStore from './store/pages/UpdateStore'
+// import Store from './store/pages/Store'
+// import AddStore from './store/pages/AddStore'
+// import SearchResult from './store/pages/SearchResult'
+// import Homepage from './home/page/Homepage'
+
+const UserPage = React.lazy(() => import('./user/pages/UserPage'))
+const UserSignUp = React.lazy(() => import('./user/pages/UserSignUp'))
+const UpdateStore = React.lazy(() => import('./store/pages/UpdateStore'))
+const Store = React.lazy(() => import('./store/pages/Store'))
+const AddStore = React.lazy(() => import('./store/pages/AddStore'))
+const SearchResult = React.lazy(() => import('./store/pages/SearchResult'))
+const Homepage = React.lazy(() => import('./home/page/Homepage'))
+
+
+
 
 const theme = createMuiTheme({
     spacing: 4,
@@ -168,8 +183,10 @@ const App: React.FC = () => {
     <Router>
       <Layout>
         <main className={classes.appRoot}>
+        <Suspense fallback={<div><CircularProgress /></div>}>
+          {routes}
 
-        {routes}
+        </Suspense>
       </main>
       </Layout>
     </Router>
