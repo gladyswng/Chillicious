@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
   },
   title: {
-    paddingRight: theme.spacing(1),
+    paddingRight: theme.spacing(1.5),
 
   },
 
@@ -48,7 +48,8 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: theme.spacing(3),
     [theme.breakpoints.down('xs')]: {
       width: 90,
-      height: 45
+      height: 45,
+      paddingRight: theme.spacing(1),
     }
   },
   

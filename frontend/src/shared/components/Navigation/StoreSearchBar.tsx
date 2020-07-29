@@ -35,7 +35,6 @@ const StoreSearchBar: React.FC<StoreSearchBarProps> = ({}) => {
   const [inputValue, setInputValue] = useState('')
   const {isLoading, error, sendRequest, clearError} = useHttpClient() 
   console.log(inputValue)
-  console.log(options)
   
 
   const fetchStoreSuggestion = useCallback(async (active) => {

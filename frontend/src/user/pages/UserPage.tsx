@@ -108,19 +108,21 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
 
   const fetchUser = useCallback(async () => {
     try {
-      const responseData = await sendRequest(`/api/user/me`, 'GET', null , { 
-        Authorization: 'Bearer ' + auth.token,
-        'Content-Type': 'application/json'
-      })
-      clearError()
-      const user = responseData
-      const heartList = user.hearts.map((store: Store) => store.id)
-      setLoadedUser(user)
-      if (heartList) {
-
-        setHearts(heartList)
-      }
-
+      if (auth.token) {
+        
+        const responseData = await sendRequest(`/api/user/me`, 'GET', null , { 
+          Authorization: 'Bearer ' + auth.token,
+          'Content-Type': 'application/json'
+        })
+        clearError()
+        const user = responseData
+        const heartList = user.hearts.map((store: Store) => store.id)
+        setLoadedUser(user)
+        
+        if (heartList) {
+          setHearts(heartList)
+        }
+      } 
     } catch (e) {
 
     }
@@ -178,6 +180,7 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
           </div>
 
       )}
+      {!auth.token && <Message message='Please Authenticate'/>}
       {error && <Message message={error}/>}
       {!isLoading && loadedUser && auth.token && (
       <Paper className={classes.container}>

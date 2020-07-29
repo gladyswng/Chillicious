@@ -135,7 +135,7 @@ const StoreInfo: React.FC<StoreInfoProps> = (props) => {
 
      
               
-          <Map center={{ lat: location.coordinates[1], lng: location.coordinates[0]}} zoom={16}/>
+          {location.coordinates && <Map center={{ lat: location.coordinates[1], lng: location.coordinates[0]}} zoom={16}/>}
 
       
 
