@@ -1,9 +1,14 @@
+// require('dotenv').config()
 const fs = require('fs')
 const User = require('../models/User')
 const HttpError = require('../models/http-error')
 const { body, validationResult } = require('express-validator')
 const fileUpload = require('../middleware/file-upload')
-// const { findById } = require('../models/User')
+const crypto = require('crypto')
+const sgMail = require('@sendgrid/mail')
+sgMail.setApiKey(process.env.SENDGRID_API_KEY) 
+
+
 
 
 
@@ -198,14 +203,84 @@ exports.logoutAll = async (req, res) => {
 }
 
 exports.deleteProfile = async (req, res, next) => {
-    try {
-        // Remember we attached user on auth 
-        // const user = await User.findByIdAndDelete(req.user._id)
+  try {
+      // Remember we attached user on auth 
+      // const user = await User.findByIdAndDelete(req.user._id)
 
-        await req.user.remove()
-    } catch (e) {
-      return next(
-        new HttpError('Something went wrong, could not proceed to delete profile.', 500)
-      )
-    }
+      await req.user.remove()
+  } catch (e) {
+    return next(
+      new HttpError('Something went wrong, could not proceed to delete profile.', 500)
+    )
+  }
 }   
+
+// PASSWORD RESET
+
+exports.sendResetLink = async (req, res, next) => {
+    // 1. See if a user with that email exists
+    const user = await User.findOne({ email: req.body.email })
+    if(!user) {
+      res.send({ message: 'A password reset link has been sent to your email address' })
+      return 
+    }
+    try {
+      // 2. Set reset tokens and expiry on their account
+      // Here we need to add in user model
+      user.resetPasswordToken = crypto.randomBytes(20).toString('hex')
+      user.resetPasswordExpires = Date.now() + 3600000
+     
+      // await user.save()
+      // 3. Send them an email with the token
+      const resetURL = `http://${req.headers.host}/user/reset/${user.resetPasswordToken}`
+      console.log('here')
+      const msg = {
+        to: 'gladyswng@gmail.com',
+        from: 'gladyswng@gmail.com',
+        subject: 'Sending with Twilio SendGrid is Fun',
+        text: 'and easy to do anywhere, even with Node.js',
+        html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+      };
+      sgMail.send(msg)
+      // await sgMail.send({
+      //   to: req.body.email,
+      //   from: 'gladyswng@gmail.com',
+      //   subject: 'Password Reset',
+      //   text: `${resetURL}`
+      // })
+
+      // await res.send({ message: 'A password reset link has been sent to your email address' })
+    
+
+    } catch (e) {
+      console.log(e)
+    }
+    
+}
+
+exports.passwordUpdate = async (req, res) => {
+  const user = await User.findOne({
+      resetPasswordToken: req.params.token,
+      resetPasswordExpires: { $gt: Date.now() }
+  })
+
+  if(!user) {
+    return next(
+      new HttpError('Password reset is invalid or has expired', 500)
+    )
+  }
+
+  user.password = req.body.password
+
+  // const setPassword = promisify(user.setPassword, user)
+  // await setPassword(req.body.password)
+
+  // get rid of the field in MongoDB by setting them undefined
+  // These do nothing to database, it just queues it up, then when we call .save, it will run to the database and do the saving
+  user.resetPasswordToken = undefined
+  user.resetPasswordExpires = undefined
+  user.save()
+
+  res.send({ message: 'Password successfully updated' })
+
+}

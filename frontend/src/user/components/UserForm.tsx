@@ -47,7 +47,7 @@ interface UserFormProps {
   blur: boolean
   disableEmail: boolean
   inputHandler: () => void,
-  submitHandler: any
+  submitHandler: (e: any) => Promise<void>
 }
 
 const UserForm: React.FC<UserFormProps>  = (props) => {

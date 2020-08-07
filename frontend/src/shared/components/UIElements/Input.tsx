@@ -99,9 +99,11 @@ const Input: React.FC<InputProps> = (props) => {
 
 
     return (
-      <div>
+      <div >
         <label htmlFor={id}><Typography>{props.inputLabel}</Typography></label>
-        <TextField id={id}
+        <TextField 
+          style={{ width: '100%' }}
+          id={id}
           required={props.required}
           label={props.label}
           multiline={props.multiline}

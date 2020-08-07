@@ -71,6 +71,8 @@ router.patch('/user/me/profile',
 
 router.delete('/user/me', auth, userController.deleteProfile)
 
+router.post('/user/sendResetLink', userController.sendResetLink)
+
 
 // REVIEW
 router.post('/store/:id/addReview', auth, reviewController.addReview)
