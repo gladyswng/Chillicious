@@ -239,11 +239,13 @@ exports.sendResetLink = async (req, res, next) => {
 
     user.save()
 
-    const resetURL = `http://${req.headers.host}/user/reset/${user.resetPasswordToken}`
+    const resetURL = `http://${req.headers.host}/user/resetPassword/${user.resetPasswordToken}`
     
     const transporter = nodemailer.createTransport({
       host: process.env.MAIL_HOST,
       port: process.env.MAIL_PORT,
+      secure: false,
+      requireTLS: true,
       auth: {
           user: process.env.MAIL_USER,
           pass: process.env.MAIL_PASS
@@ -270,10 +272,10 @@ exports.sendResetLink = async (req, res, next) => {
 
 
 exports.passwordReset = async (req, res, next) => {
-
+  console.log(req.body.passwordToken)
   try {
     const user = await User.findOne({
-        resetPasswordToken: req.body.token,
+        resetPasswordToken: req.body.passwordToken,
         resetPasswordExpires: { $gt: Date.now() }
     })
   

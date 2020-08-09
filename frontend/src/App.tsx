@@ -163,9 +163,10 @@ const App: React.FC = () => {
           <UserPage />
       </Route>
 
-      <Route path="/user/reset" exact>
+      <Route path="/user/resetLink" exact>
         <ResetLink />
       </Route>
+
 
       <Route path="/user/resetPassword/:token" exact>
           <ResetPassword />
