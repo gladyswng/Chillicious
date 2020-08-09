@@ -19,9 +19,11 @@ interface TopListProps {
     image: string
     address: string
     ratingsAverage: number
+    ratingsQuantity: number
     priceRange: string
     tags: string[]
     slug: string
+
   }[]
 }
 

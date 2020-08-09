@@ -150,7 +150,7 @@ const LoginModal: React.FC<LoginModalProps> = (props) => {
         color="primary" 
         size={props.size}
         type="submit"
-        style={{ margin: 8 }}
+        style={{ marginRight: 8 }}
         disabled={!isValid}
         >Log In</Button>
         <Button 
@@ -165,6 +165,16 @@ const LoginModal: React.FC<LoginModalProps> = (props) => {
   </form>
 
   <div>
+
+    <Button 
+      component={ NavLink } 
+      to="/user/resetLink" 
+      color="primary" 
+      variant="contained"
+      size="small"
+      style={{ boxShadow: 'none', marginBottom: 8 }} onClick={handleModalClose}>
+        Forgot Password
+    </Button>
     <Typography variant='body2'>Do not have an account?</Typography>
     <Typography>
 
@@ -176,6 +186,8 @@ const LoginModal: React.FC<LoginModalProps> = (props) => {
       style={{ boxShadow: 'none' }} onClick={handleModalClose}>
         Sign Up Here
       </Button>
+
+      
   
     </Typography>
   </div>

@@ -3,7 +3,9 @@ const User = require('../models/User')
 const HttpError = require('../models/http-error')
 const { body, validationResult } = require('express-validator')
 const fileUpload = require('../middleware/file-upload')
-// const { findById } = require('../models/User')
+const crypto = require('crypto')
+const nodemailer = require("nodemailer")
+
 
 
 
@@ -129,6 +131,19 @@ exports.getUser = async (req, res, next) => {
   }
 }
 
+exports.getHearts = async (req, res, next) => {
+
+  try {
+
+    const user = await User.findById(req.user._id).populate('hearts', '-author -created')
+   
+    res.send(user.hearts)
+  } catch (e) {
+    console.log(e)
+  }
+  
+}
+
 exports.updateProfile = async (req, res, next) => {
   console.log(req.body)
     
@@ -198,14 +213,89 @@ exports.logoutAll = async (req, res) => {
 }
 
 exports.deleteProfile = async (req, res, next) => {
-    try {
-        // Remember we attached user on auth 
-        // const user = await User.findByIdAndDelete(req.user._id)
+  try {
+      // Remember we attached user on auth 
+      // const user = await User.findByIdAndDelete(req.user._id)
 
-        await req.user.remove()
+      await req.user.remove()
+  } catch (e) {
+    return next(
+      new HttpError('Something went wrong, could not proceed to delete profile.', 500)
+    )
+  }
+}   
+
+// PASSWORD RESET
+
+exports.sendResetLink = async (req, res, next) => {
+    // 1. See if a user with that email exists
+    const user = await User.findOne({ email: req.body.email })
+    if(!user) {
+      res.send({ message: 'A password reset link has been sent to your email address' })
+      return 
+    }
+    user.resetPasswordToken = crypto.randomBytes(20).toString('hex')
+    user.resetPasswordExpires = Date.now() + 3600000
+
+    user.save()
+
+    const resetURL = `http://${req.headers.host}/user/reset/${user.resetPasswordToken}`
+    
+    const transporter = nodemailer.createTransport({
+      host: process.env.MAIL_HOST,
+      port: process.env.MAIL_PORT,
+      auth: {
+          user: process.env.MAIL_USER,
+          pass: process.env.MAIL_PASS
+      }
+    })
+
+    try {
+      
+      const info = await transporter.sendMail({
+        from: `gladys <gladyswng@gmail.com>`,
+        to: req.body.email,
+        subject: 'Password Reset Link',
+        text: resetURL,
+        html: `<div>You have requested a password reset. Click <a href=${resetURL}>here</a> to continue on with resetting your password. Please note this link is only valid for the next hour.</div>`
+      })
+
+      console.log(info)
+
     } catch (e) {
+      console.log(e)
+    }
+    
+}
+
+
+exports.passwordReset = async (req, res, next) => {
+
+  try {
+    const user = await User.findOne({
+        resetPasswordToken: req.body.token,
+        resetPasswordExpires: { $gt: Date.now() }
+    })
+  
+    if(!user) {
       return next(
-        new HttpError('Something went wrong, could not proceed to delete profile.', 500)
+        new HttpError('Password reset is invalid or has expired', 500)
       )
     }
-}   
+  
+    user.password = req.body.password
+  
+    // const setPassword = promisify(user.setPassword, user)
+    // await setPassword(req.body.password)
+  
+    user.resetPasswordToken = undefined
+    user.resetPasswordExpires = undefined
+    user.save()
+  
+    res.send({ message: 'Password successfully updated' })
+
+  } catch (e) {
+    console.log(e)
+  }
+
+}

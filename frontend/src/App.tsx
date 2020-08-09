@@ -27,6 +27,8 @@ import { Typography } from "@material-ui/core"
 
 const UserPage = React.lazy(() => import('./user/pages/UserPage'))
 const UserSignUp = React.lazy(() => import('./user/pages/UserSignUp'))
+const ResetLink = React.lazy(() => import('./user/pages/ResetLink'))
+const ResetPassword = React.lazy(() => import('./user/pages/ResetPassword'))
 const UpdateStore = React.lazy(() => import('./store/pages/UpdateStore'))
 const Store = React.lazy(() => import('./store/pages/Store'))
 const AddStore = React.lazy(() => import('./store/pages/AddStore'))
@@ -161,8 +163,17 @@ const App: React.FC = () => {
           <UserPage />
       </Route>
 
+      <Route path="/user/reset" exact>
+        <ResetLink />
+      </Route>
+
+      <Route path="/user/resetPassword/:token" exact>
+          <ResetPassword />
+      </Route>
+      
+
+
       <Redirect to="/user/signUp" />
-          
       </Switch>
     )
   }
