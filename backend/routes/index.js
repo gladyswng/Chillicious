@@ -73,6 +73,9 @@ router.delete('/user/me', auth, userController.deleteProfile)
 
 router.post('/user/sendResetLink', userController.sendResetLink)
 
+router.post('/user/passwordReset', userController.passwordReset)
+
+router.get('/user/hearts', auth, userController.getHearts)
 
 // REVIEW
 router.post('/store/:id/addReview', auth, reviewController.addReview)

@@ -3,9 +3,9 @@ import { Typography } from '@material-ui/core'
 import Input from '../../shared/components/UIElements/Input'
 import { useForm } from '../../shared/hooks/form-hook'
 import { useHttpClient } from '../../shared/hooks/http-hook' 
+import Message from '../../shared/components/UIElements/Message'
 import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH, VALIDATOR_MATCH, VALIDATOR_EMAIL } from '../../util/validators'
 import Button from '@material-ui/core/Button'
-
 interface ResetLinkProps {
 
 }
@@ -42,17 +42,35 @@ const ResetLink: React.FC<ResetLinkProps> = ({}) => {
     return (
       <div style={{ width: '80%' }}>
         <Typography variant='h4' style={{ marginTop: 20, marginBottom: 20 }}>Reset Password</Typography>
+        {error && 
+        <Message message={error}/>
+        }
 
       <form action="" onSubmit={submitHandler}>
-        <Input 
-          id="email" 
+      <Input 
+          id="password" 
           label="Required" 
-          inputLabel="Email Address"
-          value={inputs.email.value}
+          type="password"
+          inputLabel="Password"
+          value={inputs.password.value}
           variant="outlined"
-          errorMessage="Invalid email address" 
+          errorMessage="Please provide more than 6 characters" 
           required
-          validators={[VALIDATOR_REQUIRE(), VALIDATOR_EMAIL()]}
+          validators={[VALIDATOR_REQUIRE(), VALIDATOR_MINLENGTH(6)]}
+          onInput={inputHandler}
+          blur={true}
+        />
+
+        <Input 
+          id="confirmPassword" 
+          label="Required" 
+          type="password"
+          inputLabel="Confirm Password"
+          value={inputs.confirmPassword.value}
+          variant="outlined"
+          errorMessage="Invalid match" 
+          required
+          validators={[VALIDATOR_REQUIRE(), VALIDATOR_MINLENGTH(6), VALIDATOR_MATCH(inputs.password.value)]}
           onInput={inputHandler}
           blur={true}
         />
@@ -63,7 +81,7 @@ const ResetLink: React.FC<ResetLinkProps> = ({}) => {
           style={{ margin: 8 }}
           disabled={!isValid}
           type='submit'
-        >Send
+        >Reset Password
         </Button>
         
       </form>

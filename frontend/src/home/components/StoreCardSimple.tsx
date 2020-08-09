@@ -8,8 +8,10 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@material-ui/core/Typography'
 import Chip from '@material-ui/core/Chip'
+import Divider from '@material-ui/core/Divider'
+import Hidden from '@material-ui/core/Hidden'
 
 const useStyles = makeStyles((theme) => ({
   cardRoot: {
@@ -24,6 +26,12 @@ const useStyles = makeStyles((theme) => ({
   chip: {
     marginRight: 4,
     marginBottom: 4
+  },
+  reveiwBar: {
+    display: 'flex',
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'column'
+    }
   }
 }))
 
@@ -38,6 +46,7 @@ interface StoreCardProps {
     priceRange: string
     tags: string[]
     slug: string
+    ratingsQuantity: number
   }
 }
 
@@ -63,8 +72,24 @@ const StoreCard: React.FC<StoreCardProps> = ({store}) => {
           <Typography gutterBottom variant="h5" component="h2">
             {store.name}
           </Typography>
+          <div className={classes.reveiwBar}>
+
           <RatingBar  readOnly={true} rating={store.ratingsAverage}/>
-          <Typography>{store.priceRange}</Typography>
+          <Hidden mdDown>
+          <Divider orientation="vertical" flexItem variant="middle" />
+          </Hidden>
+
+          <Typography style={{ fontWeight: 'bold' }}>{store.ratingsQuantity? store.ratingsQuantity : 0} {!store.ratingsQuantity || store.ratingsQuantity < 2? 'Review' : 'Reviews'}</Typography>
+          </div>
+       
+
+          <Typography style={{ fontWeight: 'bold' }}>{store.priceRange}</Typography>
+            
+
+        
+
+
+
           <Typography variant="body2" color="textSecondary" component="p">
             {store.address}
           </Typography>

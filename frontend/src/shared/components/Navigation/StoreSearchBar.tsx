@@ -133,7 +133,7 @@ const StoreSearchBar: React.FC<StoreSearchBarProps> = ({}) => {
           >
             <div style={{ display: 'flex' }}>
 
-            <img 
+              <img 
               
               style={{ width: 40, height: 40, borderRadius: 3, marginRight: 10 }}
               src={option.image? `/api/${option.image}` : "https://images.unsplash.com/photo-1506368144590-cf6438f1cdb5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80"}/>
