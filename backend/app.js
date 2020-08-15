@@ -8,9 +8,9 @@ const HttpError = require('./models/http-error')
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-
+app.use(express.static(path.join(__dirname, 'dist')))
 // static() means you don't execute it but just return it
-app.use('/backend/uploads/images', express.static(path.join('backend','uploads', 'images')))
+app.use('/api/backend/uploads/images', express.static(path.join('backend','uploads', 'images')))
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -23,14 +23,14 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(routes)
+app.use('/api', routes)
 
 
 app.use(express.json())
 
 
 app.use((req, res, next) => {
-
+  console.log(req)
   const error = new HttpError('Could not find this page', 404)
   throw error
 })

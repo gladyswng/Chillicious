@@ -187,9 +187,10 @@ exports.updateProfile = async (req, res, next) => {
 }
 
 exports.logout = async (req, res) => {
+  console.log('logout')
     try {
         // user info already fetched from auth
-
+        
         req.user.tokens = req.user.tokens.filter(tokenObj => tokenObj.token !== req.token )
         await req.user.save()
         res.send({ message: 'You are logged out!' })
@@ -263,6 +264,7 @@ exports.sendResetLink = async (req, res, next) => {
       })
 
       console.log(info)
+      res.send({ message: 'A password reset link has been sent to your email address' })
 
     } catch (e) {
       console.log(e)

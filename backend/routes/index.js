@@ -53,13 +53,14 @@ router.post('/user/register',
 
 
 // router.get('/login', userController.loginForm)
-router.post('/login', userController.login)
+router.post('/api/login', userController.login)
 
 // login logout backend
-router.get('/logout', auth, userController.logout)
-router.get('/logoutAll', auth, userController.logoutAll)
+// TODO - CONNECT LOGOUT TO FRONTEND
+router.get('/api/logout', auth, userController.logout)
+router.get('/api/logoutAll', auth, userController.logoutAll)
 
-router.get('/user/me', auth, userController.getUser)
+router.get('/api/user/me', auth, userController.getUser)
 
 router.patch('/user/me/profile', 
   auth, 

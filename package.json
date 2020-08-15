@@ -10,8 +10,8 @@
     ]
   },
   "scripts": {
-    "start": "webpack-dev-server",
-    "build": "node scripts/build.js",
+    "start": "webpack-dev-server --open --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js",
     "startbackend": "nodemon ./backend/index.js",
     "devbackend": "env-cmd -f ./backend/config/dev.env nodemon ./backend/index.js"
   },
@@ -51,7 +51,7 @@
     "react-dom": "^16.13.1",
     "react-places-autocomplete": "^7.2.1",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.1",
+    "react-scripts": "^3.4.3",
     "request": "^2.88.2",
     "slugify": "^1.4.0",
     "uuid": "^7.0.3",
@@ -75,6 +75,6 @@
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.11.0",
-    "webpack-merge": "^5.0.9"
+    "webpack-merge": "^5.1.1"
   }
 }

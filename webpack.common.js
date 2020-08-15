@@ -11,7 +11,6 @@ module.exports = {
         publicPath: '/'
     },
     resolve: {extensions: ['.ts', '.tsx','.js', '.jsx', '.react.js']},
-    devtool: 'source-map',
     module : {
         rules : [
             {test: /\.tsx?$/, loader: 'awesome-typescript-loader'},
@@ -23,27 +22,12 @@ module.exports = {
         ]
 
     },
-    mode:'development',
-    devServer: {
-        host: '0.0.0.0',
-        historyApiFallback: true,
-        public: process.env.proxyhost ? process.env.proxyhost : '',
-        proxy: {
-            '/api': {
-              target: 'http://localhost:3000',
-              pathRewrite: {'^/api' : ''}
-            }
-          }      
-    },
+    
     plugins : [
         new HtmlWebpackPlugin ({
             template : 'frontend/public/index.html',
-       
         }),
-      
         new Dotenv()
-   
-
     ]
 
 }

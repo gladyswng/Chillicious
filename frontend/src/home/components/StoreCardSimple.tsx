@@ -63,7 +63,7 @@ const StoreCard: React.FC<StoreCardProps> = ({store}) => {
       <CardActionArea onClick={storeHandler}>
         <CardMedia
           component="img"
-          alt="Contemplative Reptile"
+          alt="storeImage"
           height="180"
           image={`/api/${store.image}`}
           title="restaurant"
