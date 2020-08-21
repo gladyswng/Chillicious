@@ -76,8 +76,9 @@ const SearchResult: React.FC<SearchResultProps> = () => {
   const [fetchedStores, setFetchedStores] = useState<Store[]>()
   const [checkedList, setCheckedList] = useState([])
   const [hearts, setHearts] = useState<string[]>()
+  console.log(fetchedStores) 
 
-  console.log(checkedList) // 7 times??
+  console.log(loadedStores) // 7 times??
   // const getUserLocation = async () => { 
   //   console.log('ran')
   //   if (navigator.geolocation) {
@@ -93,16 +94,45 @@ const SearchResult: React.FC<SearchResultProps> = () => {
   // }
   
 
-  const fetchStores = useCallback(async() => {
-     try { 
-       const responseData = await sendRequest('/api/stores', 'POST', JSON.stringify({ location }), { 
-         'Content-Type': 'application/json'
-       })
-       setLoadedStores(responseData)
-       setFetchedStores(responseData)
-     } catch (e) {
+  const fetchStores = useCallback(() => {
+    //  try { 
+      const responseData =  [
+        {
+          id:"5f103ec91b0ef45738179148",
+          tags:["chinese","lactoseFree"],
+          name:"Helo",
+          description:"asdfadsfasdfasdfadfs",
+          address:"oslo",
+          image:"backend/uploads/images/678fc1c0-c75a-11ea-9b12-c3196938cb98.jpeg",priceRange:"$$",
+          author: "5f0cb118070a4e218cb6c8fb",
+          slug:"Helo-1",
+          ratingsAverage:3,
+          ratingsQuantity:1
+        },
+        {
+          id:"5f103ec91b0ef45738179148",
+          tags:["chinese","lactoseFree"],
+          name:"Helo",
+          description:"asdfadsfasdfasdfadfs",
+          address:"oslo",
+          image:"backend/uploads/images/678fc1c0-c75a-11ea-9b12-c3196938cb98.jpeg",priceRange:"$$",
+          author: "5f0cb118070a4e218cb6c8fb",
+          slug:"Helo-1",
+          ratingsAverage:3,
+          ratingsQuantity:1
+        }
+        
+      ]
+      //  const responseData = await sendRequest('/api/stores', 'POST', JSON.stringify({ location }), { 
+      //    'Content-Type': 'application/json'
+      //  })
+      console.log(responseData)
+      setFetchedStores(responseData)
+      setLoadedStores(responseData)
+       
+    //  } catch (e) {
  
-     }
+    //  }
   }, [])
 
       
@@ -149,13 +179,13 @@ const SearchResult: React.FC<SearchResultProps> = () => {
     //   }
     // }
     if (location) {
-    fetchStores()
+      fetchStores()
     }
     if (auth.token) {
 
       fetchHearts() //??? right place to put?
     }
-  }, [fetchStores, fetchHearts])
+  }, [fetchStores])
   // TODO - CHANGE AUTH TOKEN?
 
   const storeDeleteHandler = (storeId: string) => {
