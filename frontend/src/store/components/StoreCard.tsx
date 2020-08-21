@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex', 
     justifyContent: 'space-between', 
     width: '100%',
-    paddingBottom: 0,
+    padding: 0,
     [theme.breakpoints.down('xs')]: {
       flexDirection: 'column'
     }
@@ -88,9 +88,10 @@ const useStyles = makeStyles((theme) => ({
     display: 'inline-block', 
     verticalAlign: 'text-bottom'
   },
-  wordBreak: {
-    wordWrap: 'break-word', 
-    wordBreak: 'break-all' 
+  description: { 
+    wordBreak: 'break-all',
+    height: 40,
+    overflow: 'scroll'
   }
 }))
 
@@ -192,8 +193,8 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, onHeartCh
        <CardMedia className={classes.cardMedia}  image={store.image? `/api/${store.image}` : "https://images.unsplash.com/photo-1506368144590-cf6438f1cdb5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80"}/>
 
       <CardContent  className={classes.cardContent}>
-        <div>
-          <Typography variant="h5" component="h3" className={classes.wordBreak}>
+        <div style={{ padding: 8 }}>
+          <Typography variant="h5" component="h3" style={{ wordBreak: 'break-all' }}>
             {store.name}
           </Typography>
 
@@ -203,10 +204,10 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, onHeartCh
             <Typography variant="body1" component="span" className={classes.reviewNumber}>{ store.ratingsQuantity || "0"} {store.ratingsQuantity>1? 'Reviews' : 'Review'}</Typography>
           </Box>
 
-          <Typography variant="body2" component="p" className={classes.wordBreak}>
+          <Typography variant="body2" component="p" className={classes.description}>
             {store.description}
           </Typography>
-          <Typography variant="subtitle1">{store.priceRange}</Typography>
+          <Typography variant="subtitle1" style={{ fontWeight: 'bold' }}>{store.priceRange}</Typography>
           <Typography>{store.address}</Typography>
          
          {store.tags[0] !== "" &&

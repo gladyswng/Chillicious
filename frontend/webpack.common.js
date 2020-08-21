@@ -4,7 +4,7 @@ const Dotenv = require('dotenv-webpack');
 
 
 module.exports = {
-    entry : './frontend/src/index.tsx',
+    entry : './src/index.tsx',
     output : {
         path : path.resolve(__dirname, 'dist'),
         filename: 'index_bundle.js',
@@ -25,7 +25,7 @@ module.exports = {
     
     plugins : [
         new HtmlWebpackPlugin ({
-            template : 'frontend/public/index.html',
+            template : 'public/index.html',
         }),
         new Dotenv()
     ]
