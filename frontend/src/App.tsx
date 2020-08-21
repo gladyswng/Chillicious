@@ -2,6 +2,7 @@ import React, { Suspense } from "react"
 
 import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-dom"
 
+import { HashRouter } from "react-router-dom";
 import useScript from './shared/hooks/useScript'
 import { AuthContext } from './shared/context/authContext'
 import { ScriptLoadContext } from './shared/context/scriptLoadContext'
@@ -192,7 +193,7 @@ const App: React.FC = () => {
       login: login, 
       logout: logout 
     }}>
-    <Router>
+    <HashRouter>
       <Layout>
         <main className={classes.appRoot}>
         <Suspense fallback={<div><CircularProgress /></div>}>
@@ -201,7 +202,7 @@ const App: React.FC = () => {
         </Suspense>
       </main>
       </Layout>
-    </Router>
+    </HashRouter>
   </AuthContext.Provider>
   </ThemeProvider>
 

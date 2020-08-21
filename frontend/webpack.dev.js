@@ -7,6 +7,9 @@ module.exports = merge (common, {
     devServer: {
         host: '0.0.0.0',
         historyApiFallback: true,
+        contentBase: './',
+        hot: true,
+        historyApiFallback: true,
         public: process.env.proxyhost ? process.env.proxyhost : '',
         proxy: {
             '/api': {

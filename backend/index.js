@@ -1,8 +1,10 @@
 const mongoose = require('mongoose')
 
-MONGODB_URL = process.env.MONGODB_URL
+// MONGODB_URL = process.env.MONGODB_URL
 
-mongoose.connect(MONGODB_URL, {
+mongoose.connect(
+  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@dang-thats-delicious-wll2p.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
+  , {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,

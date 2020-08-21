@@ -9,7 +9,12 @@ import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { useHttpClient } from '../../shared/hooks/http-hook'
-import UpdateStore from './UpdateStore'
+
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Hidden from '@material-ui/core/Hidden';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -76,9 +81,8 @@ const SearchResult: React.FC<SearchResultProps> = () => {
   const [fetchedStores, setFetchedStores] = useState<Store[]>()
   const [checkedList, setCheckedList] = useState([])
   const [hearts, setHearts] = useState<string[]>()
-  console.log(fetchedStores) 
 
-  console.log(loadedStores) // 7 times??
+  console.log(checkedList) // 7 times??
   // const getUserLocation = async () => { 
   //   console.log('ran')
   //   if (navigator.geolocation) {
@@ -94,45 +98,17 @@ const SearchResult: React.FC<SearchResultProps> = () => {
   // }
   
 
-  const fetchStores = useCallback(() => {
-    //  try { 
-      const responseData =  [
-        {
-          id:"5f103ec91b0ef45738179148",
-          tags:["chinese","lactoseFree"],
-          name:"Helo",
-          description:"asdfadsfasdfasdfadfs",
-          address:"oslo",
-          image:"backend/uploads/images/678fc1c0-c75a-11ea-9b12-c3196938cb98.jpeg",priceRange:"$$",
-          author: "5f0cb118070a4e218cb6c8fb",
-          slug:"Helo-1",
-          ratingsAverage:3,
-          ratingsQuantity:1
-        },
-        {
-          id:"5f103ec91b0ef45738179148",
-          tags:["chinese","lactoseFree"],
-          name:"Helo",
-          description:"asdfadsfasdfasdfadfs",
-          address:"oslo",
-          image:"backend/uploads/images/678fc1c0-c75a-11ea-9b12-c3196938cb98.jpeg",priceRange:"$$",
-          author: "5f0cb118070a4e218cb6c8fb",
-          slug:"Helo-1",
-          ratingsAverage:3,
-          ratingsQuantity:1
-        }
-        
-      ]
-      //  const responseData = await sendRequest('/api/stores', 'POST', JSON.stringify({ location }), { 
-      //    'Content-Type': 'application/json'
-      //  })
-      console.log(responseData)
-      setFetchedStores(responseData)
-      setLoadedStores(responseData)
-       
-    //  } catch (e) {
- 
-    //  }
+  const fetchStores = useCallback(async() => {
+     try { 
+    
+       const responseData = await sendRequest('/api/stores', 'POST', JSON.stringify({ location }), { 
+         'Content-Type': 'application/json'
+       })
+       setLoadedStores(responseData)
+       setFetchedStores(responseData)
+     } catch (e) {
+      
+     }
   }, [])
 
       
@@ -151,7 +127,6 @@ const SearchResult: React.FC<SearchResultProps> = () => {
   }, [auth.token])
 
   
-  // TODO - FIX FUNCTION IN USEEFFECT!!!!! usecallback?
   useEffect(() => {
     // const fetchStores = async() => {
     //   console.log(location)
@@ -179,13 +154,13 @@ const SearchResult: React.FC<SearchResultProps> = () => {
     //   }
     // }
     if (location) {
-      fetchStores()
+    fetchStores()
     }
     if (auth.token) {
 
       fetchHearts() //??? right place to put?
     }
-  }, [fetchStores])
+  }, [fetchStores, fetchHearts, auth.token, location])
   // TODO - CHANGE AUTH TOKEN?
 
   const storeDeleteHandler = (storeId: string) => {
@@ -253,11 +228,30 @@ const SearchResult: React.FC<SearchResultProps> = () => {
           )}
             <Typography variant='h4' style={{ textAlign: 'center' }}>Search Results</Typography>
             {error && !loadedStores && <Message message={error}/>}
-            {location && !isLoading && loadedStores && (
+            {location && !isLoading && loadedStores &&  (
           <div className={classes.storePageContent}>
 
+
             <div className={classes.filterList}>
-              <FilterList onCheckboxChange={checkboxHandler}/>
+            <Hidden smUp>
+            <Accordion style={{ boxShadow: 'none' }}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="filter"
+                id="filter"
+              >
+                <Typography variant="button">Filter</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <FilterList onCheckboxChange={checkboxHandler}/>
+              </AccordionDetails>
+            </Accordion>
+            
+            </Hidden>
+            <Hidden xsDown>
+
+            <FilterList onCheckboxChange={checkboxHandler}/>
+            </Hidden>
 
             </div>
             
