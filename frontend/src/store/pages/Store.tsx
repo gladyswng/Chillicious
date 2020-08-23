@@ -52,7 +52,7 @@ interface Store {
   description: string
   rating: number
   priceRange: string
-  image?: string[]
+  image?: string
   address?: string
   tags?: string[]
   location: {
@@ -122,7 +122,7 @@ const Store: React.FC<StoreProps> = ({}) => {
         {!isLoading && loadedStore && (
         <div className={classes.storeContent}>
           <div style={{width: '100%'}}>
-            <img src={loadedStore.image? `/api/${loadedStore.image}`: 'https://images.unsplash.com/photo-1506368144590-cf6438f1cdb5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80'} className={classes.image}/>
+            <img src={loadedStore.image} className={classes.image}/>
           </div>    
             <StoreInfo store={loadedStore}/>
             

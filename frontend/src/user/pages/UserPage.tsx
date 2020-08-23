@@ -104,7 +104,7 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
   const [hearts, setHearts] = useState<string[]>()
 // TODO - FIX ISSUE WITH NOT UNAUTHORIZED WHEN RELOAD PLUS REDIRECT IF RESTRICT ROUTE
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
-  console.log(loadedUser)
+
 
   const fetchUser = useCallback(async () => {
     try {

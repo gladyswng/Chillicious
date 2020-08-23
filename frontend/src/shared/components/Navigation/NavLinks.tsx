@@ -78,8 +78,10 @@ const NavLinks: React.FC<NavLinksProps> = ({}) => {
   }
 
   const storeBar = () => {
-    if (!heartList) {
-      return
+    if (!heartList || heartList.length === 0) {
+      return (
+        <Typography variant="body2" style={{ padding: '0 10px 0 10px', color: '#808080'}}>No Hearted Store</Typography>
+      )
     }
     const list = heartList.map((store: Store) => {
       return (
@@ -93,7 +95,7 @@ const NavLinks: React.FC<NavLinksProps> = ({}) => {
   
           <img 
           style={{ width: 40, height: 40, borderRadius: 3, marginRight: 10 }}
-          src={store.image? `/api/${store.image}` : "https://images.unsplash.com/photo-1506368144590-cf6438f1cdb5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80"}/>
+          src={store.image}/>
           <div >
           <Typography>{store.name}</Typography>
           <Typography variant='caption' style={{ color: '#808080' }}>{store.address}</Typography>

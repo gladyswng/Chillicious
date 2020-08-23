@@ -65,7 +65,7 @@ const StoreCard: React.FC<StoreCardProps> = ({store}) => {
           component="img"
           alt="storeImage"
           height="180"
-          image={`/api/${store.image}`}
+          image={store.image}
           title="restaurant"
         />
         <CardContent>

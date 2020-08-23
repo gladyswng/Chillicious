@@ -76,7 +76,7 @@ interface StoreInfoProps {
     description: string;
     rating: number
     priceRange: string
-    image?: string[];
+    image?: string;
     address?: string;
     tags?: string[]
     location: {

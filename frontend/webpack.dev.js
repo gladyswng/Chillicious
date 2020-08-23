@@ -13,8 +13,8 @@ module.exports = merge (common, {
         public: process.env.proxyhost ? process.env.proxyhost : '',
         proxy: {
             '/api': {
-              target: 'http://localhost:3000',
-              pathRewrite: {'^/api' : ''}
+              target: 'http://localhost:3000'
+              // pathRewrite: {'^/api' : ''}
             }
           }      
     }

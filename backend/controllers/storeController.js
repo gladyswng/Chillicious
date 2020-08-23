@@ -7,8 +7,7 @@ const Review = require('../models/Review')
 const HttpError = require('../models/http-error')
 const getCoordsForAddress = require('../util/location')
 const { body, validationResult } = require('express-validator')
-const { search } = require('../app')
-const { Console } = require('console')
+const fileDelete = require('../middleware/file-delete')
 
 
 exports.getStores = async (req, res, next) => {
@@ -22,10 +21,10 @@ exports.getStores = async (req, res, next) => {
     try {
       
       if (req.body.location){
-        console.log(req.body.location)
+  
         const coordinates = await getCoordsForAddress(req.body.location)
         searchCoordinates= [coordinates.lng, coordinates.lat ]
-        console.log(searchCoordinates)
+      
         
         
       } else {
@@ -196,7 +195,7 @@ exports.createStore = async (req, res, next) => {
     address: address,
     //image: '/api/' + req.file. 
     // We can store the full url here but we want to prepend it on the frontend so we only save the file path here on server
-    image: req.file.path,
+    image: req.file.location,
     priceRange,
     tags
    
@@ -215,7 +214,6 @@ exports.createStore = async (req, res, next) => {
       new HttpError('Could not find user', 404)
     )
   }
-  console.log(user)
 
     try {
       // TODO - ADD SESSION HERE!!!
@@ -263,7 +261,6 @@ exports.validateRegister = (req, res, next) => {
   const errors = validationResult(req)
   if (errors.isEmpty()) {
 
-      console.log(req.body)
     return next()
   }
   
@@ -346,20 +343,26 @@ exports.updateStore = async (req, res, next) => {
       })
 
       //TODO - Message not showing, showing mongodb's message instead
+
+     
       let imageSource
       if (req.file === undefined) {
         imageSource = req.body.image
       } else {
-        imageSource = req.file.path
-        fs.unlink(store.image, err => {
-          console.log(err)
-        })
+        imageSource = req.file.location
+        // TODO - DELETE PHOTO IN BUCKET 
+        fileDelete(store.image)
+        // fs.unlink(store.image, err => {
+
+        //   console.log(err)
+        // })
         
       }
-      
+     
       updates.forEach(update => {
           store[update] = req.body[update]
       })
+      console.log(store.image)
       // TODO - CHANGE WAY TO SAVE HERE
       store.address = req.body.address.toLowerCase()
       store.image = imageSource
@@ -403,11 +406,12 @@ exports.deleteStore = async (req, res, next) => {
 
         await Store.findByIdAndDelete(req.params.id)
 
-        const imagePath = storeExisted.image
-
-        fs.unlink(imagePath, err => {
-          console.log(err)
-        })
+        // TODO - DELETE PHOTO IN BUCKET 
+        fileDelete(storeExisted.image)
+        // const imagePath = storeExisted.image
+        // fs.unlink(imagePath, err => {
+        //   console.log(err)
+        // })
         // const userReview = await Review.findOne({ author: req.user._id, store: req.params.id })
 
         if (storeExisted.reviews.length > 0) {

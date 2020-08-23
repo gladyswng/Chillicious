@@ -6,11 +6,13 @@ const routes = require('./routes/index')
 const bodyParser = require('body-parser')
 const HttpError = require('./models/http-error')
 
+
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-app.use(express.static(path.join(__dirname, 'dist')))
+// app.use(express.static(path.join(__dirname, 'dist')))
 // static() means you don't execute it but just return it
-app.use('/api/uploads/images', express.static(path.join('uploads', 'images')))
+// app.use('/api/uploads/images', express.static(path.join('uploads', 'images')))
+
 app.use(express.static(path.join('dist')))
 
 // app.use((req, res, next) => {
@@ -30,9 +32,9 @@ app.use('/api', routes)
 app.use(express.json())
 
 
-// app.use((req, res, next) => {
-//   res.sendFile(path.resolve(__dirname, 'dist', 'index.html'))
-// })
+app.use((req, res, next) => {
+  res.sendFile(path.resolve(__dirname, 'dist', 'index.html'))
+})
 
 app.use((req, res, next) => {
   console.log(req)
@@ -43,6 +45,7 @@ app.use((req, res, next) => {
 
 
 app.use((error, req, res, next) => {
+  
   if (req.file) {
     // cb func on unlink trigger when deletion is done
     fs.unlink(req.file.path, (err) => {

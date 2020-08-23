@@ -5,7 +5,7 @@ const { body, validationResult } = require('express-validator')
 const fileUpload = require('../middleware/file-upload')
 const crypto = require('crypto')
 const nodemailer = require("nodemailer")
-
+const fileDelete = require('../middleware/file-delete')
 
 
 
@@ -145,7 +145,6 @@ exports.getHearts = async (req, res, next) => {
 }
 
 exports.updateProfile = async (req, res, next) => {
-  console.log(req.body)
     
     const updates = Object.keys(req.body)
     const allowedUpdates = ['name', 'image']
@@ -160,12 +159,14 @@ exports.updateProfile = async (req, res, next) => {
       if (req.file === undefined) {
         imageSource = req.body.image
       } else if (req.file && req.user.avatar) {
-        imageSource = req.file.path
-        fs.unlink(req.user.avatar, err => {
-        console.log(err)
-        })  
+        imageSource = req.file.location
+        console.log(req.file.location)
+        fileDelete(req.user.avatar)
+        // fs.unlink(req.user.avatar, err => {
+        // console.log(err)
+        // })  
       } else {
-        imageSource = req.file.path
+        imageSource = req.file.location
       }
     try {
         updates.forEach(update => {
@@ -187,7 +188,6 @@ exports.updateProfile = async (req, res, next) => {
 }
 
 exports.logout = async (req, res) => {
-  console.log('logout')
     try {
         // user info already fetched from auth
         

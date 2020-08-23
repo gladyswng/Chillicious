@@ -11,9 +11,10 @@ const auth = require('../middleware/auth')
 
 router.get('/', storeController.getStores) 
 router.post('/stores', storeController.getStores) 
-router.get('store/add', auth, storeController.addStore)
+router.get('/store/add', auth, storeController.addStore)
 router.get('/store/:slug', storeController.getStoreBySlug)
 // Submit storeForm - when add''
+
 router.post('/store/add', auth, 
 fileUpload.single('image'),
 storeController.storeValidationRules(),
