@@ -4,7 +4,8 @@ import Message from '../../shared/components/UIElements/Message'
 import StoreInfo from '../components/StoreInfo'
 import { useHttpClient } from '../../shared/hooks/http-hook'  
 import { AuthContext } from '../../shared/context/authContext'
-import StoreHeart from '../components/StoreHeart'
+import HeartButton from '../components/HeartButton'
+import ShareButton from '../components/ShareButton'
 
 import ReviewField from '../components/ReviewField'
 import { makeStyles } from '@material-ui/core/styles'
@@ -31,12 +32,24 @@ const useStyles = makeStyles((theme) => ({
       width: '90%',
     }
   },
-  heartIcon: {
+  // heartIcon: {
+  //   position: 'absolute', 
+  //   top: 100, 
+  //   right: 200, 
+  //   zIndex: 10, 
+  //   backgroundColor: '#FFFFFF'
+  // }
+  shareLikeButtons: {
     position: 'absolute', 
-    top: 100, 
-    right: 200, 
+    top: 120, 
+    right: 160, 
     zIndex: 10, 
-    backgroundColor: '#FFFFFF'
+
+    [theme.breakpoints.down('xs')]: {
+      top: 80, 
+      right: 50
+
+    }
   }
 
 }));
@@ -63,6 +76,7 @@ interface Store {
   image?: string
   address?: string
   tags?: string[]
+  slug: string
   location: {
       coordinates: number[]
   };
@@ -127,7 +141,10 @@ const Store: React.FC<StoreProps> = ({}) => {
     let mounted = true
    
     fetchStore(mounted)
-    fetchHearts()
+    if (auth.token) {
+      fetchHearts()
+
+    }
  
     return () => {
       mounted = false
@@ -154,8 +171,13 @@ const Store: React.FC<StoreProps> = ({}) => {
         <div className={classes.storeContent}>
           <div style={{width: '100%'}}>
             <img src={loadedStore.image} className={classes.image}/>
-            {hearts && <StoreHeart storeId={loadedStore.id} hearts={hearts} fontSize="large"/>}
+            <div className={classes.shareLikeButtons}>
+
+              {hearts && <HeartButton storeId={loadedStore.id} hearts={hearts} fontSize="large"/>}
+              <ShareButton storeSlug={loadedStore.slug}/>
+            </div>
           </div>    
+          
             <StoreInfo store={loadedStore}/>
             
           

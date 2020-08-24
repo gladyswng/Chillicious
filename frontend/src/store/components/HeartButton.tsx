@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react'
 import { useParams } from 'react-router-dom'
 import Message from '../../shared/components/UIElements/Message'
-import StoreInfo from '../components/StoreInfo'
+import StoreInfo from './StoreInfo'
 import { useHttpClient } from '../../shared/hooks/http-hook'  
 import { AuthContext } from '../../shared/context/authContext'
+import Hidden from '@material-ui/core/Hidden'
 
-
-import ReviewField from '../components/ReviewField'
+import ReviewField from './ReviewField'
 import { makeStyles } from '@material-ui/core/styles'
 import { Typography } from '@material-ui/core'
 import FavoriteIcon from '@material-ui/icons/Favorite'
@@ -16,18 +16,19 @@ import IconButton from '@material-ui/core/IconButton'
 
 const useStyles = makeStyles((theme) => ({
 
-  heartIcon: {
-    position: 'absolute', 
-    top: 100, 
-    right: 200, 
-    zIndex: 10, 
+  heartButton: {
     backgroundColor: '#FFFFFF',
     '&:hover': {
       backgroundColor: '#C0C0C0',
-    }
+    },
+    marginBottom: 10
   },
-
-
+  heartIcon: {
+    [theme.breakpoints.down('xs')]: {
+      fontSize: "inherit"
+    }
+  }
+  
 }));
 
 
@@ -37,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 interface StoreHeartProps {
   storeId: string
   hearts: string[]
-  fontSize?: "large" | "small"
+  fontSize: "large" | "small" | "inherit" | "default"
   style?: React.CSSProperties
 }
 
@@ -86,10 +87,12 @@ const StoreHeart: React.FC<StoreHeartProps> = ({ storeId, hearts, fontSize }) =>
 
     return (
       <IconButton aria-label="add hearts" 
-      className={fontSize === "large"? classes.heartIcon : null}
+      // className={fontSize === "large"? classes.heartButton : null}
+      className={classes.heartButton}
       onClick={heartHandler}
       >
-        <FavoriteIcon color={hearted? "primary" : "inherit"} fontSize={fontSize || "default"}/>
+        <FavoriteIcon color={hearted? "primary" : "inherit"}  className={classes.heartIcon} fontSize={fontSize}/>
+
       </IconButton>
     );
 }

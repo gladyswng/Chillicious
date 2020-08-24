@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
   storeInfoContent: {
     padding: 12, 
-    height: 250, 
+    height: 200, 
     display: 'flex', 
     justifyContent: 'space-between',
     [theme.breakpoints.down('xs')]: {

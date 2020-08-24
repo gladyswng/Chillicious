@@ -18,7 +18,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip'
 import { Box } from '@material-ui/core';
-import StoreHeart from '../../store/components/StoreHeart';
+import StoreHeart from './HeartButton';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -33,8 +33,8 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   cardMedia: {
-    height: 220, 
-    minWidth: 220
+    height: 230, 
+    minWidth: 230
   },
    
   cardContent: {
@@ -44,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
     [theme.breakpoints.down('xs')]: {
       flexDirection: 'column'
+    },
+    '&:last-child': {
+      padding: '0 10px 10px 0'
     }
   },
   cardButtons: {
@@ -217,7 +220,7 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, onHeartCh
 
         <div>
           {hearts && 
-            <StoreHeart storeId={store.id} hearts={hearts}/>
+            <StoreHeart storeId={store.id} hearts={hearts} fontSize="default"/>
           }
 
 
