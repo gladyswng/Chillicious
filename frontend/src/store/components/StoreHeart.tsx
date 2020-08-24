@@ -35,13 +35,13 @@ const useStyles = makeStyles((theme) => ({
 
 
 interface StoreHeartProps {
-  loadedStore: {
-    id: string
-  },
+  storeId: string
   hearts: string[]
+  fontSize?: "large" | "small"
+  style?: React.CSSProperties
 }
 
-const StoreHeart: React.FC<StoreHeartProps> = ({ loadedStore, hearts }) => {
+const StoreHeart: React.FC<StoreHeartProps> = ({ storeId, hearts, fontSize }) => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
@@ -53,7 +53,7 @@ const StoreHeart: React.FC<StoreHeartProps> = ({ loadedStore, hearts }) => {
   }
 
   const heartHandler = () => {
-    sendRequest(`/api/api/stores/${loadedStore.id}/heart`, 'POST', null,  { 
+    sendRequest(`/api/api/stores/${storeId}/heart`, 'POST', null,  { 
       Authorization: 'Bearer ' + auth.token,
       'Content-Type': 'application/json'
     })
@@ -79,17 +79,17 @@ const StoreHeart: React.FC<StoreHeartProps> = ({ loadedStore, hearts }) => {
       return
     }
    
-    if (hearts && hearts.includes(loadedStore.id)) {
+    if (hearts && hearts.includes(storeId)) {
       setHearted(true)
     }
   }, [hearts])
 
     return (
       <IconButton aria-label="add hearts" 
-      className={classes.heartIcon}
+      className={fontSize === "large"? classes.heartIcon : null}
       onClick={heartHandler}
       >
-        <FavoriteIcon color={hearted? "primary" : "inherit"} fontSize="large"/>
+        <FavoriteIcon color={hearted? "primary" : "inherit"} fontSize={fontSize || "default"}/>
       </IconButton>
     );
 }

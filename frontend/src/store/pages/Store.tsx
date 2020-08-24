@@ -154,7 +154,7 @@ const Store: React.FC<StoreProps> = ({}) => {
         <div className={classes.storeContent}>
           <div style={{width: '100%'}}>
             <img src={loadedStore.image} className={classes.image}/>
-            {auth.token && <StoreHeart loadedStore={loadedStore} hearts={hearts}/>}
+            {hearts && <StoreHeart storeId={loadedStore.id} hearts={hearts} fontSize="large"/>}
           </div>    
             <StoreInfo store={loadedStore}/>
             
