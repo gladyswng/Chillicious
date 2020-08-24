@@ -110,8 +110,8 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
   const [loadedInputs, setLoadedInputs] = useState(false)
 
   const priceRange = inputs.priceRange
-  const category = ['chinese', 'indian', 'korean', 'mexican']
-  const dietaryRestrictions = ['lactoseFree', 'vegetarianFriendly', 'veganOptions', 'glutenFree']
+  const category = ['chinese', 'indian', 'korean', 'mexican', 'other']
+  const dietaryRestrictions = ['MeatLover', 'lactoseFree', 'vegetarianFriendly', 'veganOptions', 'glutenFree']
   const priceLevel = ['$', '$$', '$$$', '$$$$']
 
 

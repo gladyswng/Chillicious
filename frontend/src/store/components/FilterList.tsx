@@ -96,9 +96,9 @@ const FilterList: React.FC<FilterListProps> = ({ onCheckboxChange }) => {
 
   const priceRange = ['$', '$$', '$$$', '$$$$']
 
-  const category = ['chinese', 'indian', 'korean', 'mexican']
+  const category = ['chinese', 'indian', 'korean', 'mexican', 'other']
 
-  const dietaryRestrictions = ['lactoseFree', 'vegetarianFriendly', 'veganOptions', 'glutenFree']
+  const dietaryRestrictions = ['MeatLover', 'lactoseFree', 'vegetarianFriendly', 'veganOptions', 'glutenFree']
 
 
 

@@ -32,9 +32,9 @@ app.use('/api', routes)
 app.use(express.json())
 
 
-app.use((req, res, next) => {
-  res.sendFile(path.resolve(__dirname, 'dist', 'index.html'))
-})
+// app.use((req, res, next) => {
+//   res.sendFile(path.resolve(__dirname, 'dist', 'index.html'))
+// })
 
 app.use((req, res, next) => {
   console.log(req)

@@ -1,16 +1,16 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import Message from '../../shared/components/UIElements/Message'
 import StoreInfo from '../components/StoreInfo'
 import { useHttpClient } from '../../shared/hooks/http-hook'  
-
-
-import { makeStyles } from '@material-ui/core/styles'
+import { AuthContext } from '../../shared/context/authContext'
+import StoreHeart from '../components/StoreHeart'
 
 import ReviewField from '../components/ReviewField'
+import { makeStyles } from '@material-ui/core/styles'
 import { Typography } from '@material-ui/core'
-import { Console } from 'console'
-
+import FavoriteIcon from '@material-ui/icons/Favorite'
+import IconButton from '@material-ui/core/IconButton'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -20,7 +20,8 @@ const useStyles = makeStyles((theme) => ({
     objectFit: 'cover',
     [theme.breakpoints.down('xs')]: {
       height: 200
-    }
+    },
+    borderRadius: 4
   },
   storeContent: {
     marginTop: 20, 
@@ -29,6 +30,13 @@ const useStyles = makeStyles((theme) => ({
       marginTop: 10, 
       width: '90%',
     }
+  },
+  heartIcon: {
+    position: 'absolute', 
+    top: 100, 
+    right: 200, 
+    zIndex: 10, 
+    backgroundColor: '#FFFFFF'
   }
 
 }));
@@ -69,21 +77,41 @@ interface StoreProps {
 
 const Store: React.FC<StoreProps> = ({}) => {
   const classes = useStyles()
+  const auth = useContext(AuthContext)
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
   const [loadedStore, setLoadedStore] = useState<Store>()
- 
+
+  const [hearts, setHearts] = useState<string[]>()
 
   const { slug } = useParams()
+
+
+  const fetchHearts = useCallback(async() => {
+    console.log('fetch hearts')
+    try {
+      const heartsData = await sendRequest('/api/user/me/hearts', 'GET', null, { 
+        Authorization: 'Bearer ' + auth.token,
+        'Content-Type': 'application/json'
+      })
+      
+      setHearts(heartsData)
+    } catch (e) {
+
+    }
+  }, [auth.token])
+
 
   const fetchStore = useCallback(async (mounted) => {
     try {
       if (slug) {
 
         const store = await sendRequest(`/api/store/${slug}`)
-
+        
         
         if (mounted) {
           setLoadedStore(store)
+      
+          
         }
   
       }
@@ -99,16 +127,19 @@ const Store: React.FC<StoreProps> = ({}) => {
     let mounted = true
    
     fetchStore(mounted)
+    fetchHearts()
+ 
     return () => {
       mounted = false
     }
   }, [fetchStore])
-  // TODO - CHANGE TYPE
+  
+
   const changeReviewHandler = (store: Store) => {
     setLoadedStore(store)
   }
 
-  
+
 
   // const reviewDeleteHandler = (store: any) => {
   //   setLoadedStore(store)
@@ -123,6 +154,7 @@ const Store: React.FC<StoreProps> = ({}) => {
         <div className={classes.storeContent}>
           <div style={{width: '100%'}}>
             <img src={loadedStore.image} className={classes.image}/>
+            {auth.token && <StoreHeart loadedStore={loadedStore} hearts={hearts}/>}
           </div>    
             <StoreInfo store={loadedStore}/>
             

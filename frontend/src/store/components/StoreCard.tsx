@@ -118,7 +118,7 @@ interface StoreItemProps {
 
 }
 const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, onHeartChange}) => {
-  console.log(store)
+  
   const classes = useStyles()
   const auth = useContext(AuthContext)
   const history = useHistory()
@@ -131,7 +131,6 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, onHeartCh
     if (hearts && hearts.includes(store.id)) {
       setHearted(true)
     }
-
   }, [hearts])
 
   const handleModalOpen = () => {
@@ -140,7 +139,6 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, onHeartCh
   const handleModalClose = () => {
     setModalOpen(false);
   }
-
 
   const toggleHeart = () => {
     setHearted(!hearted)
@@ -154,7 +152,6 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, onHeartCh
     toggleHeart()
     onHeartChange(store.id)
 
-    
   }
 
 
