@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
   storeInfoContent: {
     padding: 12, 
-    height: 200, 
+    height: 220, 
     display: 'flex', 
     justifyContent: 'space-between',
     [theme.breakpoints.down('xs')]: {
@@ -59,6 +59,9 @@ const useStyles = makeStyles((theme) => ({
     wordBreak: 'break-all'
   },
   textSection: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
     width: '60%',
     paddingRight: 10,
     [theme.breakpoints.down('xs')]: {

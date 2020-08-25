@@ -8,7 +8,8 @@ import Message from '../../shared/components/UIElements/Message'
 import ImageUpload from '../../shared/components/UIElements/ImageUpload'
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles'
-import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button'
+import { useSnackbar } from 'notistack'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -34,11 +35,12 @@ interface UserProfileProps {
 
 const UserProfile: React.FC<UserProfileProps> = (props) => {
   const classes = useStyles()
+  const { enqueueSnackbar } = useSnackbar()
   const auth = useContext(AuthContext)
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
   
   const { userName, email, avatar, avatarChange } = props
-  const [message, setMessage] = useState()
+  // const [message, setMessage] = useState()
   
   const [formState, inputHandler, setFormData] = useForm({
   userName: {
@@ -72,7 +74,7 @@ const profileSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
       Authorization: 'Bearer ' + auth.token
     } 
     )
-    setMessage(response.message)
+    enqueueSnackbar(response.message)
     avatarChange(response.userProfile)
     // setIsLoading(false)
     // setError(null)
@@ -107,7 +109,7 @@ const profileSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
 
       <form  className={classes.profileRoot} noValidate autoComplete="off" onSubmit={profileSubmitHandler}>
       {error && <Message message={error}/>}
-      {message && <Message message={message}/>}
+      {/* {message && <Message message={message}/>} */}
         <div>
         <Input 
           id="userName" 

@@ -3,6 +3,9 @@ import { useHistory } from 'react-router-dom'
 import StoreForm from '../components/StoreForm'
 import { useForm } from '../../shared/hooks/store-form-hook'
 import { useHttpClient } from '../../shared/hooks/http-hook'
+
+import { useSnackbar } from 'notistack'
+
 import Typography from '@material-ui/core/Typography';
 import Message from '../../shared/components/UIElements/Message'
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -13,6 +16,7 @@ interface AddStoreProps {
 }
 
 const AddStore: React.FC<AddStoreProps> = ({}) => {
+  const { enqueueSnackbar } = useSnackbar()
   const auth = useContext(AuthContext);
   const history = useHistory()
   
@@ -98,7 +102,7 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
             )
             
             history.goBack()
-           
+            enqueueSnackbar('Store added')
           //Redirect to different page
         } catch (e) {
          

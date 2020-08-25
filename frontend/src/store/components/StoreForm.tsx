@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useReducer, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH } from '../../util/validators'
+import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH, VALIDATOR_MAXLENGTH } from '../../util/validators'
 
 import ImageUpload from '../../shared/components/UIElements/ImageUpload'
 
@@ -167,8 +167,8 @@ const StoreForm: React.FC<StoreFormProps> = (props) => {
         variant="outlined"
         multiline
         rows={4}
-        errorMessage="Please provide more than 15 characters"
-        validators={[VALIDATOR_REQUIRE(), VALIDATOR_MINLENGTH(15)] }
+        errorMessage="Please provide 15-125 characters"
+        validators={[VALIDATOR_REQUIRE(), VALIDATOR_MINLENGTH(15), VALIDATOR_MAXLENGTH(125)] }
         onInput={inputHandler}
         blur={blur}
         />

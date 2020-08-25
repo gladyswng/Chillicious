@@ -13,7 +13,7 @@ interface MapProps {
 }
 const useStyles = makeStyles((theme) => ({
   map: {
-    height: 200,
+    height: 220,
     width: '100%'
   },
   mapWrapper: {

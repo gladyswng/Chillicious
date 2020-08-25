@@ -8,6 +8,8 @@ import { useForm } from '../../shared/hooks/store-form-hook'
 import { AuthContext } from '../../shared/context/authContext'
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+import { useSnackbar } from 'notistack'
+
 interface UpdateStoreProps {
 
 }
@@ -23,6 +25,7 @@ interface checkbox {
 }
 
 const UpdateStore: React.FC<UpdateStoreProps> = ({}) => {
+  const { enqueueSnackbar } = useSnackbar()
   const auth = useContext(AuthContext)
   const history = useHistory()
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
@@ -89,6 +92,7 @@ const UpdateStore: React.FC<UpdateStoreProps> = ({}) => {
         const store = responseData
 
         setLoadedStore(store)
+       
 
 
         let checkbox = {
@@ -172,6 +176,8 @@ const updateSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
           Authorization: 'Bearer ' + auth.token,
         } 
       )
+      enqueueSnackbar('Store updated')
+      
       history.push('/stores') // TODO - CHANGE PAGE HERE TO USER STORE PAGE
     } catch (e) {
 

@@ -236,7 +236,7 @@ exports.storeValidationRules = () => {
       
       body('description')
       .not().isEmpty().withMessage('You must supply a description')
-      .isLength({ min: 15 }).withMessage('Description must be at least 15 chars long'),
+      .isLength({ min: 15, max: 125 }).withMessage('Description must be at 15-125 chars long'),
 
       body('priceRange')
       .not().isEmpty().withMessage('You must supply price range'),

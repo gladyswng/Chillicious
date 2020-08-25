@@ -7,6 +7,10 @@ import Link from '@material-ui/core/Link'
 import { useHttpClient } from '../../shared/hooks/http-hook'
 import { AuthContext } from '../../shared/context/authContext'
 import { useHistory } from 'react-router-dom'
+
+import { useSnackbar } from 'notistack'
+
+
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -56,14 +60,20 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     [theme.breakpoints.down('xs')]: {
       flexDirection: 'row',
-      width: '80%'
+      width: '80%',
+      marginLeft: 10
+
     }
 
 
   },
-  heart: {
+
+  heartButton: {
+    
     [theme.breakpoints.down('xs')]: {
-      marginLeft: 250
+      position: 'absolute',
+      marginLeft: 300,
+      marginTop: -430,
     }
   },
   title: {
@@ -123,6 +133,7 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, onHeartCh
   
   const classes = useStyles()
   const auth = useContext(AuthContext)
+  const { enqueueSnackbar } = useSnackbar()
   const history = useHistory()
   const [modalOpen, setModalOpen] = useState(false)
 
@@ -160,6 +171,7 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, onHeartCh
       
       // sendDeleteRequest(store.id)
       onDelete(store.id)
+      enqueueSnackbar('Store deleted')
       
     } catch (e) {
       
@@ -172,6 +184,7 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, onHeartCh
     
     <Card className={classes.storeCardRoot} variant="outlined" >
        <CardMedia className={classes.cardMedia}  image={store.image}/>
+       
 
       <CardContent  className={classes.cardContent}>
         <div style={{ padding: 8 }}>
@@ -219,10 +232,13 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, onHeartCh
         </div>
 
         <div>
-          {hearts && 
-            <StoreHeart storeId={store.id} hearts={hearts} fontSize="default"/>
-          }
+          
+        <div className={classes.heartButton}>
 
+          {hearts && 
+              <StoreHeart storeId={store.id} hearts={hearts} fontSize="default"/>
+            }
+          </div>
 
           <div className={classes.cardButtons}>
 

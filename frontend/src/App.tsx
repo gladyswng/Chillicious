@@ -17,6 +17,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import { Typography } from "@material-ui/core"
+import { SnackbarProvider } from 'notistack'
 
 // import UserPage from './user/pages/UserPage'
 // import UserSignUp from './user/pages/UserSignUp'
@@ -184,6 +185,9 @@ const App: React.FC = () => {
   return (
   
   <ThemeProvider theme={theme}>
+    <SnackbarProvider maxSnack={2}>
+ 
+    
     {/* Here we bind the value we managed with context, which we initialize to the object in authContext, and bind this initial value to a new value, whenever this value here changes, all the componentes that listen to our context, so that active tap into the context we re-render, not all the components that are wrapped by provider but only the components where we add code to listen to our context. When bind when isLoggedIn changes, new value will be passed down*/}
   <AuthContext.Provider 
     value={{ 
@@ -204,6 +208,7 @@ const App: React.FC = () => {
       </Layout>
     </HashRouter>
   </AuthContext.Provider>
+  </SnackbarProvider>
   </ThemeProvider>
 
   )

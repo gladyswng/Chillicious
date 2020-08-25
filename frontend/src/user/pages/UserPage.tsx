@@ -7,6 +7,9 @@ import { AuthContext } from '../../shared/context/authContext'
 import { useHttpClient } from '../../shared/hooks/http-hook'  
 import TabPanel from '../../shared/components/UIElements/TabPanel'
 
+
+
+
 import { makeStyles } from '@material-ui/core/styles';
 import Hidden from '@material-ui/core/Hidden'
 import ListAltIcon from '@material-ui/icons/ListAlt'
@@ -94,8 +97,8 @@ interface User {
 
 
 const UserPage: React.FC<UserPageProps> = ({}) => {
-
   const classes = useStyles()
+  
   const auth = useContext(AuthContext)
   
 
@@ -152,6 +155,7 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
       user.stores = prevUser.stores.filter((store: Store)=> store.id !== storeId)
       return user
     })
+    
   }
 
   const changeReviewHandler = (updatedUser: User) => {

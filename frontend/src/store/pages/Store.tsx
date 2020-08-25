@@ -13,7 +13,6 @@ import { Typography } from '@material-ui/core'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import IconButton from '@material-ui/core/IconButton'
 
-
 const useStyles = makeStyles((theme) => ({
   image: {
     height: 320, 
@@ -42,9 +41,12 @@ const useStyles = makeStyles((theme) => ({
   shareLikeButtons: {
     position: 'absolute', 
     top: 120, 
-    right: 160, 
+    right: 180, 
     zIndex: 10, 
-
+    [theme.breakpoints.down('md')]: {
+      top: 120, 
+      right: 120,
+    },
     [theme.breakpoints.down('xs')]: {
       top: 80, 
       right: 50
@@ -91,6 +93,7 @@ interface StoreProps {
 
 const Store: React.FC<StoreProps> = ({}) => {
   const classes = useStyles()
+
   const auth = useContext(AuthContext)
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
   const [loadedStore, setLoadedStore] = useState<Store>()
@@ -120,12 +123,8 @@ const Store: React.FC<StoreProps> = ({}) => {
       if (slug) {
 
         const store = await sendRequest(`/api/store/${slug}`)
-        
-        
         if (mounted) {
           setLoadedStore(store)
-      
-          
         }
   
       }

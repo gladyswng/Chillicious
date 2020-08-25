@@ -4,8 +4,9 @@ import Message from '../../shared/components/UIElements/Message'
 import StoreInfo from './StoreInfo'
 import { useHttpClient } from '../../shared/hooks/http-hook'  
 import { AuthContext } from '../../shared/context/authContext'
-import Hidden from '@material-ui/core/Hidden'
+import { useSnackbar } from 'notistack'
 
+import Hidden from '@material-ui/core/Hidden'
 import ReviewField from './ReviewField'
 import { makeStyles } from '@material-ui/core/styles'
 import { Typography } from '@material-ui/core'
@@ -44,6 +45,7 @@ interface StoreHeartProps {
 
 const StoreHeart: React.FC<StoreHeartProps> = ({ storeId, hearts, fontSize }) => {
   const classes = useStyles()
+  const { enqueueSnackbar } = useSnackbar()
   const auth = useContext(AuthContext)
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
 
@@ -59,6 +61,7 @@ const StoreHeart: React.FC<StoreHeartProps> = ({ storeId, hearts, fontSize }) =>
       'Content-Type': 'application/json'
     })
     toggleHeart()
+    enqueueSnackbar(hearted? 'Removed from hearts' : 'Added to hearts')
 
   }
   // const fetchHearts = useCallback(async() => {
@@ -83,7 +86,14 @@ const StoreHeart: React.FC<StoreHeartProps> = ({ storeId, hearts, fontSize }) =>
     if (hearts && hearts.includes(storeId)) {
       setHearted(true)
     }
+
   }, [hearts])
+
+  // useEffect(() => {
+
+  //   enqueueSnackbar(hearted? 'Added to hearts' : 'Removed from hearts')
+    
+  // }, [hearted])
 
     return (
       <IconButton aria-label="add hearts" 
