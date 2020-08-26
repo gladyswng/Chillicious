@@ -76,9 +76,10 @@ const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId, onChange })
   const indexOfFirstTodo = indexOfLastTodo - 5
   const currentTodos = reviews.slice(indexOfFirstTodo, indexOfLastTodo)
 
-  // const handleChange = (event: any) => {
-  //   setSortBy(event.target.value);
-  // };
+  const handleSortChange = (event: any) => {
+    setSortBy(event.target.value)
+  }
+
   const pageChangeHandler = (e: React.MouseEvent<HTMLElement, MouseEvent>, value: number) => {
     setCurrentPage(value)
  }
@@ -122,11 +123,11 @@ const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId, onChange })
 
           <Paper variant="outlined" style={{ width: '50%', height: 28 }}>
             <SearchBar />
-          </Paper>
+          </Paper> */}
 
         
-        <SortByForm sortBy={sortBy} changeHandler={handleChange}/>
-        </div> */}
+        <SortByForm sortBy={sortBy} changeHandler={handleSortChange}/>
+        {/* </div> */}
         
 
         {reviews.length===0? <Typography variant="h6" style={{ padding: 12 }}>No reviews yet :(</Typography> : reviewList}

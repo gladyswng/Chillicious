@@ -40,17 +40,14 @@ const useStyles = makeStyles((theme) => ({
   // }
   shareLikeButtons: {
     position: 'absolute', 
-    top: 120, 
-    right: 180, 
     zIndex: 10, 
-    [theme.breakpoints.down('md')]: {
-      top: 120, 
-      right: 120,
-    },
+    top: '15%', 
+    right: '10%', 
+    marginRight: 30,
+    
     [theme.breakpoints.down('xs')]: {
-      top: 80, 
-      right: 50
-
+      marginRight: 0,
+      top: '10%'
     }
   }
 
