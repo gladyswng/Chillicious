@@ -67,7 +67,15 @@ exports.getStoreBySlug = async (req, res, next) => {
         const store = await Store.findOne({
             slug: req.params.slug
         }).populate({ path: 'author', select: 'name' }).populate('reviews')
-
+        
+        //, null, null, sort({ created: 1 })).exec(function (err) {
+        //   console.log(err)
+        // })
+        
+        
+        //('reviews', null, null, sort({ created: 1 })).exec()
+        //({ path: 'reviews', options: { sort: { created: 1 }}}).exec()
+        // .sort({ created: 1 })
         // TODO - EXCLUDE ID
         
         if (!store) {
@@ -78,6 +86,7 @@ exports.getStoreBySlug = async (req, res, next) => {
         }
         res.send(store)
     } catch (e) {
+      console.log(e)
       return next(
         new HttpError('Something went wrong, could not fetch store', 500)
       )

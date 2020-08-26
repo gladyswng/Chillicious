@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import ReviewCard from './ReviewCard'
 import { AuthContext } from '../../shared/context/authContext'
 
@@ -45,19 +45,21 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-interface ReviewFieldProps {
-  reviews: {
-    author: {
-      name: string
-      avatar?: string
-      _id: string
-    }
-    rating: number;
-    created: string;
-    description: string;
-    title: string;
+interface IReview {
+  author: {
+    name: string
+    avatar?: string
     _id: string
-  }[]
+  }
+  rating: number;
+  created: string;
+  description: string;
+  title: string;
+  _id: string
+}
+
+interface ReviewFieldProps {
+  reviews: IReview[]
   storeId: string
 
   onChange: (store: object) => void
@@ -68,23 +70,46 @@ const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId, onChange })
 
   const classes = useStyles()
   const auth = useContext(AuthContext)
-  const [sortBy, setSortBy] = useState('Latest')
+  const [sortBy, setSortBy] = useState()
+  // TODO - set hook
   const [currentPage, setCurrentPage] = useState(1)
-  
+  const [reviewList, setReviewList] = useState(reviews)
+
   const pageCount = Math.ceil(reviews.length / 5)
   const indexOfLastTodo = currentPage * 5
   const indexOfFirstTodo = indexOfLastTodo - 5
-  const currentTodos = reviews.slice(indexOfFirstTodo, indexOfLastTodo)
+
+  const currentTodos = reviewList.slice(indexOfFirstTodo, indexOfLastTodo)
+
+  // useEffect(() => {
+  //   setReviewList(reviews)
+  
+
+  // }, [reviews])
 
   const handleSortChange = (event: any) => {
-    setSortBy(event.target.value)
+    const value = event.target.value
+    setSortBy(value)
+    switch(value) {
+      case 'Latest': 
+        setReviewList(reviews.sort((a, b) => a.created > b.created ? -1: 1))
+        break
+      case 'Oldest': 
+        setReviewList(reviews.sort((a, b) => a.created < b.created ? -1: 1))
+        break
+      case 'Heighest':
+        setReviewList(reviews.sort((a, b) => a.rating > b.rating ? -1: 1))
+        break
+      case 'Lowest':
+      setReviewList(reviews.sort((a, b) => a.rating < b.rating ? -1: 1))
+    }
   }
 
   const pageChangeHandler = (e: React.MouseEvent<HTMLElement, MouseEvent>, value: number) => {
     setCurrentPage(value)
  }
  
-  const reviewList = currentTodos.map(review => {
+  const reviewCardList = currentTodos.map(review => {
     return (
       <ReviewCard 
       review={review}
@@ -130,7 +155,7 @@ const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId, onChange })
         {/* </div> */}
         
 
-        {reviews.length===0? <Typography variant="h6" style={{ padding: 12 }}>No reviews yet :(</Typography> : reviewList}
+        {reviews.length===0? <Typography variant="h6" style={{ padding: 12 }}>No reviews yet :(</Typography> : reviewCardList}
         {/* {reviewList} */}
         <Pagination 
           count={pageCount} 
