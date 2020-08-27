@@ -6,6 +6,7 @@ import { useForm } from '../../shared/hooks/form-hook'
 import { useHttpClient } from '../../shared/hooks/http-hook' 
 import Message from '../../shared/components/UIElements/Message'
 import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH, VALIDATOR_MATCH, VALIDATOR_EMAIL } from '../../util/validators'
+import { useSnackbar } from 'notistack'
 import Button from '@material-ui/core/Button'
 
 interface ResetPasswordProps {
@@ -14,6 +15,7 @@ interface ResetPasswordProps {
 
 const ResetPassword: React.FC<ResetPasswordProps> = ({}) => {
   const { token } = useParams()  
+  const { enqueueSnackbar } = useSnackbar()
   const [formState, inputHandler] = useForm({
     password: {
       value: '',
@@ -41,6 +43,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({}) => {
             'Content-Type': 'application/json'
           }
         )
+        enqueueSnackbar('Password updated')
         console.log(responseData)
       } catch (e) {
 

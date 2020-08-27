@@ -11,6 +11,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Avatar from '@material-ui/core/Avatar';
 import RatingBar from '../../shared/components/UIElements/RatingBar'
 import Typography from '@material-ui/core/Typography';
+import { useSnackbar } from 'notistack'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -81,6 +82,7 @@ interface ReviewCardProps {
 
 const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, storeName, userReview }) => {
   const classes = useStyles()
+  const { enqueueSnackbar } = useSnackbar()
   const auth = useContext(AuthContext)
   const {isLoading, error, sendRequest, clearError} = useHttpClient() 
   const { rating, author, title, description, created } = review
@@ -110,8 +112,9 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, stor
       const updatedStore = responseData.updatedStore
       const updatedUser = responseData.updatedUser
       console.log(updatedUser)
+      enqueueSnackbar('Review deleted')
 
-    userReview? onChange(updatedUser) : onChange(updatedStore)
+      userReview? onChange(updatedUser) : onChange(updatedStore)
 
     } catch (e) {
 

@@ -3,6 +3,8 @@ import { NavLink, useHistory } from 'react-router-dom'
 import LoginModal from '../../../user/components/LoginModal'
 import { AuthContext } from '../../context/authContext'
 import { useHttpClient } from '../../../shared/hooks/http-hook'
+import { useSnackbar } from 'notistack'
+
 import Link from '@material-ui/core/Link'
 import Drawer from './NavDrawer'
 
@@ -49,6 +51,7 @@ interface NavLinksProps {
 
 const NavLinks: React.FC<NavLinksProps> = ({}) => {
   const classes = useStyles()
+  const { enqueueSnackbar } = useSnackbar()
   // useContext allow us to tap into a context to listen to it. Here we can call use context and pass in the auth context, what we get back is an obj which will hold the latest context and this component will re-render whenever the context we're listening to changes
 
   const auth = useContext(AuthContext)
@@ -62,8 +65,7 @@ const NavLinks: React.FC<NavLinksProps> = ({}) => {
 
   const getHearts = async () => {
     const response = await sendRequest('/api/user/hearts', 'GET', null, { 
-      Authorization: 'Bearer ' + auth.token,
-      'Content-Type': 'application/json'
+      Authorization: 'Bearer ' + auth.token
     })
     setHeartList(response)
   }
@@ -123,7 +125,17 @@ const NavLinks: React.FC<NavLinksProps> = ({}) => {
     }
 
     setDrawerState(open);
-  };
+  }
+
+  const loggoutHandler = async () => {
+    await sendRequest('/api/logoutAll', 'GET', null, { 
+      Authorization: 'Bearer ' + auth.token,
+      'Content-Type': 'application/json'
+    })
+    auth.logout()
+    enqueueSnackbar(`You're loged out`)
+    
+  }
 
   return (
       <div className={classes.menu}>
@@ -171,7 +183,7 @@ const NavLinks: React.FC<NavLinksProps> = ({}) => {
 
         {auth.isLoggedIn && 
           <Hidden smDown>
-          <Button onClick={auth.logout}>Logout</Button>
+          <Button onClick={loggoutHandler}>Logout</Button>
           </Hidden>
         }
 

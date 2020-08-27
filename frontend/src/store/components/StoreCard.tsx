@@ -1,13 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { useHistory } from 'react-router-dom'
 
 import Modal from '../../shared/components/UIElements/Modal'
 import Message from '../../shared/components/UIElements/Message'
 import RatingBar from '../../shared/components/UIElements/RatingBar'
 import Link from '@material-ui/core/Link'
+import StoreHeart from './HeartButton';
 import { useHttpClient } from '../../shared/hooks/http-hook'
 import { AuthContext } from '../../shared/context/authContext'
-import { useHistory } from 'react-router-dom'
-
 import { useSnackbar } from 'notistack'
 
 
@@ -22,7 +22,8 @@ import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip'
 import { Box } from '@material-ui/core';
-import StoreHeart from './HeartButton';
+import Hidden from '@material-ui/core/Hidden'
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -37,8 +38,11 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   cardMedia: {
-    height: 230, 
-    minWidth: 230
+    height: 'auto', 
+    minWidth: 230,
+    [theme.breakpoints.down('xs')]: {
+      height: 230, 
+    }
   },
    
   cardContent: {
@@ -50,11 +54,12 @@ const useStyles = makeStyles((theme) => ({
       flexDirection: 'column'
     },
     '&:last-child': {
-      padding: '0 10px 10px 0'
+      padding: 0
     }
   },
   cardButtons: {
     display: 'flex', 
+    padding: 10,
     flexDirection: 'column', 
     height: '50%', 
     justifyContent: 'space-between',
@@ -69,11 +74,12 @@ const useStyles = makeStyles((theme) => ({
   },
 
   heartButton: {
-    
+    padding: 10,
+    textAlign: 'center',
     [theme.breakpoints.down('xs')]: {
       position: 'absolute',
-      marginLeft: 300,
-      marginTop: -430,
+      right: 0,
+      marginRight: '8%'
     }
   },
   title: {
@@ -132,8 +138,8 @@ interface StoreItemProps {
 const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, onHeartChange}) => {
   
   const classes = useStyles()
-  const auth = useContext(AuthContext)
   const { enqueueSnackbar } = useSnackbar()
+  const auth = useContext(AuthContext)
   const history = useHistory()
   const [modalOpen, setModalOpen] = useState(false)
 
@@ -183,7 +189,17 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, onHeartCh
   return (
     
     <Card className={classes.storeCardRoot} variant="outlined" >
+    
        <CardMedia className={classes.cardMedia}  image={store.image}/>
+       <Hidden smUp>
+
+            <div className={classes.heartButton}>
+
+              {hearts && 
+                <StoreHeart storeId={store.id} hearts={hearts} fontSize="default"/>
+              }
+            </div>
+        </Hidden>
        
 
       <CardContent  className={classes.cardContent}>
@@ -232,13 +248,16 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, onHeartCh
         </div>
 
         <div>
-          
-        <div className={classes.heartButton}>
 
-          {hearts && 
-              <StoreHeart storeId={store.id} hearts={hearts} fontSize="default"/>
-            }
-          </div>
+          <Hidden xsDown>
+
+            <div className={classes.heartButton}>
+
+              {hearts && 
+                <StoreHeart storeId={store.id} hearts={hearts} fontSize="default"/>
+              }
+            </div>
+          </Hidden>
 
           <div className={classes.cardButtons}>
 

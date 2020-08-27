@@ -28,6 +28,7 @@ export const useAuth = () => {
   }, []) // Thanks to useCallback it will only run once
   
   const logout = useCallback(() => {
+    
     setToken(null)
     setUserId(null)
     setTokenExpirationDate(null)

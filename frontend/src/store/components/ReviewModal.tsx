@@ -4,6 +4,9 @@ import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH, VALIDATOR_EMAIL } from '../../u
 import { useForm } from '../../shared/hooks/form-hook'
 import { useHttpClient } from '../../shared/hooks/http-hook' 
 import { AuthContext } from '../../shared/context/authContext'
+
+import { useSnackbar } from 'notistack'
+
 import RatingBar from '../../shared/components/UIElements/RatingBar'
 import Modal from '../../shared/components/UIElements/Modal'
 import { makeStyles } from '@material-ui/core/styles'
@@ -45,6 +48,7 @@ interface ReviewModalProps {
 
 const ReviewModal: React.FC<ReviewModalProps> = ({ storeId, onChange, buttonText, buttonStyle, review, userReview }) => {
   const classes = useStyles()
+  const { enqueueSnackbar } = useSnackbar()
   const auth = useContext(AuthContext)
   const history = useHistory()
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
@@ -118,7 +122,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ storeId, onChange, buttonText
        
        setModalOpen(false)
        
-       
+       enqueueSnackbar('Review updated')
        const store = responseData.updatedStore
        const user = responseData.updatedUser
        userReview? onChange(user) : onChange(store)

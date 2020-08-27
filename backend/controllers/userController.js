@@ -205,6 +205,7 @@ exports.logoutAll = async (req, res) => {
     try {
         req.user.tokens = []
         await req.user.save()
+        console.log('loged out')
         res.send()
     } catch (e) {
       return next(

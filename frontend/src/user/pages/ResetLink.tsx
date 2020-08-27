@@ -6,13 +6,15 @@ import { useHttpClient } from '../../shared/hooks/http-hook'
 import Message from '../../shared/components/UIElements/Message'
 import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH, VALIDATOR_MATCH, VALIDATOR_EMAIL } from '../../util/validators'
 import Button from '@material-ui/core/Button'
+import { useSnackbar } from 'notistack'
 
 interface ResetLinkProps {
 
 }
 
 const ResetLink: React.FC<ResetLinkProps> = ({}) => {
-  const [message, setMessage] = useState(null)
+  const { enqueueSnackbar } = useSnackbar()
+ 
   const [formState, inputHandler] = useForm({
     email: {
       value: '',
@@ -38,8 +40,8 @@ const ResetLink: React.FC<ResetLinkProps> = ({}) => {
           }
         )
 
-        setMessage(responseData.message)
-
+        // setMessage(responseData.message)
+        enqueueSnackbar('A reset link has been sent')
 
       } catch (e) {
 
@@ -48,7 +50,7 @@ const ResetLink: React.FC<ResetLinkProps> = ({}) => {
     return (
       <div style={{ width: '80%' }}>
         <Typography variant='h4' style={{ marginTop: 20, marginBottom: 20 }}>Reset Password</Typography>
-      {message && <Message message={message} />}
+      {error && <Message message={error} />}
 
       <form action="" onSubmit={submitHandler}>
         <Input 

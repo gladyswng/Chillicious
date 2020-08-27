@@ -5,9 +5,9 @@ import Message from '../../shared/components/UIElements/Message'
 import Input from '../../shared/components/UIElements/Input'
 import { useForm } from '../../shared/hooks/form-hook'
 import { useHttpClient } from '../../shared/hooks/http-hook' 
-
 import { AuthContext } from '../../shared/context/authContext'
 import Modal from '../../shared/components/UIElements/Modal'
+import { useSnackbar } from 'notistack'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -31,6 +31,7 @@ interface LoginModalProps {
 
 const LoginModal: React.FC<LoginModalProps> = (props) => {
   const classes = useStyles()
+  const { enqueueSnackbar } = useSnackbar()
   const auth = useContext(AuthContext)
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
 
@@ -86,8 +87,8 @@ const LoginModal: React.FC<LoginModalProps> = (props) => {
    
       // setIsLoading(false)
       // setError(null)
- 
       auth.login(responseData.user, responseData.token)
+      enqueueSnackbar(`Welcome! You're now logged in`)
     } catch (e) {
       // setIsLoading(false)
       // setError(e.message || 'Something went wrong, please try again')
