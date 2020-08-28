@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useCallback } from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
 import LoginModal from '../../../user/components/LoginModal'
 import { AuthContext } from '../../context/authContext'
@@ -127,13 +127,21 @@ const NavLinks: React.FC<NavLinksProps> = ({}) => {
     setDrawerState(open);
   }
 
-  const loggoutHandler = async () => {
-    await sendRequest('/api/logoutAll', 'GET', null, { 
-      Authorization: 'Bearer ' + auth.token,
-      'Content-Type': 'application/json'
-    })
+
+  const logoutHandler = async () => {
+    // ????? What's wrong with sending request first? async?
     auth.logout()
-    enqueueSnackbar(`You're loged out`)
+    
+    enqueueSnackbar(`You're logged out`)
+    try {
+      await sendRequest('/api/logoutAll', 'GET', null, { 
+        Authorization: 'Bearer ' + auth.token
+      })
+
+    } catch (e) {
+      console.log(e)
+
+    }
     
   }
 
@@ -183,7 +191,7 @@ const NavLinks: React.FC<NavLinksProps> = ({}) => {
 
         {auth.isLoggedIn && 
           <Hidden smDown>
-          <Button onClick={loggoutHandler}>Logout</Button>
+          <Button onClick={logoutHandler}>Logout</Button>
           </Hidden>
         }
 

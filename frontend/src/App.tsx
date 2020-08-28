@@ -110,7 +110,9 @@ const App: React.FC = () => {
 
 
       <Route path="/stores/:location" exact>
+          <ScriptLoadContext.Provider value={{ scriptLoaded: loaded, scriptLoadError: error }}>
           <SearchResult />
+          </ScriptLoadContext.Provider>
       </Route>
 
       <Route path="/store/add" exact>
@@ -141,9 +143,10 @@ const App: React.FC = () => {
       <Route path="/" exact>
           <Homepage />
       </Route>
-
       <Route path="/stores/:location" exact>
+          <ScriptLoadContext.Provider value={{ scriptLoaded: loaded, scriptLoadError: error }}>
           <SearchResult />
+          </ScriptLoadContext.Provider>
       </Route>
 
       <Route path="/store/add" exact>

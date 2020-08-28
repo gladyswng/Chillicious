@@ -50,6 +50,7 @@ interface SharedModalProps {
   buttonStyle?: 'contained' | 'outlined'
   disableElevation?: boolean
   buttonSize?: "small" | "medium" | "large"
+  buttonStyles?: React.CSSProperties
   open: boolean
   onOpen: () => void
   onClose: () => void
@@ -75,7 +76,7 @@ const SharedModal: React.FC<SharedModalProps> = (props) => {
     <div>
     <Button disableElevation={props.disableElevation} 
     size={props.buttonSize}
-    style={{ width: 84 }}
+    style={props.buttonStyles}
     variant={props.buttonStyle || "contained"} 
     onClick={props.onOpen} 
     color={props.buttonColor}>

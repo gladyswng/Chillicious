@@ -28,6 +28,7 @@ interface ReviewModalProps {
   storeId: string
   buttonText: string
   buttonStyle?: "contained" | "outlined"
+  buttonStyles?: React.CSSProperties
   // TODO - TYPE 
   onChange: (info: object) => void
   review? : {
@@ -46,7 +47,7 @@ interface ReviewModalProps {
 
 }
 
-const ReviewModal: React.FC<ReviewModalProps> = ({ storeId, onChange, buttonText, buttonStyle, review, userReview }) => {
+const ReviewModal: React.FC<ReviewModalProps> = ({ storeId, onChange, buttonText, buttonStyle, buttonStyles, review, userReview }) => {
   const classes = useStyles()
   const { enqueueSnackbar } = useSnackbar()
   const auth = useContext(AuthContext)
@@ -148,6 +149,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ storeId, onChange, buttonText
        )
        
        setModalOpen(false)
+       enqueueSnackbar('Review added')
       
        const store = responseData
        onChange(store)
@@ -167,6 +169,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ storeId, onChange, buttonText
     <Modal 
     buttonText={buttonText} 
     buttonStyle={buttonStyle}
+    buttonStyles={buttonStyles}
     buttonColor="primary" 
     open={modalOpen} 
     onOpen={handleModalOpen} 

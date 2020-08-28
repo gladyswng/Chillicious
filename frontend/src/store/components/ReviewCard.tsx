@@ -155,6 +155,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, stor
              onChange={onChange}
              buttonText="Edit"
              buttonStyle="outlined"
+             buttonStyles={{width: 84}}
              />
             // <Button variant="outlined" color="primary"
             // size="small"

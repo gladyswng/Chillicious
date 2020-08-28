@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 
 import StoreList from '../components/StoreList'
 import FilterList from '../components/FilterList'
+import Map from '../../shared/components/UIElements/Map'
 import { AuthContext } from '../../shared/context/authContext'
 import Message from '../../shared/components/UIElements/Message'
 import { Typography } from '@material-ui/core'
@@ -56,12 +57,15 @@ interface Store {
   id: string
   name: string
   description: string
-  image?: string
+  image: string
   tags: string[]
   priceRange: string
   address: string
   author: string
   slug: string
+  location: {
+    coordinates: [number, number]
+  }
   ratingsQuantity?: number
   ratingsAverage?: number
 }
@@ -82,6 +86,17 @@ const SearchResult: React.FC<SearchResultProps> = () => {
   const [checkedList, setCheckedList] = useState([])
   const [hearts, setHearts] = useState<string[]>()
 
+  // let locations
+  // if (loadedStores && loadedStores.length > 0) {
+  //   locations = loadedStores.map(store => {
+  //     return {
+  //       lat: store.location.coordinates[1], 
+  //       lng: store.location.coordinates[0]
+  //     }
+  //   })
+  //   console.log(locations)
+
+  // }
   console.log(checkedList) // 7 times??
   // const getUserLocation = async () => { 
   //   console.log('ran')
@@ -220,14 +235,22 @@ const SearchResult: React.FC<SearchResultProps> = () => {
   return (
   
         <div className={classes.root}>
+         
 
           {isLoading && (
-          <div>
+            <div>
             <CircularProgress />
           </div>
           )}
             <Typography variant='h4' style={{ textAlign: 'center' }}>Search Results</Typography>
             {error && !loadedStores && <Message message={error}/>}
+            <Map 
+              center={{ lat: 60, lng: 11}} 
+              zoom={12}
+              pin='multiple'
+              style={{ width: '100%', height: 300 }}
+              storeList={loadedStores}
+              />
             {location && !isLoading && loadedStores &&  (
           <div className={classes.storePageContent}>
 
@@ -252,12 +275,16 @@ const SearchResult: React.FC<SearchResultProps> = () => {
 
             <FilterList onCheckboxChange={checkboxHandler}/>
             </Hidden>
+            
+
+
 
             </div>
+
             
               <div className={classes.storeList}>
               {error && <Message message={error}/>}
-
+              
               {noStoreMessage()}  
                 {loadedStores.length>0 &&
                 <StoreList 
