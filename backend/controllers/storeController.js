@@ -24,13 +24,8 @@ exports.getStores = async (req, res, next) => {
   
         const coordinates = await getCoordsForAddress(req.body.location)
         searchCoordinates= [coordinates.lng, coordinates.lat ]
-      
-        
-        
-      } else {
-        
-        searchCoordinates = [10, 59]
-      }
+
+      } 
     } catch(e) {
       return next(
         new HttpError('Invalid Address', 404)
@@ -50,7 +45,7 @@ exports.getStores = async (req, res, next) => {
         
       }, function (err, stores) {
      
-          res.json(stores)
+          res.json({stores, searchCoordinates})
       })
     } catch(e) {
         return next(

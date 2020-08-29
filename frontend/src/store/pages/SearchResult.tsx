@@ -6,11 +6,12 @@ import FilterList from '../components/FilterList'
 import Map from '../../shared/components/UIElements/Map'
 import { AuthContext } from '../../shared/context/authContext'
 import Message from '../../shared/components/UIElements/Message'
+import { useHttpClient } from '../../shared/hooks/http-hook'
+import MapModal from '../components/MapModal'
+
 import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import { useHttpClient } from '../../shared/hooks/http-hook'
-
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -66,8 +67,8 @@ interface Store {
   location: {
     coordinates: [number, number]
   }
-  ratingsQuantity?: number
-  ratingsAverage?: number
+  ratingsQuantity: number
+  ratingsAverage: number
 }
 
 interface SearchResultProps {
@@ -83,21 +84,10 @@ const SearchResult: React.FC<SearchResultProps> = () => {
  
   const [loadedStores, setLoadedStores] = useState<Store[]>()
   const [fetchedStores, setFetchedStores] = useState<Store[]>()
+  const [searchCoordinates, setSearchCoordinates] = useState<[number, number]>()
   const [checkedList, setCheckedList] = useState([])
   const [hearts, setHearts] = useState<string[]>()
 
-  // let locations
-  // if (loadedStores && loadedStores.length > 0) {
-  //   locations = loadedStores.map(store => {
-  //     return {
-  //       lat: store.location.coordinates[1], 
-  //       lng: store.location.coordinates[0]
-  //     }
-  //   })
-  //   console.log(locations)
-
-  // }
-  console.log(checkedList) // 7 times??
   // const getUserLocation = async () => { 
   //   console.log('ran')
   //   if (navigator.geolocation) {
@@ -119,8 +109,11 @@ const SearchResult: React.FC<SearchResultProps> = () => {
        const responseData = await sendRequest('/api/stores', 'POST', JSON.stringify({ location }), { 
          'Content-Type': 'application/json'
        })
-       setLoadedStores(responseData)
-       setFetchedStores(responseData)
+       const { stores, searchCoordinates } = responseData
+       setFetchedStores(stores)
+       setLoadedStores(stores)
+       
+       setSearchCoordinates(searchCoordinates)
      } catch (e) {
       
      }
@@ -243,14 +236,23 @@ const SearchResult: React.FC<SearchResultProps> = () => {
           </div>
           )}
             <Typography variant='h4' style={{ textAlign: 'center' }}>Search Results</Typography>
+
             {error && !loadedStores && <Message message={error}/>}
-            <Map 
-              center={{ lat: 60, lng: 11}} 
-              zoom={12}
-              pin='multiple'
-              style={{ width: '100%', height: 300 }}
-              storeList={loadedStores}
-              />
+            {searchCoordinates && 
+            <MapModal 
+              searchCoordinates={searchCoordinates}
+              loadedStores={loadedStores}
+              wholeScreenModal
+            />
+       
+            // <Map 
+            //   center={{ lat: searchCoordinates[1], lng: searchCoordinates[0]}} 
+            //   zoom={12}
+            //   pin='multiple'
+            //   style={{ width: '100%', height: 300 }}
+            //   storeList={loadedStores}
+            //   />
+            }
             {location && !isLoading && loadedStores &&  (
           <div className={classes.storePageContent}>
 

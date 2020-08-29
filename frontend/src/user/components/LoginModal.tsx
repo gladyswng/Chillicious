@@ -98,13 +98,16 @@ const LoginModal: React.FC<LoginModalProps> = (props) => {
 
 
   return (
+    
     <Modal 
+    
     buttonText={props.buttonText}
     buttonColor="primary" 
     disableElevation={props.disableElevation}
     open={modalOpen} 
     onOpen={handleModalOpen} 
     onClose={handleModalClose}>
+
       {isLoading && <CircularProgress />}
 
       <Typography variant="h5">Log In</Typography>
@@ -178,8 +181,6 @@ const LoginModal: React.FC<LoginModalProps> = (props) => {
     </Button>
     <Typography variant='body2'>Do not have an account?</Typography>
     <Typography>
-
-
       <Button 
       component={ NavLink } 
       to="/user/signUp" 
@@ -188,8 +189,6 @@ const LoginModal: React.FC<LoginModalProps> = (props) => {
         Sign Up Here
       </Button>
 
-      
-  
     </Typography>
   </div>
 

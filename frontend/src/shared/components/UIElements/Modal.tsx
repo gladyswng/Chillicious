@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2, 4, 3),
     [theme.breakpoints.down('xs')]: {
       width: 300,
+  
       top: '50%',
       left: '58%',
       transform: 'translate(-50%, -58%)'
@@ -40,6 +41,24 @@ const useStyles = makeStyles((theme) => ({
     }
 
   },
+  wholeScreenPaper : {
+    position: 'absolute',
+    height: 500,
+    width: '80%',
+    backgroundColor: theme.palette.background.paper,
+    border: 0,
+    outline: 0,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    [theme.breakpoints.down('xs')]: {
+      width: 300,
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -58%)'
+
+    }
+  }
+
 
 }));
 
@@ -51,6 +70,8 @@ interface SharedModalProps {
   disableElevation?: boolean
   buttonSize?: "small" | "medium" | "large"
   buttonStyles?: React.CSSProperties
+  modalStyles?: React.CSSProperties
+  wholeScreenModal?: boolean
   open: boolean
   onOpen: () => void
   onClose: () => void
@@ -63,14 +84,14 @@ const SharedModal: React.FC<SharedModalProps> = (props) => {
 
 
   const body = (
-    <div style={modalStyle} className={classes.paper}>
+    <div style={modalStyle} className={props.wholeScreenModal?classes.wholeScreenPaper :  classes.paper }>
       {props.children}
       
     </div>
   );
 
 
-  
+   
 
   return (
     <div>
@@ -86,7 +107,7 @@ const SharedModal: React.FC<SharedModalProps> = (props) => {
       onClose={props.onClose}
       aria-labelledby="title"
       aria-describedby="description"
-      style={{ outline: 'none', border: 'none' }}
+      style={{ outline: 'none', border: 'none'}}
      
       
     >

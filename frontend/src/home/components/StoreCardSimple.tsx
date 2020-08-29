@@ -44,7 +44,7 @@ interface StoreCardProps {
     address: string
     ratingsAverage: number
     priceRange: string
-    tags: string[]
+    tags?: string[]
     slug: string
     ratingsQuantity: number
   }
@@ -96,7 +96,7 @@ const StoreCard: React.FC<StoreCardProps> = ({store}) => {
         </CardContent>
         
       </CardActionArea>
-      {store.tags[0] !== "" &&
+      {store.tags && store.tags[0] !== "" &&
         <div style={{ padding: '10px 10px 0 10px' }}>
 
           {store.tags.map(tag => {
