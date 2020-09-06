@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react'
 import ReviewCard from './ReviewCard'
 import { AuthContext } from '../../shared/context/authContext'
-
+import { usePagination } from '../../shared/hooks/pagination-hook'
 import ReviewModal from './ReviewModal'
 import LoginModal from '../../user/components/LoginModal'
 
@@ -71,22 +71,20 @@ const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId, onChange })
   const classes = useStyles()
   const auth = useContext(AuthContext)
   const [sortBy, setSortBy] = useState()
-  // TODO - set hook
-  const [currentPage, setCurrentPage] = useState(1)
-  const [reviewList, setReviewList] = useState(reviews)
-
-  const pageCount = Math.ceil(reviews.length / 5)
-  const indexOfLastTodo = currentPage * 5
-  const indexOfFirstTodo = indexOfLastTodo - 5
-
-  const currentTodos = reviewList.slice(indexOfFirstTodo, indexOfLastTodo)
-
-  // useEffect(() => {
-  //   setReviewList(reviews)
   
+  const [reviewList, setReviewList] = useState(reviews)
+  
+  const { pageChangeHandler, currentPage, pageCount, indexOfLastItem, indexOfFirstItem } = usePagination(reviewList, 5)
+ 
 
-  // }, [reviews])
+  const currentReviews = reviewList.slice(indexOfFirstItem, indexOfLastItem)
+ 
+  useEffect(() => {
+    setReviewList(reviews)
 
+  }, [reviews])
+
+ 
   const handleSortChange = (event: any) => {
     const value = event.target.value
     setSortBy(value)
@@ -105,20 +103,7 @@ const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId, onChange })
     }
   }
 
-  const pageChangeHandler = (e: React.MouseEvent<HTMLElement, MouseEvent>, value: number) => {
-    setCurrentPage(value)
- }
- 
-  const reviewCardList = currentTodos.map(review => {
-    return (
-      <ReviewCard 
-      review={review}
-      storeId={storeId} 
-      // onReviewDelete={onReviewDelete}
-      onChange={onChange}
-      key={review._id}/>
-    )
-  })
+
 
     return (
       <Paper variant="outlined" className={classes.reviewFieldRoot}>
@@ -155,8 +140,18 @@ const ReviewField: React.FC<ReviewFieldProps> = ({ reviews, storeId, onChange })
         {/* </div> */}
         
 
-        {reviews.length===0? <Typography variant="h6" style={{ padding: 12 }}>No reviews yet :(</Typography> : reviewCardList}
-        {/* {reviewList} */}
+        {reviews.length===0 &&  <Typography variant="h6" style={{ padding: 12 }}>No reviews yet :(</Typography>} 
+        {currentReviews && currentReviews.map(review => {
+          return (
+            <ReviewCard 
+            review={review}
+            storeId={storeId} 
+            // onReviewDelete={onReviewDelete}
+            onChange={onChange}
+            key={review._id}/>
+          )
+        })}
+    
         <Pagination 
           count={pageCount} 
           shape="rounded" 

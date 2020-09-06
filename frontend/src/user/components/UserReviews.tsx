@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react'
+import { usePagination } from '../../shared/hooks/pagination-hook'
 import ReviewCard from '../../store/components/ReviewCard'
 import Pagination from '@material-ui/lab/Pagination'
 import StoreList from '../../store/components/StoreList'
@@ -31,22 +32,16 @@ interface UserReviewsProps {
 
 const UserReviews: React.FC<UserReviewsProps> = ({ reviews, onChange, userReview }) => {
 
-  const [currentPage, setCurrentPage] = useState(1)
 
   if (!reviews || reviews.length === 0 ) {
     return (
       <Message message='No review found'/>
     )
   }
-  const pageCount = Math.ceil(reviews.length / 5)
-  const indexOfLastTodo = currentPage * 5
-  const indexOfFirstTodo = indexOfLastTodo - 5
-  const currentTodos = reviews.slice(indexOfFirstTodo, indexOfLastTodo)
+  const { pageChangeHandler, currentPage, pageCount, indexOfLastItem, indexOfFirstItem } = usePagination(reviews, 5)
+ 
+  const currentTodos = reviews.slice(indexOfFirstItem, indexOfLastItem)
   
-  const pageChangeHandler = (e: React.MouseEvent<HTMLElement, MouseEvent>, value: number) => {
-    setCurrentPage(value)
-
- }
 
 
   const reviewList = currentTodos.map(review => {

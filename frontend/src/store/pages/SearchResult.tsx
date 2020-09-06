@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react'
+import React, { useState, useEffect, useContext, useCallback, useReducer } from 'react'
 import { useParams } from 'react-router-dom'
 
 import StoreList from '../components/StoreList'
@@ -136,31 +136,6 @@ const SearchResult: React.FC<SearchResultProps> = () => {
 
   
   useEffect(() => {
-    // const fetchStores = async() => {
-    //   console.log(location)
-    //   try { 
-    //     const responseData = await sendRequest('/api/stores', 'POST', JSON.stringify({ location }), { 
-    //       'Content-Type': 'application/json'
-    //     })
-    //     setLoadedStores(responseData)
-    //     setFetchedStores(responseData)
-    //   } catch (e) {
-
-    //   }
-    // }
-
-    // const fetchHearts = async() => {
-    //   try {
-    //     const heartsData = await sendRequest('/api/user/me/hearts', 'GET', null, { 
-    //       Authorization: 'Bearer ' + auth.token,
-    //       'Content-Type': 'application/json'
-    //     })
-        
-    //     setHearts(heartsData)
-    //   } catch (e) {
-
-    //   }
-    // }
     if (location) {
     fetchStores()
     }
@@ -227,81 +202,81 @@ const SearchResult: React.FC<SearchResultProps> = () => {
   
   return (
   
-        <div className={classes.root}>
-         
+    <div className={classes.root}>
+      
 
-          {isLoading && (
-            <div>
-            <CircularProgress />
-          </div>
-          )}
-            <Typography variant='h4' style={{ textAlign: 'center' }}>Search Results</Typography>
+      {isLoading && (
+        <div>
+        <CircularProgress />
+      </div>
+      )}
+        <Typography variant='h4' style={{ textAlign: 'center' }}>Search Results</Typography>
 
-            {error && !loadedStores && <Message message={error}/>}
-            {searchCoordinates && 
-            <MapModal 
-              searchCoordinates={searchCoordinates}
-              loadedStores={loadedStores}
-              wholeScreenModal
-            />
-       
-            // <Map 
-            //   center={{ lat: searchCoordinates[1], lng: searchCoordinates[0]}} 
-            //   zoom={12}
-            //   pin='multiple'
-            //   style={{ width: '100%', height: 300 }}
-            //   storeList={loadedStores}
-            //   />
-            }
-            {location && !isLoading && loadedStores &&  (
-          <div className={classes.storePageContent}>
-
-
-            <div className={classes.filterList}>
-            <Hidden smUp>
-            <Accordion style={{ boxShadow: 'none' }}>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="filter"
-                id="filter"
-              >
-                <Typography variant="button">Filter</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <FilterList onCheckboxChange={checkboxHandler}/>
-              </AccordionDetails>
-            </Accordion>
-            
-            </Hidden>
-            <Hidden xsDown>
-
-            <FilterList onCheckboxChange={checkboxHandler}/>
-            </Hidden>
-            
-
-
-
-            </div>
-
-            
-              <div className={classes.storeList}>
-              {error && <Message message={error}/>}
-              
-              {noStoreMessage()}  
-                {loadedStores.length>0 &&
-                <StoreList 
-                storeList={loadedStores} 
-                onDelete={storeDeleteHandler}
-                onHeartChange={heartChangeHandler}
-                hearts={hearts}
-                />
-                }
-              </div>
-
-          </div>
-          )}
-        </div>
+        {error && !loadedStores && <Message message={error}/>}
+        {searchCoordinates && 
+        <MapModal 
+          searchCoordinates={searchCoordinates}
+          loadedStores={loadedStores}
+          wholeScreenModal
+        />
     
-    )
+        // <Map 
+        //   center={{ lat: searchCoordinates[1], lng: searchCoordinates[0]}} 
+        //   zoom={12}
+        //   pin='multiple'
+        //   style={{ width: '100%', height: 300 }}
+        //   storeList={loadedStores}
+        //   />
+        }
+        {location && !isLoading && loadedStores &&  (
+      <div className={classes.storePageContent}>
+
+
+        <div className={classes.filterList}>
+        <Hidden smUp>
+        <Accordion style={{ boxShadow: 'none' }}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="filter"
+            id="filter"
+          >
+            <Typography variant="button">Filter</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <FilterList onCheckboxChange={checkboxHandler}/>
+          </AccordionDetails>
+        </Accordion>
+        
+        </Hidden>
+        <Hidden xsDown>
+
+        <FilterList onCheckboxChange={checkboxHandler}/>
+        </Hidden>
+        
+
+
+
+        </div>
+
+        
+          <div className={classes.storeList}>
+          {error && <Message message={error}/>}
+          
+          {noStoreMessage()}  
+            {loadedStores.length>0 &&
+            <StoreList 
+            storeList={loadedStores} 
+            onDelete={storeDeleteHandler}
+            onHeartChange={heartChangeHandler}
+            hearts={hearts}
+            />
+            }
+          </div>
+
+      </div>
+      )}
+    </div>
+    
+  )
 }
 export default SearchResult

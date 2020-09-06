@@ -174,9 +174,9 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, onHeartCh
       await sendRequest(`/api/store/${store.id}`, 'DELETE', null , { 
         Authorization: 'Bearer ' + auth.token
       })
-      
-      // sendDeleteRequest(store.id)
       onDelete(store.id)
+      setModalOpen(false)
+      // sendDeleteRequest(store.id)
       enqueueSnackbar('Store deleted')
       
     } catch (e) {
