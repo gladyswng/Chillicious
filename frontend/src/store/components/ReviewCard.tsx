@@ -142,7 +142,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, stor
 
             <RatingBar rating={rating} readOnly={true}/>
             <Typography variant="h6" style={{ fontWeight: 'normal' }}>{title}</Typography>
-            <Typography style={{ width: '100%', wordWrap: 'break-word', wordBreak: 'break-all' }}>{description}</Typography>
+            <Typography style={{ width: '100%', wordBreak: 'break-all' }}>{description}</Typography>
             
           </div>
           <div hidden={false} className={classes.cardButtons}>

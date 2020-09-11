@@ -95,7 +95,7 @@ const useStyles = makeStyles((theme) => ({
 
   },
   chipList: {
-    width: 300
+    width: '100%'
     // [theme.breakpoints.down('xs')]: {
     //   flexDirection: 'column',
     // }
