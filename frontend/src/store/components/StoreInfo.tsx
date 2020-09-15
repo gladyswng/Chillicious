@@ -112,7 +112,7 @@ const StoreInfo: React.FC<StoreInfoProps> = (props) => {
       <Paper variant="outlined" className={classes.storeInfoContent}>
         <div className={classes.textSection}>
         <Typography variant="h5" className={classes.wordBreak}>{name}</Typography>
-        <Typography className={classes.wordBreak} style={{ maxHeight: 70, overflow: 'scroll'}}>{description}</Typography>
+        <Typography className={classes.wordBreak} style={{ maxHeight: 70 }}>{description}</Typography>
 
 
           <Box component="fieldset" mb={3} borderColor="transparent" style={{ margin: 0, padding: 0, display:'inline-block' }}>

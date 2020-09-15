@@ -260,7 +260,7 @@ const SearchResult: React.FC<SearchResultProps> = () => {
 
         
           <div className={classes.storeList}>
-          {error && <Message message={error}/>}
+          {error && loadedStores &&<Message message={error}/>}
           
           {noStoreMessage()}  
             {loadedStores.length>0 &&

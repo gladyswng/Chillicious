@@ -107,9 +107,7 @@ const useStyles = makeStyles((theme) => ({
     verticalAlign: 'text-bottom'
   },
   description: { 
-    wordBreak: 'break-all',
     height: 40,
-    overflow: 'scroll'
   }
 }))
 

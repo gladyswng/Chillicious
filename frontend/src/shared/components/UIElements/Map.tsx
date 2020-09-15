@@ -125,7 +125,7 @@ const Map: React.FC<MapProps> = (props) => {
                     <img alt="image" src={storeList[i].image} style={{ width: 50, height: 50, borderRadius: 3, marginRight: 10 }}  />
                 <Link 
                   //${window.location.host}
-                  href={`${window.location.host}/#/store/${storeList[i].slug}`}
+                  href={`/#/store/${storeList[i].slug}`}
                   color="inherit"
                   style={{ cursor: 
                   "pointer" }}
