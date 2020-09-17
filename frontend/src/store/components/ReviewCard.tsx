@@ -32,7 +32,6 @@ const useStyles = makeStyles((theme) => ({
   comment: {
     paddingLeft: 24,
     width: '80%',
-    wordBreak: 'break-all',
     [theme.breakpoints.down('xs')]: {
       width: '90%'
     }
@@ -142,7 +141,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, storeId, onChange, stor
 
             <RatingBar rating={rating} readOnly={true}/>
             <Typography variant="h6" style={{ fontWeight: 'normal' }}>{title}</Typography>
-            <Typography style={{ width: '100%', wordBreak: 'break-all' }}>{description}</Typography>
+            <Typography style={{ width: '100%' }}>{description}</Typography>
             
           </div>
           <div hidden={false} className={classes.cardButtons}>

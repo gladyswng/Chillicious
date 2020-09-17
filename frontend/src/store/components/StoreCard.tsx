@@ -202,7 +202,7 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, onHeartCh
 
       <CardContent  className={classes.cardContent}>
         <div style={{ padding: 8 }}>
-          <Typography variant="h5" component="h3" style={{ wordBreak: 'break-all' }}>
+          <Typography variant="h5" component="h3" >
             {store.name}
           </Typography>
 

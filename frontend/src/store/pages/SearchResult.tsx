@@ -78,7 +78,7 @@ interface SearchResultProps {
 const SearchResult: React.FC<SearchResultProps> = () => {
   const classes = useStyles()
   const auth = useContext(AuthContext)
-  const { location } = useParams()
+  const { location }: any = useParams()
   console.log(location)
   const {isLoading, error, sendRequest, clearError} = useHttpClient() 
  

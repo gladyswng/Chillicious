@@ -55,9 +55,7 @@ const useStyles = makeStyles((theme) => ({
     }
     
   },
-  wordBreak: {
-    wordBreak: 'break-all'
-  },
+
   textSection: {
     display: 'flex',
     flexDirection: 'column',
@@ -111,8 +109,8 @@ const StoreInfo: React.FC<StoreInfoProps> = (props) => {
     return (
       <Paper variant="outlined" className={classes.storeInfoContent}>
         <div className={classes.textSection}>
-        <Typography variant="h5" className={classes.wordBreak}>{name}</Typography>
-        <Typography className={classes.wordBreak} style={{ maxHeight: 70 }}>{description}</Typography>
+        <Typography variant="h5" >{name}</Typography>
+        <Typography style={{ maxHeight: 70 }}>{description}</Typography>
 
 
           <Box component="fieldset" mb={3} borderColor="transparent" style={{ margin: 0, padding: 0, display:'inline-block' }}>
