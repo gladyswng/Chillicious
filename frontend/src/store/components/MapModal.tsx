@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Map from '../../shared/components/UIElements/Map'
+import Map from './Map'
 import Modal from '../../shared/components/UIElements/Modal'
 
 interface MapModalProps {

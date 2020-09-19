@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 
 import StoreList from '../components/StoreList'
 import FilterList from '../components/FilterList'
-import Map from '../../shared/components/UIElements/Map'
+import Map from '../components/Map'
 import { AuthContext } from '../../shared/context/authContext'
 import Message from '../../shared/components/UIElements/Message'
 import { useHttpClient } from '../../shared/hooks/http-hook'

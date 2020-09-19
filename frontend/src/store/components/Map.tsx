@@ -1,13 +1,13 @@
 import React, { useRef, useEffect, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
-import useScript from '../../hooks/useScript'
-import { ScriptLoadContext } from '../../context/scriptLoadContext'
-import StoreList from '../../../store/components/StoreList';
+import useScript from '../../shared/hooks/useScript'
+import { ScriptLoadContext } from '../../shared/context/scriptLoadContext'
+import StoreList from './StoreList';
 import { renderToString } from 'react-dom/server'
 import { Typography } from '@material-ui/core';
-import RatingBar from './RatingBar';
-import StoreCardSimple from '../../../home/components/StoreCardSimple'
+import RatingBar from '../../shared/components/UIElements/RatingBar';
+import StoreCardSimple from '../../home/components/StoreCardSimple'
 import CardActionArea from '@material-ui/core/CardActionArea'
 import Link from '@material-ui/core/Link'
 interface Store {
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
   mapWrapper: {
     width: '40%', 
-    height: '100%',
+    height: 220,
     [theme.breakpoints.down('xs')]: {
       width: '100%'
     }

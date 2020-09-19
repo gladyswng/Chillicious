@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 
 
-import Map from '../../shared/components/UIElements/Map'
+import Map from './Map'
 
 
 import { Typography } from '@material-ui/core'
