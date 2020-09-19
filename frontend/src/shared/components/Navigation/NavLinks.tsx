@@ -129,19 +129,26 @@ const NavLinks: React.FC<NavLinksProps> = ({}) => {
 
 
   const logoutHandler = async () => {
-    // ????? What's wrong with sending request first? async?
-    auth.logout()
     
-    enqueueSnackbar(`You're logged out`)
+    // ????? What's wrong with sending request first? async?
+    // auth.logout()
+     
+    
     try {
-      await sendRequest('/api/logoutAll', 'GET', null, { 
+      console.log('Request start')
+      await sendRequest('/api/logoutAll', 'post', {}, { 
         Authorization: 'Bearer ' + auth.token
       })
 
+      auth.logout()
+     enqueueSnackbar(`You're logged out`)
     } catch (e) {
       console.log(e)
 
+
     }
+
+
     
   }
 

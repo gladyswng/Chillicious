@@ -149,24 +149,24 @@ const App: React.FC = () => {
           </ScriptLoadContext.Provider>
       </Route>
 
-      <Route path="/store/add" exact>
+      {/* <Route path="/store/add" exact>
           <AddStore />
-      </Route>
+      </Route> */}
       <Route path="/store/:slug" exact>
         <ScriptLoadContext.Provider value={{ scriptLoaded: loaded, scriptLoadError: error }}>
             <Store />
         </ScriptLoadContext.Provider>
       </Route>
-      <Route path="/store/edit/:id" exact>
+      {/* <Route path="/store/edit/:id" exact>
           <UpdateStore />
-      </Route>
+      </Route> */}
 
       <Route path="/user/signUp" exact>
           <UserSignUp />
       </Route>
-      <Route path="/user/me" exact>
+      {/* <Route path="/user/me" exact>
           <UserPage />
-      </Route>
+      </Route> */}
 
       <Route path="/user/resetLink" exact>
         <ResetLink />
@@ -179,7 +179,7 @@ const App: React.FC = () => {
       
 
 
-      <Redirect to="/user/signUp" />
+      <Redirect to="/" />
       </Switch>
     )
   }

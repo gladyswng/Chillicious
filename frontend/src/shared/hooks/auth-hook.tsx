@@ -5,6 +5,7 @@ export const useAuth = () => {
   const [token, setToken] = useState(false)
   const [userId, setUserId] = useState(false)
   const [tokenExpirationDate, setTokenExpirationDate] = useState<any>()
+  console.log(token)
 
 
   // the function in useCallback will never be recreated
@@ -28,7 +29,7 @@ export const useAuth = () => {
   }, []) // Thanks to useCallback it will only run once
   
   const logout = useCallback(() => {
-    
+    console.log('logout frontend')
     setToken(null)
     setUserId(null)
     setTokenExpirationDate(null)

@@ -59,7 +59,7 @@ router.post('/login', userController.login)
 // login logout backend
 // TODO - CONNECT LOGOUT TO FRONTEND
 router.get('/logout', auth, userController.logout)
-router.get('/logoutAll', auth, userController.logoutAll)
+router.post('/logoutAll', auth, userController.logoutAll)
 
 router.get('/user/me', auth, userController.getUser)
 

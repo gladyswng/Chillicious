@@ -138,6 +138,7 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, onHeartCh
   const classes = useStyles()
   const { enqueueSnackbar } = useSnackbar()
   const auth = useContext(AuthContext)
+
   const history = useHistory()
   const [modalOpen, setModalOpen] = useState(false)
 
@@ -193,7 +194,7 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, onHeartCh
 
             <div className={classes.heartButton}>
 
-              {hearts && 
+              {hearts && auth.token &&
                 <StoreHeart storeId={store.id} hearts={hearts} fontSize="default"/>
               }
             </div>
@@ -251,7 +252,7 @@ const StoreItem: React.FC<StoreItemProps> = ({store, onDelete, hearts, onHeartCh
 
             <div className={classes.heartButton}>
 
-              {hearts && 
+              {hearts && auth.token &&
                 <StoreHeart storeId={store.id} hearts={hearts} fontSize="default"/>
               }
             </div>
