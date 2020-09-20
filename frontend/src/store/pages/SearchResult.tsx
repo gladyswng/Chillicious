@@ -181,7 +181,7 @@ const SearchResult: React.FC<SearchResultProps> = () => {
       setLoadedStores( fetchedStores.filter((store) => tags.every(tag => store.tags.includes(tag)) 
       && (prices.length == 0 || prices.includes(store.priceRange)) 
       && (levels.length == 0 || (store.ratingsAverage 
-      && levels.includes(store.ratingsAverage.toString()))))
+      && levels.includes(Math.round(store.ratingsAverage).toString()))))
      )
 
     } else if (checkedList.length === 0) {

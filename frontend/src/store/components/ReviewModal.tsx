@@ -75,6 +75,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ storeId, onChange, buttonText
 
   if (review) {
     useEffect(()=> {
+      console.log('set to true')
       setFormData({
         rating: {
           value: review.rating,
@@ -197,7 +198,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ storeId, onChange, buttonText
             required
             validators={[VALIDATOR_REQUIRE()]}
             onInput={inputHandler}
-            blur={true}
+            blur={!review}
             />
 
           </div>
@@ -215,7 +216,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ storeId, onChange, buttonText
             required
             validators={[VALIDATOR_REQUIRE(), VALIDATOR_MINLENGTH(40)]}
             onInput={inputHandler}
-            blur={true}
+            blur={!review}
             />
 
           </div>
