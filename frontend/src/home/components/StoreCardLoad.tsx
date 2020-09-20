@@ -7,7 +7,8 @@ import Paper from '@material-ui/core/Paper'
 const useStyles = makeStyles((theme) => ({
 
   root: {
-    flexGrow: 1
+    flexGrow: 1,
+    width: '100%'
   },
   cardRoot: {
     width: 345,
@@ -45,8 +46,8 @@ const StoreCardLoad: React.FC<StoreCardLoadProps> = ({}) => {
 
   const loadingStore = cardRows.map((item, index) => {
     return (
-      <Grid item sm={6} md={3} key={cardRows[index]} style={{ width: '100%' }}>
-      <div className={classes.cardRoot}>
+      <Grid item sm={6} md={3} key={cardRows[index]} className={classes.cardRoot}>
+   
         <div
         style={{ 
           backgroundColor: '#D3D3D3',
@@ -60,18 +61,17 @@ const StoreCardLoad: React.FC<StoreCardLoadProps> = ({}) => {
       <LinearProgress color="secondary" className={classes.loading}/>
 
 
-      </div>
       </Grid>
   )
   })
     return (
 
-        <div className={classes.root}>
-          <Grid container spacing={4} >
+    
+          <Grid container spacing={4} className={classes.root}>
           {loadingStore}
           </Grid>
 
-        </div>
+ 
         
 
     )

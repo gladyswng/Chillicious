@@ -64,7 +64,7 @@ const Homepage: React.FC<HomePageProps> = ({}) => {
   }, [])
 
   useEffect(() => {
-    fetchTopStores()
+    // fetchTopStores()
   }, [fetchTopStores])
   console.log(topList)
 
