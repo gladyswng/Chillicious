@@ -47,7 +47,7 @@ const theme = createMuiTheme({
             main: '#FEC200'
         },
         secondary: {
-            main: '#000000'
+            main: '#C0C0C0'
         }
     },
     // overrides: {
