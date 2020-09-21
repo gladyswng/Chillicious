@@ -149,24 +149,16 @@ const App: React.FC = () => {
           </ScriptLoadContext.Provider>
       </Route>
 
-      {/* <Route path="/store/add" exact>
-          <AddStore />
-      </Route> */}
+  
       <Route path="/store/:slug" exact>
         <ScriptLoadContext.Provider value={{ scriptLoaded: loaded, scriptLoadError: error }}>
             <Store />
         </ScriptLoadContext.Provider>
       </Route>
-      {/* <Route path="/store/edit/:id" exact>
-          <UpdateStore />
-      </Route> */}
-
+  
       <Route path="/user/signUp" exact>
           <UserSignUp />
       </Route>
-      {/* <Route path="/user/me" exact>
-          <UserPage />
-      </Route> */}
 
       <Route path="/user/resetLink" exact>
         <ResetLink />

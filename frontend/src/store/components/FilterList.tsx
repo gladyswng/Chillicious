@@ -62,6 +62,7 @@ interface IState {
     vegetarianFriendly: boolean
     veganOptions: boolean
     glutenFree: boolean
+    meatLover: boolean
 
 }
 
@@ -85,7 +86,8 @@ const FilterList: React.FC<FilterListProps> = ({ onCheckboxChange }) => {
     lactoseFree: false,
     vegetarianFriendly: false,
     veganOptions: false,
-    glutenFree: false
+    glutenFree: false,
+    meatLover: false
 
   });
 
@@ -98,7 +100,7 @@ const FilterList: React.FC<FilterListProps> = ({ onCheckboxChange }) => {
 
   const category = ['chinese', 'indian', 'korean', 'mexican', 'other']
 
-  const dietaryRestrictions = ['MeatLover', 'lactoseFree', 'vegetarianFriendly', 'veganOptions', 'glutenFree']
+  const dietaryRestrictions = ['meatLover', 'lactoseFree', 'vegetarianFriendly', 'veganOptions', 'glutenFree']
 
 
 

@@ -73,8 +73,8 @@ interface SharedModalProps {
   modalStyles?: React.CSSProperties
   wholeScreenModal?: boolean
   open: boolean
-  onOpen: () => void
-  onClose: () => void
+  onOpen?: () => void
+  onClose?: () => void
 }
 
 const SharedModal: React.FC<SharedModalProps> = (props) => {
@@ -95,13 +95,13 @@ const SharedModal: React.FC<SharedModalProps> = (props) => {
 
   return (
     <div>
-    <Button disableElevation={props.disableElevation} 
+    {props.onOpen && <Button disableElevation={props.disableElevation} 
     size={props.buttonSize}
     style={props.buttonStyles}
     variant={props.buttonStyle || "contained"} 
     onClick={props.onOpen} 
     color={props.buttonColor}>
-    {props.buttonText}</Button>
+    {props.buttonText}</Button>}
     <Modal
       open={props.open}
       onClose={props.onClose}

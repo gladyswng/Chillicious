@@ -5,7 +5,7 @@ export const useAuth = () => {
   const [token, setToken] = useState(false)
   const [userId, setUserId] = useState(false)
   const [tokenExpirationDate, setTokenExpirationDate] = useState<any>()
-  console.log(token)
+
 
 
   // the function in useCallback will never be recreated

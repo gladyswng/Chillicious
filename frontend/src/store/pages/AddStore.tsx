@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import StoreForm from '../components/StoreForm'
+import Modal from '../../shared/components/UIElements/Modal'
 import { useForm } from '../../shared/hooks/store-form-hook'
 import { useHttpClient } from '../../shared/hooks/http-hook'
 
@@ -55,7 +56,8 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
       lactoseFree: false,
       vegetarianFriendly: false,
       veganOptions: false,
-      glutenFree: false
+      glutenFree: false,
+      meatLover: false
     }
   })
 
@@ -116,7 +118,13 @@ const AddStore: React.FC<AddStoreProps> = ({}) => {
           Add Store
           </Typography>
           {error && <Message message={error}/>}
-          {isLoading && <CircularProgress />}
+          {isLoading && 
+          <Modal open>
+            <div style={{ width: '100%', textAlign: 'center' }}>
+              <CircularProgress />
+            </div>
+          </Modal>
+          }
           <StoreForm 
           inputs={inputs}
           formIsValid={isValid}

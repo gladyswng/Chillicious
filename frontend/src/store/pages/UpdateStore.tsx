@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react'
 import { useHttpClient } from '../../shared/hooks/http-hook'  
 import { useParams, useHistory } from "react-router-dom";
 import StoreForm from '../components/StoreForm'
+import Modal from '../../shared/components/UIElements/Modal'
 import Message from '../../shared/components/UIElements/Message'
 import Typography from '@material-ui/core/Typography'
 import { useForm } from '../../shared/hooks/store-form-hook'
@@ -22,6 +23,7 @@ interface checkbox {
   vegetarianFriendly: boolean
   veganOptions: boolean
   glutenFree:boolean
+  meatLover: boolean
 }
 
 const UpdateStore: React.FC<UpdateStoreProps> = ({}) => {
@@ -30,7 +32,7 @@ const UpdateStore: React.FC<UpdateStoreProps> = ({}) => {
   const history = useHistory()
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
   const [loadedStore, setLoadedStore] = useState()
-  const { id } = useParams()
+  const { id } : any = useParams()
 
   
 
@@ -71,7 +73,8 @@ const UpdateStore: React.FC<UpdateStoreProps> = ({}) => {
       lactoseFree: false,
       vegetarianFriendly: false,
       veganOptions: false,
-      glutenFree: false
+      glutenFree: false,
+      meatLover: false
     }
   })
 
@@ -103,7 +106,8 @@ const UpdateStore: React.FC<UpdateStoreProps> = ({}) => {
           lactoseFree: false,
           vegetarianFriendly: false,
           veganOptions: false,
-          glutenFree: false
+          glutenFree: false,
+          meatLover: false
           }
           Object.keys(checkbox).map((tag: keyof checkbox )=> {
             if (store.tags.includes(tag)) {
@@ -196,7 +200,13 @@ const updateSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
       Edit Store
       </Typography>
       {error && <Message message={error}/>}
-      {isLoading && <CircularProgress />}
+      {isLoading && 
+        <Modal open>
+          <div style={{ width: '100%', textAlign: 'center' }}>
+            <CircularProgress />
+          </div>
+        </Modal>
+      }
       {!isLoading&& loadedStore && 
       <StoreForm 
         inputs={inputs}
