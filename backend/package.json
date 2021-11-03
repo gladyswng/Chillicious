@@ -28,7 +28,7 @@
     "nodemailer": "^6.4.11",
     "slugify": "^1.4.0",
     "uuid": "^7.0.3",
-    "validator": "^13.0.0"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "env-cmd": "^10.1.0",
